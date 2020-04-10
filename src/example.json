@@ -1,0 +1,35 @@
+{
+  "name": "Example App Template",
+
+  "tabs": [
+
+    {
+      "id": 0,
+      "name": "Welcome",
+      "slug": "welcome",
+      "icon": "Home",
+      "pages": [
+        {
+          "id": 0,
+          "title": "Example App Template",
+          "components": [
+            {
+              "id": 0,
+              "type": "markdown",
+              "content": "# Welcome!\n\nThis is your decentralize space"
+            }
+          ]
+        }
+      ]
+    }
+
+  ],
+
+  "integrations": [
+    {
+      "type": "thegraph",
+      "endpoint": "http://thegraph.io/...."
+    }
+  ]
+
+}
