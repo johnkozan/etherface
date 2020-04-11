@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   useMediaQuery,
@@ -8,7 +8,6 @@ import {
   Drawer,
   List,
   ListItem,
-  Paper,
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { makeStyles, useTheme } from "@material-ui/styles";
@@ -124,15 +123,15 @@ export const Layout = ({ children }) => {
 
       <div className={classes.navlist}>
         <List className={classes.list}>
-          { appTemplate.tabs && appTemplate.tabs.map((page, k) => (
+          { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
             <ListItem key={`page-${k}`} className={classes.item} disableGutters>
               <Button
                 className={classes.button}
                 component={Link}
-                to={`/${page.slug}`}
+                to={`/${appTemplate.tabs[tabId].slug}`}
               >
                 <div className={classes.icon}></div>
-                { page.name }
+                { appTemplate.tabs[tabId].name }
               </Button>
 
             </ListItem>

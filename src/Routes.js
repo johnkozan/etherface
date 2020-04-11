@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Switch, Route, Link, Redirect, useHistory } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import { useAppTemplate } from './AppTemplateStore';
 
@@ -12,13 +12,12 @@ const Main = () => {
 };
 
 export const Routes = () => {
-  const history = useHistory();
   const appTemplate = useAppTemplate();
 
   return (
     <Switch>
-      { appTemplate.tabs && appTemplate.tabs.map((tab, k) => (
-        <Route exact path={`/${tab.slug}`} render={() => <Tab tab={tab} />} />
+      { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
+        <Route exact key={tabId} path={`/${appTemplate.tabs[tabId].slug}`} render={() => <Tab tab={appTemplate.tabs[tabId]} />} />
       ))}
 
       <Route exact path="/settings" component={Settings} />

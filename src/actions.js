@@ -13,8 +13,13 @@ export const useActions = () => {
     dispatch({ type: 'ADD_INTEGRATION', payload: integration });
   }
 
+  function editComponent(component) {
+    dispatch({ type: 'EDIT_COMPONENT', payload: component});
+  }
+
   return {
     loadAppTemplate,
     addIntegration,
+    editComponent,
   };
 };

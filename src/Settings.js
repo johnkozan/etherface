@@ -37,8 +37,8 @@ export const Settings = () => {
         <CardContent>
 
           <ul>
-            { template.integrations && template.integrations.map((integration, k) => (
-              <li key={`integration-${k}`}>hi</li>
+            { template.integrations && Object.keys(template.integrations).map((integrationId, k) => (
+              <li key={`integration-${k}`}>{ template.integrations[integrationId].type }</li>
             ))}
           </ul>
 

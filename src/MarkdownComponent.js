@@ -1,12 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-
 import ReactMarkdown from "react-markdown";
+
+import { EditMarkdownComponent } from './EditMarkdownComponent';
+import { EditButton } from './EditButton';
 
 const useStyles = makeStyles(theme => ({
   root: {}
@@ -14,10 +11,20 @@ const useStyles = makeStyles(theme => ({
 
 export const MarkdownComponent = ({ component }) => {
   const classes = useStyles();
+  const [editMode, setEditMode] = useState(false);
 
   return (
     <div className={classes.root}>
-      <ReactMarkdown source={component.content} />
+
+      { editMode ?
+        <EditMarkdownComponent component={component} onCancel={() => setEditMode(false)} />
+        :
+        <div>
+          <ReactMarkdown source={component.content} />
+          <EditButton onClick={() => setEditMode(true)} />
+        </div>
+      }
+
     </div>
   );
 };
