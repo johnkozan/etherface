@@ -90,3 +90,36 @@ export const useComponentsByPageId = (pageId) => {
   return Object.filter(components, p => p.__page_id === pageId);
 }
 
+
+
+// Serialize internal structure to json.
+// TODO:  Remove __fields
+export const useExportTemplate = () => {
+  const { state } = React.useContext(AppTemplateStore);
+  const { tabs, pages, components, integrations } = state;
+
+  return function(template) {
+    let serializedTemplate = Object.assign({}, template, {tabs: [], integrations: []});
+    Object.keys(tabs).forEach(tabKey => {
+      let tab = tabs[tabKey];
+      tab.pages = [];
+      let tab_pages = Object.filter(pages, p => p.__tab_id === tab.__id);
+      Object.keys(tab_pages).forEach(pageKey => {
+        let page = pages[pageKey];
+        page.components = [];
+        let page_components = Object.filter(components, f => f.__page_id === page.__id);
+        Object.keys(page_components).forEach(componentKey => {
+          page.components.push(components[componentKey]);
+        });
+        tab.pages.push(page);
+      });
+      serializedTemplate.tabs.push(tab);
+    });
+
+    Object.keys(integrations).forEach(integrationKey => {
+      serializedTemplate.integrations.push(integrations[integrationKey])
+    });
+
+    return serializedTemplate;
+  };
+};

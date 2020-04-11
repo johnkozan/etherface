@@ -8,12 +8,19 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { useAppTemplate } from './AppTemplateStore';
+import { saveAppTemplate } from './localstorage';
+import { useAppTemplate, useExportTemplate } from './AppTemplateStore';
 import { NewIntegration } from './NewIntegration';
 
 export const Settings = () => {
   const  template = useAppTemplate();
+  const exportTemplate = useExportTemplate();
   const [showNewIntegration, setShowNewIntegration] = useState(false);
+
+  const saveToLocalstorage = () => {
+    saveAppTemplate(exportTemplate(template));
+    console.log('Saved!');
+  }
 
   return (
     <div>
@@ -30,6 +37,10 @@ export const Settings = () => {
           Location: localstorage
 
         </CardContent>
+        <CardActions>
+          <Button color="primary" variant="outlined" onClick={saveToLocalstorage}>Save to LocalStorage</Button>
+
+        </CardActions>
       </Card>
 
       <Card>

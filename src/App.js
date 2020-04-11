@@ -10,6 +10,7 @@ import { Routes } from './Routes';
 import { AppTemplateProvider, AppTemplateStore } from './AppTemplateStore';
 
 import { useActions } from './actions';
+import localstorageBackend from './localstorage';
 
 import exampleTemplate from './example.json';
 
@@ -20,7 +21,13 @@ const LoadDefault = () => {
   const { loadAppTemplate } = useActions(state, dispatch);
 
   useEffect(() => {
-    loadAppTemplate(exampleTemplate);
+    const savedTemplate = localstorageBackend.loadAppTemplate();
+    console.log('Loaded saved template ::: ', savedTemplate);
+    if (!savedTemplate) {
+      loadAppTemplate(exampleTemplate);
+    } else {
+      loadAppTemplate(savedTemplate);
+    }
   }, []);
 
   return null;
