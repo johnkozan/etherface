@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { useAppTemplate } from './AppTemplateStore';
 
 import { Tab } from './Tab';
 import { Settings } from './Settings';
+import { JsonView } from './JsonView';
 
 const Main = () => {
   return <div>Main!</div>;
@@ -14,6 +15,10 @@ const Main = () => {
 export const Routes = () => {
   const appTemplate = useAppTemplate();
 
+  // Default tab is first one for now
+  const defaultTab = appTemplate.tabs[Object.keys(appTemplate.tabs)[0]];
+  console.log('defaultTab ::: ', defaultTab)
+
   return (
     <Switch>
       { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
@@ -21,7 +26,8 @@ export const Routes = () => {
       ))}
 
       <Route exact path="/settings" component={Settings} />
-      <Route path="/" component={Main} />
+      <Route exact path="/settings/json" component={JsonView} />
+      <Route path="/" render={() => <Redirect to={`/${defaultTab.slug}`} /> } />
     </Switch>
   );
 

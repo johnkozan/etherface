@@ -7,15 +7,15 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
-
+import { Link } from 'react-router-dom';
 import { saveAppTemplate } from './localstorage';
 import { useAppTemplate, useExportTemplate } from './AppTemplateStore';
-import { NewIntegration } from './NewIntegration';
+import { Integrations } from './Integrations';
+import { Tabs } from './Tabs';
 
 export const Settings = () => {
   const  template = useAppTemplate();
   const exportTemplate = useExportTemplate();
-  const [showNewIntegration, setShowNewIntegration] = useState(false);
 
   const saveToLocalstorage = () => {
     saveAppTemplate(exportTemplate(template));
@@ -24,7 +24,7 @@ export const Settings = () => {
 
   return (
     <div>
-      <Typography variant="h4" guttersBottom>
+      <Typography variant="h4" gutterBottom>
         Settings
       </Typography>
 
@@ -40,29 +40,14 @@ export const Settings = () => {
         <CardActions>
           <Button color="primary" variant="outlined" onClick={saveToLocalstorage}>Save to LocalStorage</Button>
 
+          <Button variant="outlined" component={Link} to="/settings/json">See JSON</Button>
         </CardActions>
       </Card>
 
-      <Card>
-        <CardHeader title="Integrations" />
-        <CardContent>
+      <Tabs />
 
-          <ul>
-            { template.integrations && Object.keys(template.integrations).map((integrationId, k) => (
-              <li key={`integration-${k}`}>{ template.integrations[integrationId].type }</li>
-            ))}
-          </ul>
+      <Integrations />
 
-        { showNewIntegration ? <NewIntegration onCancel={() => setShowNewIntegration(false)} /> : undefined }
-
-        </CardContent>
-
-        <CardActions>
-          { showNewIntegration ? undefined :
-              <Button onClick={() => setShowNewIntegration(true)}>Add Integration</Button>
-          }
-        </CardActions>
-      </Card>
 
     </div>
   );

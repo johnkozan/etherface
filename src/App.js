@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
@@ -7,42 +7,23 @@ import { createBrowserHistory } from "history";
 import { Layout } from './Layout';
 import { Routes } from './Routes';
 
-import { AppTemplateProvider, AppTemplateStore } from './AppTemplateStore';
+import { AppTemplateProvider } from './AppTemplateStore';
 
-import { useActions } from './actions';
-import localstorageBackend from './localstorage';
-
-import exampleTemplate from './example.json';
+import { Loading } from './Loading';
 
 const history = createBrowserHistory();
-
-const LoadDefault = () => {
-  const { state, dispatch } = useContext(AppTemplateStore);
-  const { loadAppTemplate } = useActions(state, dispatch);
-
-  useEffect(() => {
-    const savedTemplate = localstorageBackend.loadAppTemplate();
-    console.log('Loaded saved template ::: ', savedTemplate);
-    if (!savedTemplate) {
-      loadAppTemplate(exampleTemplate);
-    } else {
-      loadAppTemplate(savedTemplate);
-    }
-  }, []);
-
-  return null;
-}
 
 export default function App() {
   return (
     <Router history={history}>
       <AppTemplateProvider>
-        <LoadDefault />
         <Container>
           <Box my={4}>
-            <Layout>
-              <Routes />
-            </Layout>
+            <Loading>
+              <Layout>
+                <Routes />
+              </Layout>
+            </Loading>
           </Box>
         </Container>
       </AppTemplateProvider>
