@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { useActions } from './actions';
 import { useAppTemplate } from './AppTemplateStore';

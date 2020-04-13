@@ -8,16 +8,11 @@ import { Tab } from './Tab';
 import { Settings } from './Settings';
 import { JsonView } from './JsonView';
 
-const Main = () => {
-  return <div>Main!</div>;
-};
-
 export const Routes = () => {
   const appTemplate = useAppTemplate();
 
   // Default tab is first one for now
   const defaultTab = appTemplate.tabs[Object.keys(appTemplate.tabs)[0]];
-  console.log('defaultTab ::: ', defaultTab)
 
   return (
     <Switch>

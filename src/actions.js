@@ -19,6 +19,10 @@ export const useActions = () => {
     dispatch({ type: 'DELETE_TAB', payload: tab });
   }
 
+  function addPage(page){
+    dispatch({ type: 'ADD_PAGE', payload: page });
+  }
+
   function addIntegration(integration) {
     dispatch({ type: 'ADD_INTEGRATION', payload: integration });
   }
@@ -36,7 +40,6 @@ export const useActions = () => {
   }
 
   function connectIntegration(integration) {
-    console.log('Connecting...');
     const __instance = ((type) => {
       switch (type) {
         case 'thegraph':
@@ -52,6 +55,7 @@ export const useActions = () => {
     loadAppTemplate,
     addTab,
     deleteTab,
+    addPage,
     addIntegration,
     deleteIntegration,
     connectIntegration,

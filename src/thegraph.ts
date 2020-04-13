@@ -7,10 +7,9 @@
 import {
   InMemoryCache,
   NormalizedCacheObject,
-  IntrospectionFragmentMatcher
 } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
-import { ApolloLink, split } from "apollo-link";
+import { ApolloLink } from "apollo-link";
 import { onError } from "apollo-link-error";
 import { HttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
@@ -18,27 +17,12 @@ import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
-/* Local */
-//import introspectionQueryResultData from "../graphql/fragments";
-//import { LOCALSTORAGE_JWT } from "@/config";
-//const LOCALSTORAGE_JWT = 'decentralhub';
-
-// ----------------------------------------------------------------------------
-//
-//const GRAPHQL = "http://localhost:5000/graphql";
-
-// Match up fragments
-//const fragmentMatcher = new IntrospectionFragmentMatcher({
-  //introspectionQueryResultData
-//});
-
 export function connectTheGraph(uri: string): ApolloClient<NormalizedCacheObject> {
   // Create the cache first, which we'll share across Apollo tooling.
   // This is an in-memory cache. Since we'll be calling `createClient` on
   // universally, the cache will survive until the HTTP request is
   // responded to (on the server) or for the whole of the user's visit (in
   // the browser)
-  //const cache = new InMemoryCache({ fragmentMatcher });
   const cache = new InMemoryCache();
 
   // Create a HTTP client (both server/client). It takes the GraphQL

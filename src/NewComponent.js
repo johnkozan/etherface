@@ -1,23 +1,15 @@
 import React, { useState } from 'react';
 import {
   Card,
-  CardActions,
   CardContent,
-  CardHeader,
-  FormControl,
   Grid,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
-  TextField,
   Typography,
 } from '@material-ui/core';
 
-import { useForm } from 'react-hooks-useform';
 import { useActions } from './actions';
 
 import { DataTableOptions } from './DataTableOptions';
+import { MarkdownOptions } from './MarkdownOptions';
 
 const COMPONENT_TYPES = [
   { value: 'markdown', label: 'Text' },
@@ -37,7 +29,7 @@ export const NewComponent = ({page_id}) => {
 
   switch (componentType) {
     case 'markdown':
-      return <div>Mark down opts</div>;
+      return <MarkdownOptions onCancel={onCancel} onCreate={onCreate} />;
 
     case 'datatable':
       return <DataTableOptions onCancel={onCancel} onCreate={onCreate} />;
@@ -55,12 +47,10 @@ export const NewComponent = ({page_id}) => {
                   <CardContent>
                     { componentType.label }
                   </CardContent>
-            </Card>
-          </Grid>
+                </Card>
+              </Grid>
             )) }
           </Grid>
-
-
         </div>
       );
   }

@@ -1,28 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {
+  Typography,
+} from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 import { useComponentsByPageId } from './AppTemplateStore';
 
 import { DataTableComponent } from './DataTableComponent';
 import { MarkdownComponent } from './MarkdownComponent';
 import { NewComponent } from './NewComponent';
+import { EditButton } from './EditButton';
+import { EditPage } from './EditPage';
 
 export const Page = ({ page }) => {
   const components = useComponentsByPageId(page.__id);
+  const [editMode, setEditMode] = useState(false);
 
-  // Render first component for now
-  const component = components && Object.keys(components).length > 0 ? components[Object.keys(components)[0]] : undefined;
-
-  if (!component) { return <NewComponent page_id={page.__id} />; }
-
-  switch (component.type) {
+  const renderedComponents = components && Object.keys(components).map(componentKey =>
+    ((type) => {
+      switch (type) {
     case 'markdown':
-      return <MarkdownComponent component={component} />;
-
+      return <MarkdownComponent component={components[componentKey]} key={componentKey} />;
     case 'datatable':
-      return <DataTableComponent component={component} />;
-
+      return <DataTableComponent component={components[componentKey]} key={componentKey} />;
     default:
-      return <div>Unknown component type: { component.type }</div>;
+          throw new Error('Unknown component type ', type);
+      }
+    })(components[componentKey].type)
+  );
+
+  if (editMode) {
+    return <EditPage page={page} onCancel={() => setEditMode(false)} />
   }
+
+  const content = !renderedComponents || renderedComponents.length === 0 ?
+    <div>
+      <Alert severity="warning">
+        <AlertTitle>Page has no components</AlertTitle>
+      </Alert>
+      <NewComponent page_id={page.__id} />
+    </div>
+    : renderedComponents;
+
+  return (
+    <div>
+      <Typography variant="h4"> { page.title }</Typography>
+      <div>
+        { content }
+        <EditButton onClick={() => setEditMode(true)} />
+      </div>
+    </div>
+  );
 
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
   Card,
@@ -18,7 +18,9 @@ export const Settings = () => {
   const exportTemplate = useExportTemplate();
 
   const saveToLocalstorage = () => {
-    saveAppTemplate(exportTemplate(template));
+    const exportedTemplate = exportTemplate();
+    console.log('Saving to localstoreage... ', exportedTemplate);
+    saveAppTemplate(exportedTemplate);
     console.log('Saved!');
   }
 

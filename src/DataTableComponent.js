@@ -1,13 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
-  Grid,
-  Button,
-  TextField,
-  Typography,
   Card,
-  CardContent,
   CardActions,
+  CardContent,
   Table,
   TableBody,
   TableCell,
@@ -34,9 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 export const DataTableComponent = ({ component }) => {
   const graph_client = useIntegration(component.data_source.type, component.data_source.endpoint);
-  //const { content, options, contract, graph_client } = props;
   const classes = useStyles();
-  //const dtContent = JSON.parse(content);
   const { model, fields } = component.options;
 
 
@@ -44,14 +38,11 @@ export const DataTableComponent = ({ component }) => {
 
   const query = gql`
     query Query {
-      ${component.options.model}(first: ${perPage}) {
-        ${component.options.fields.join('\n')}
+      ${model}(first: ${perPage}) {
+        ${fields.join('\n')}
       }
     }
   `;
-
-  console.log("CLIENT:: ", graph_client);
-  console.log("GRAPH QUERY: ", query);
 
   const { loading, error, data } = useQuery(query, {
     client: graph_client
@@ -74,21 +65,18 @@ export const DataTableComponent = ({ component }) => {
     return <div>No data</div>;
   }
 
-  const cols = Object.keys(rows[0]).filter(r => r.substr(0, 2) !== "__");
+  const cols = Object.keys(rows[0]).filter(r => r.substr(0, 2) !== "__" && r !== 'id');
 
   return (
     <div className={classes.root}>
       <Card>
         <CardContent>
           <div>
-            <Typography variant="h3">Title...</Typography>
-
-            <Typography>description ...</Typography>
-
             <TableContainer component={Paper}>
               <Table className={classes.table} aria-label="table">
                 <TableHead>
                   <TableRow>
+                    <TableCell>id</TableCell>
                     {cols.map((c, k) => (
                       <TableCell key={`col-${k}`}>{c}</TableCell>
                     ))}
@@ -97,6 +85,7 @@ export const DataTableComponent = ({ component }) => {
                 <TableBody>
                   {rows.map((r, k) => (
                     <TableRow key={`row-${k}`}>
+                      <TableCell> {r['id']}</TableCell>
                       {cols.map((c, kk) => (
                         <TableCell key={`cell-${k}-${kk}`}> {r[c]}</TableCell>
                       ))}

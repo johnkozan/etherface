@@ -12,13 +12,11 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   IconButton,
-  Typography,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderIcon from '@material-ui/icons/Folder';
-import { Link } from 'react-router-dom';
-import { saveAppTemplate } from './localstorage';
-import { useAppTemplate, useExportTemplate } from './AppTemplateStore';
+
+import { useAppTemplate } from './AppTemplateStore';
 import { NewIntegration } from './NewIntegration';
 
 import { useActions } from './actions';
@@ -48,7 +46,7 @@ export const Integrations = () => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={integrations[integrationKey].type}
-                  secondary={`/${integrations[integrationKey].endpoint}`}
+                  secondary={integrations[integrationKey].endpoint}
                 />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete" onClick={() => onDelete(integrations[integrationKey])}>

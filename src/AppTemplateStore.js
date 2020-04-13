@@ -21,10 +21,11 @@ function maxId(objs) {
 }
 
 function nextId(objs) {
+  if (Object.keys(objs).length === 0) { return 0; }
   return maxId(objs) + 1;
 }
 
-function reducer(state, action) {
+export function reducer(state, action) {
   switch (action.type) {
     case 'LOAD_TEMPLATE':
       // TODO: validate JSON
@@ -34,16 +35,19 @@ function reducer(state, action) {
       let integrations = {};
 
       // Flatten components, pages and tabs
-      action.payload.tabs && action.payload.tabs.forEach((tab, tabKey) => {
-        tabs[tabKey] = {...tab, __id: tabKey};
-        tab.pages.forEach((page, pageKey)  => {
-          pages[pageKey] = {...page, __id: pageKey, __tab_id: tabKey};
-          page.components.forEach((component, componentKey) => {
-            components[componentKey] = {...component, __id: componentKey, __page_id: pageKey};
+      action.payload.tabs && action.payload.tabs.forEach((tab) => {
+        const tabId = nextId(tabs);
+        tabs[tabId] = {...tab, __id: tabId};
+        tab.pages.forEach((page)  => {
+          const pageId = nextId(pages);
+          pages[pageId] = {...page, __id: pageId, __tab_id: tabId};
+          page.components.forEach((component) => {
+            const componentId = nextId(components);
+            components[componentId] = {...component, __id: componentId, __page_id: pageId};
           });
-          delete pages[pageKey].components;
+          delete pages[pageId].components;
         });
-        delete tabs[tabKey].pages;
+        delete tabs[tabId].pages;
       });
 
       action.payload.integrations && action.payload.integrations.forEach((integration, integrationKey) =>
@@ -64,7 +68,7 @@ function reducer(state, action) {
         __loaded: true,
       };
 
-    case 'ADD_TAB':
+    case 'ADD_TAB': {
       // Need to get max ID from tabs
       const tabId = nextId(state.tabs);
       if (!action.payload.name) { throw new Error('Name required'); }
@@ -92,12 +96,29 @@ function reducer(state, action) {
           [pageId]: firstPage,
         },
       };
+    }
 
     case 'DELETE_TAB':
       return {
         ...state,
         tabs: Object.filter(state.tabs, t => t.__id !== action.payload.__id),
       };
+
+    case 'ADD_PAGE': {
+      if (action.payload.__tab_id === undefined) { throw new Error('page requires tab id'); }
+      const pageId = nextId(state.pages);
+
+      return {
+        ...state,
+        pages: {
+          ...state.pages,
+          [pageId]: {
+            ...action.payload,
+            __id: pageId,
+          },
+        },
+      };
+    }
 
 
     case 'ADD_INTEGRATION':
@@ -189,11 +210,15 @@ export const useComponentsByPageId = (pageId) => {
   return Object.filter(components, p => p.__page_id === pageId);
 };
 
+//export const useDebugState = () => {
+  //const { state } = React.useContext(AppTemplateStore);
+  //console.log('DATA STATE: ', state);
+//};
+
 export const useIntegration = (type, endpoint) => {
   const { state } = React.useContext(AppTemplateStore);
   const { integrations } = state;
 
-  console.log('INTEGRATIONS::: ', integrations);
   const integration = integrations[Object.keys(Object.filter(integrations, i => i.type === type && i.endpoint === endpoint))[0]];
   if (!integration || !integration.__connected) { return; }
 
@@ -219,11 +244,11 @@ export const useExportTemplate = () => {
   return function(template) {
     let serializedTemplate = Object.assign({}, template, {tabs: [], integrations: []});
     Object.keys(tabs).forEach(tabKey => {
-      let tab = tabs[tabKey];
-      tab.pages = [];
+      let tab = {...tabs[tabKey], pages: []};
+      //tab.pages = [];
       let tab_pages = Object.filter(pages, p => p.__tab_id === tab.__id);
       Object.keys(tab_pages).forEach(pageKey => {
-        let page = pages[pageKey];
+        let page = tab_pages[pageKey];
         page.components = [];
         let page_components = Object.filter(components, f => f.__page_id === page.__id);
         Object.keys(page_components).forEach(componentKey => {
@@ -238,7 +263,6 @@ export const useExportTemplate = () => {
       serializedTemplate.integrations.push(filterInternalFields(integrations[integrationKey]))
     });
 
-    console.log('SERIALIED:::: ', serializedTemplate);
     return serializedTemplate;
   };
 };

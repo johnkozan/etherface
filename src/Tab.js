@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { usePagesByTabId } from './AppTemplateStore';
+import { NewPage } from './NewPage';
 import { Page } from './Page';
 
 export const Tab = ({ tab }) => {
@@ -10,7 +11,7 @@ export const Tab = ({ tab }) => {
   const page = pages && Object.keys(pages).length > 0 ? pages[Object.keys(pages)[0]] : undefined;
 
   if (!page) {
-    return <div>No pages... add one here...</div>;
+    return <NewPage tab_id={tab.__id} />;
   }
 
   return <Page page={page} />;
