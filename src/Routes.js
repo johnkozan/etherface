@@ -20,8 +20,8 @@ export const Routes = () => {
         <Route exact key={tabId} path={`/${appTemplate.tabs[tabId].slug}`} render={() => <Tab tab={appTemplate.tabs[tabId]} />} />
       ))}
 
-      <Route exact path="/settings" component={Settings} />
-      <Route exact path="/settings/json" component={JsonView} />
+      <Route exact path="/_/settings" component={Settings} />
+      <Route exact path="/_/settings/json" component={JsonView} />
       <Route path="/" render={() => <Redirect to={`/${defaultTab.slug}`} /> } />
     </Switch>
   );

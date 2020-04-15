@@ -1,52 +1,84 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
   TextField,
+  IconButton,
+  Typography,
 } from '@material-ui/core';
-import { useForm } from 'react-hooks-useform';
-import { fromJS } from 'immutable';
 
 import { useActions } from './actions';
 
-
 export const EditDataTableComponent = ({ component, onCancel }) => {
   const { editComponent } = useActions();
-  const initialValues = fromJS(component);
-  const [fields, form] = useForm({
-    fields: [
-      { name: 'content', label: 'Content' },
-    ],
-    initialValues,
-    submit: values => {
-      editComponent({__id: component.__id, content: values.get('content')});
-      onCancel();
-    },
-  });
+
+  const componentFields = component.options.fields;
+  const initialChecked = componentFields.map((f,k) => f.enabled ? k : undefined).filter(f => !!f);
+  console.log('Initial checked:: ', initialChecked);
+  const [checked, setChecked] = useState(initialChecked);
+
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+    setChecked(newChecked);
+  };
+
+  const handleSubmit = () => {
+    let newComponent = Object.assign({}, component);
+    // apply checks
+    checked.forEach(i => newComponent.options.fields[i].enabled = true);
+    editComponent(newComponent);
+    onCancel();
+  }
 
   return (
     <div>
       <Card>
         <CardHeader title="Editing component" />
         <CardContent>
+          <Typography gutterBottom>Fields</Typography>
+          <List dense={false}>
+            { componentFields && componentFields.map((field,k) => (
+              <ListItem key={k} value={k} button onClick={handleToggle(k)}>
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={checked.indexOf(k) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ 'aria-labelledby': 'checkbox-list-label-' }}
+                  />
+                </ListItemIcon>
+                <ListItemText
+                  primary={field.name}
+                  secondary={field.type}
+                />
+                <ListItemSecondaryAction>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )) }
+          </List>
+        </CardContent>
 
-          TODO
-
-      </CardContent>
-
-      <CardActions>
-
-        <Button variant="outlined" color="primary" onClick={form.submit}>Save</Button><Button variant="outlined" onClick={onCancel}>Cancel</Button>
-      </CardActions>
-
-    </Card>
+        <CardActions>
+          <Button variant="outlined" color="primary" onClick={handleSubmit}>Save</Button>
+          <Button variant="outlined" onClick={onCancel}>Cancel</Button>
+        </CardActions>
+      </Card>
     </div>
-
   );
-
-
 };
-

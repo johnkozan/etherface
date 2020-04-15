@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Drawer,
+  Grid,
   List,
   ListItem,
 } from '@material-ui/core';
@@ -38,6 +39,9 @@ const useStyles = makeStyles(theme => ({
   content: {
     height: "100%"
   },
+  list: {
+    height: "100%"
+  },
   navlist: {
     backgroundColor: theme.palette.white,
     display: "flex",
@@ -55,6 +59,10 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     paddingTop: 0,
     paddingBottom: 0
+  },
+  settings: {
+    position: 'fixed',
+    bottom: 50,
   },
   button: {
     color: colors.blueGrey[800],
@@ -112,7 +120,6 @@ export const Layout = ({ children }) => {
         [classes.shiftContent]: isDesktop
       })}
     >
-
       <Drawer
         anchor="left"
         classes={{ paper: classes.drawer }}
@@ -122,35 +129,50 @@ export const Layout = ({ children }) => {
       >
 
       <div className={classes.navlist}>
-        <List className={classes.list}>
-          { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
-            <ListItem key={`page-${k}`} className={classes.item} disableGutters>
-              <Button
-                className={classes.button}
-                component={Link}
-                to={`/${appTemplate.tabs[tabId].slug}`}
-              >
-                <div className={classes.icon}></div>
-                { appTemplate.tabs[tabId].name }
-              </Button>
+        <Grid container style={{height: '100%'}}>
+          <Grid item xs={12}>
 
-            </ListItem>
-          )) }
+            <List className={classes.list}>
+              { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
+                <ListItem key={`page-${k}`} className={classes.item} disableGutters>
+                  <Button
+                    className={classes.button}
+                    component={Link}
+                    to={`/${appTemplate.tabs[tabId].slug}`}
+                  >
+                    <div className={classes.icon}></div>
+                    { appTemplate.tabs[tabId].name }
+                  </Button>
 
-          <Divider />
+                </ListItem>
+              )) }
 
-          <ListItem className={classes.item} disableGutters>
-            <Button
-              className={classes.button}
-              component={Link}
-              to={'/settings'}
-            >
-              <div className={classes.icon}><SettingsIcon /></div>
-              Settings
-            </Button>
-          </ListItem>
+            </List>
 
-        </List>
+          </Grid>
+
+
+          <Grid item xs={12} style={{marginBottom: 0}}>
+
+            <List className={classes.list}>
+
+              <Divider />
+
+              <ListItem className={clsx(classes.item, 'settings')} disableGutters>
+                <Button
+                  className={classes.button}
+                  component={Link}
+                  to={'/_/settings'}
+                >
+                  <div className={classes.icon}><SettingsIcon /></div>
+                  Settings
+                </Button>
+              </ListItem>
+            </List>
+
+          </Grid>
+
+        </Grid>
 
       </div>
 

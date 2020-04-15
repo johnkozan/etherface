@@ -55,11 +55,58 @@ export const DataTableOptions = ({ onCreate, onCancel }) => {
         f.type.ofType.ofType.kind === 'NON_NULL' &&
         f.type.ofType.ofType.ofType.kind === 'OBJECT' &&
         f.type.ofType.ofType.ofType.name === selectedModel
-      );
+    );
+
+    // determine field types
+    const model = remoteSchema.data.__schema.types.find(
+      t => t.kind === 'OBJECT' &&
+      t.name === selectedModel);
+
+    const allFields = remoteSchema.data.__schema.types.find(t => t.name === model).fields;
+    const fields = allFields.map((fieldName, order) => {
+      const field = model.fields.find(f => f.name === fieldName);
+      const { description, name } = field;
+      const enabled = selectedFields.includes(fieldName);
+      console.log('field: ', field);
+
+      // List?
+      if (field.type.ofType && field.type.ofType.kind === 'LIST') {
+        return {
+          name,
+          description,
+          kind: 'LIST',
+          type: field.type.ofType.ofType.ofType.name,
+          enabled,
+          order,
+        };
+      }
+
+      // NON_NULL
+      if (field.type.kind === 'NON_NULL') {
+        return {
+          name,
+          description,
+          kind: field.type.ofType.kind,
+          type: field.type.ofType.name,
+          enabled,
+          order,
+        };
+      }
+
+      // ID or Object or Scalar
+      return {
+        name,
+        description,
+        kind: field.type.kind,
+        type: field.type.name,
+        enabled,
+        order,
+      };
+    });
 
     onCreate({
       type: 'datatable',
-      options: { model: list.name, fields: selectedFields },
+      options: { model: list.name, fields },
       data_source: {type: dataLink.type, endpoint: dataLink.endpoint },
     });
   };

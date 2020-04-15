@@ -5,24 +5,36 @@ import {
   CardActions,
   CardHeader,
   CardContent,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
   Typography,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { saveAppTemplate } from './localstorage';
-import { useAppTemplate, useExportTemplate } from './AppTemplateStore';
+import { useAppTemplate, useExportTemplate, useSettings } from './AppTemplateStore';
 import { Integrations } from './Integrations';
 import { Tabs } from './Tabs';
 
+import { useActions } from './actions';
+
 export const Settings = () => {
   const  template = useAppTemplate();
+  const settings = useSettings();
   const exportTemplate = useExportTemplate();
+  const { setSetting } = useActions();
 
   const saveToLocalstorage = () => {
     const exportedTemplate = exportTemplate();
-    console.log('Saving to localstoreage... ', exportedTemplate);
     saveAppTemplate(exportedTemplate);
-    console.log('Saved!');
   }
+
+  const toggleOption = (option) => {
+    setSetting(option, !settings[option]);
+  };
 
   return (
     <div>
@@ -30,26 +42,43 @@ export const Settings = () => {
         Settings
       </Typography>
 
-
       <Card>
         <CardHeader title="App Template" />
-        <CardContent>
-          Name: { template.name }
-          <br />
-          Location: localstorage
 
-        </CardContent>
+        <CardContent>
+          <List>
+            <ListItem>
+              <ListItemText primary={`Name: ${template.name}`} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemText primary={'Storage location: localstorage'} />
+            </ListItem>
+
+            <ListItem button onClick={() => toggleOption('autosave')}>
+              <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={settings.autosave}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ 'aria-labelledby': 'checkbox-list-label-' }}
+                  />
+                </ListItemIcon>
+                <ListItemText primary="Auto-save" />
+              </ListItem>
+            </List>
+          </CardContent>
+
         <CardActions>
           <Button color="primary" variant="outlined" onClick={saveToLocalstorage}>Save to LocalStorage</Button>
-
-          <Button variant="outlined" component={Link} to="/settings/json">See JSON</Button>
+          <Button variant="outlined" component={Link} to="/_/settings/json">See JSON</Button>
         </CardActions>
       </Card>
 
       <Tabs />
 
       <Integrations />
-
 
     </div>
   );

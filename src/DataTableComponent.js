@@ -33,13 +33,13 @@ export const DataTableComponent = ({ component }) => {
   const classes = useStyles();
   const { model, fields } = component.options;
 
-
   const perPage = 10;
+  const queryFields = fields.filter(f => f.type === 'ID' || (f.enabled && f.kind !== 'LIST'));
 
   const query = gql`
     query Query {
       ${model}(first: ${perPage}) {
-        ${fields.join('\n')}
+        ${queryFields.map(f => f.name).join('\n')}
       }
     }
   `;

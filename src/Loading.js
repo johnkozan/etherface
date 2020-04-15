@@ -1,18 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useActions } from './actions';
-import { useAppTemplate } from './AppTemplateStore';
+import { useAppTemplate, useSettings } from './AppTemplateStore';
 import localstorageBackend from './localstorage';
 
 import exampleTemplate from './example.json';
 
 export const Loading = ({ children }) => {
   const appTemplate = useAppTemplate();
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
   const { integrations } = appTemplate;
-  const { loadAppTemplate, connectIntegration } = useActions();
+  const { loadAppTemplate, connectIntegration, loadSettings } = useActions();
+
+
+  // load user settings
+  useEffect(() => {
+    if (!settingsLoaded) {
+      loadSettings();
+      setSettingsLoaded(true);
+    }
+  }, [settingsLoaded]);
 
   // Load saved app template from localstorage if exsits, otherwise load example template
   useEffect(() => {
+    console.log('loaded');
     const savedTemplate = localstorageBackend.loadAppTemplate();
     if (!savedTemplate) {
       loadAppTemplate(exampleTemplate);

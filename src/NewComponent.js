@@ -14,6 +14,7 @@ import { MarkdownOptions } from './MarkdownOptions';
 const COMPONENT_TYPES = [
   { value: 'markdown', label: 'Text' },
   { value: 'datatable', label: 'TheGraph data table' },
+  { value: 'web3query', label: 'Web3 Query' },
 ];
 
 export const NewComponent = ({page_id}) => {

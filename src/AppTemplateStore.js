@@ -9,6 +9,7 @@ Object.filter = (obj, predicate) =>
     .reduce( (res, key) => (res[key] = obj[key], res), {} );
 
 const initialState = {
+  settings: {},
   __loaded: false,
 };
 
@@ -59,6 +60,7 @@ export function reducer(state, action) {
       );
 
       return {
+        ...state,
         name: action.payload.name,
         // TODO: and other top level keys...
         tabs,
@@ -99,6 +101,7 @@ export function reducer(state, action) {
     }
 
     case 'DELETE_TAB':
+      // TODO: Need to delete Pages and Tabs also
       return {
         ...state,
         tabs: Object.filter(state.tabs, t => t.__id !== action.payload.__id),
@@ -179,6 +182,22 @@ export function reducer(state, action) {
         },
       };
 
+    case 'LOAD_SETTINGS':
+      console.log('load settings: ', action.payload);
+      return {
+        ...state,
+        settings: action.payload,
+      };
+
+    case 'SET_SETTING':
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          [action.payload.setting]: action.payload.value,
+        },
+      };
+
     default:
       return state;
   }
@@ -224,6 +243,12 @@ export const useIntegration = (type, endpoint) => {
 
   return integration.__instance;
 };
+
+export const useSettings = () => {
+  const { state } = React.useContext(AppTemplateStore);
+  return state.settings;
+};
+
 
 
 function filterInternalFields(obj) {
