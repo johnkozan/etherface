@@ -183,7 +183,6 @@ export function reducer(state, action) {
       };
 
     case 'LOAD_SETTINGS':
-      console.log('load settings: ', action.payload);
       return {
         ...state,
         settings: action.payload,
@@ -241,7 +240,7 @@ export const useIntegration = (type, endpoint) => {
   const integration = integrations[Object.keys(Object.filter(integrations, i => i.type === type && i.endpoint === endpoint))[0]];
   if (!integration || !integration.__connected) { return; }
 
-  return integration.__instance;
+  return integration;
 };
 
 export const useSettings = () => {

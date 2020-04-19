@@ -23,7 +23,6 @@ export const Loading = ({ children }) => {
 
   // Load saved app template from localstorage if exsits, otherwise load example template
   useEffect(() => {
-    console.log('loaded');
     const savedTemplate = localstorageBackend.loadAppTemplate();
     if (!savedTemplate) {
       loadAppTemplate(exampleTemplate);

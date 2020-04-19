@@ -10,15 +10,16 @@ export const useActions = () => {
   const exportTemplate = useExportTemplate();
 
   function autoSave() {
+    console.log('Autosave? ');
     if (state.settings.autosave) {
       const exportedTemplate = exportTemplate();
       localstorage.saveAppTemplate(exportedTemplate);
+      console.log('autosaved');
     }
   }
 
   function loadAppTemplate(template) {
     dispatch({ type: 'LOAD_TEMPLATE', payload: template });
-    autoSave();
   }
 
   function addTab(tab){
@@ -33,6 +34,11 @@ export const useActions = () => {
 
   function addPage(page){
     dispatch({ type: 'ADD_PAGE', payload: page });
+    autoSave();
+  }
+
+  function editPage(page) {
+    dispatch({ type: 'EDIT_PAGE', payload: page});
     autoSave();
   }
 
@@ -83,6 +89,7 @@ export const useActions = () => {
     addTab,
     deleteTab,
     addPage,
+    editPage,
     addIntegration,
     deleteIntegration,
     connectIntegration,

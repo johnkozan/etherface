@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -8,49 +8,57 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
+  TablePagination,
   TableHead,
   TableRow,
   Paper
 } from "@material-ui/core";
 
+import { typeNameToQueryMany } from './graphql';
+import { TablePaginationActions } from './TablePaginationActions';
 import { Spinner } from "./Spinner";
 
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
-import { useIntegration } from './AppTemplateStore';
 
 const useStyles = makeStyles(theme => ({
   root: {},
   submitButton: {},
   error: {
     color: "red"
-  }
+  },
+  fakelink: {
+    cursor: 'pointer',
+    textDecoration: 'underline',
+  },
 }));
 
-export const DataTableComponent = ({ component }) => {
-  const graph_client = useIntegration(component.data_source.type, component.data_source.endpoint);
+const PER_PAGE_OPTS = [10, 25, 50];
+
+export const DataTableComponent = ({ component, setSelectedQuery, graph_client }) => {
   const classes = useStyles();
   const { model, fields } = component.options;
+  const [page, setPage] = useState(0);
+  const [perPage, setPerPage] = useState(PER_PAGE_OPTS[0]);
 
-  const perPage = 10;
   const queryFields = fields.filter(f => f.type === 'ID' || (f.enabled && f.kind !== 'LIST'));
+  const skip = page * perPage;
 
   const query = gql`
-    query Query {
-      ${model}(first: ${perPage}) {
-        ${queryFields.map(f => f.name).join('\n')}
+      query Query {
+        ${component.options.listQuery}(first: ${perPage}, skip: ${skip}) {
+          ${queryFields.map(f => f.name).join('\n')}
+        }
       }
-    }
-  `;
+    `;
 
   const { loading, error, data } = useQuery(query, {
-    client: graph_client
+    client: graph_client,
   });
-  if (!graph_client) {
-    return <div>Data Link not configured.</div>;
-  }
 
+  console.log(loading, error, data);
   if (loading) {
     return <Spinner />;
   }
@@ -59,13 +67,29 @@ export const DataTableComponent = ({ component }) => {
     return <div>Error: {error.toString()}</div>;
   }
 
-  const rows = data[model];
+  // hacky
+  const rows = data[Object.keys(data)[0]];
 
   if (rows.length < 1) {
     return <div>No data</div>;
   }
 
   const cols = Object.keys(rows[0]).filter(r => r.substr(0, 2) !== "__" && r !== 'id');
+
+  function renderCell(value, type) {
+    if (type === 'id') {
+      return <div className={classes.fakelink} onClick={() => setSelectedQuery({model, id: value})}>{ value }</div>
+    }
+    return value;
+  }
+
+  const handleChangePage = (val) => {
+    console.log(val);
+  };
+
+  const handleChangeRowsPerPage = (evt => {
+    setPerPage(evt.target.value);
+  });
 
   return (
     <div className={classes.root}>
@@ -78,20 +102,44 @@ export const DataTableComponent = ({ component }) => {
                   <TableRow>
                     <TableCell>id</TableCell>
                     {cols.map((c, k) => (
-                      <TableCell key={`col-${k}`}>{c}</TableCell>
+                      <TableCell key={`col-${k}`}>
+                        {c}
+                      </TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.map((r, k) => (
                     <TableRow key={`row-${k}`}>
-                      <TableCell> {r['id']}</TableCell>
+                      <TableCell>
+                        { renderCell(r['id'], 'id') }
+                      </TableCell>
                       {cols.map((c, kk) => (
-                        <TableCell key={`cell-${k}-${kk}`}> {r[c]}</TableCell>
+                        <TableCell key={`cell-${k}-${kk}`}>
+                          { renderCell(r[c], c) }
+                        </TableCell>
                       ))}
                     </TableRow>
                   ))}
                 </TableBody>
+
+                <TableFooter>
+                  <TablePagination
+                    rowsPerPageOptions={PER_PAGE_OPTS}
+                    colSpan={3}
+                    pageCount={rows.length}
+                    rowsPerPage={perPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: { 'aria-label': 'rows per page' },
+                      native: true,
+                    }}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableFooter>
+
               </Table>
             </TableContainer>
           </div>

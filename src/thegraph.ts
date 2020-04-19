@@ -1,9 +1,4 @@
-// Apollo GraphQL client
-
-// ----------------------------------------------------------------------------
-// IMPORTS
-
-/* NPM */
+import { useState, useEffect, EffectCallback } from 'react';
 import {
   InMemoryCache,
   NormalizedCacheObject,
@@ -16,6 +11,8 @@ import { setContext } from "apollo-link-context";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+
+import  fetchGraphqlSchema from 'fetch-graphql-schema';
 
 export function connectTheGraph(uri: string): ApolloClient<NormalizedCacheObject> {
   // Create the cache first, which we'll share across Apollo tooling.
@@ -70,3 +67,18 @@ export function connectTheGraph(uri: string): ApolloClient<NormalizedCacheObject
       ]),
     });
   }
+
+export const useRemoteSchema = (endpoint: string): string | undefined => {
+  const [cachedSchemas, setCachedSchemas] = useState<{[key: string]:string}>({});
+
+  console.log('FETCH endpoing:: ', endpoint);
+  useEffect(() => {
+    (async () => {
+      if (!endpoint || cachedSchemas[endpoint]) { return; }
+      const schema = JSON.parse((await fetchGraphqlSchema(endpoint)));
+      setCachedSchemas({...cachedSchemas, [endpoint]: schema.data.__schema});
+    })();
+  }, [cachedSchemas, endpoint]);
+
+  return endpoint ? cachedSchemas[endpoint] : undefined;
+};

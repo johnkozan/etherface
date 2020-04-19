@@ -19,17 +19,19 @@ export const NewTab = () => {
     submit: values => { addTab({name: values.get('name')}); }
   });
 
-
   return (
     <div>
 
       <Typography>Add tab</Typography>
 
-      <TextField {...fields.name } />
+      <form.Form>
 
-      <br />
+        <TextField {...fields.name } />
 
-      <Button color="primary" onClick={form.submit}>Add Tab</Button>
+        <br />
+
+        <Button color="primary" onClick={form.submit}>Add Tab</Button>
+      </form.Form>
 
     </div>
   );

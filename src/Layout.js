@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   useMediaQuery,
   colors,
@@ -34,14 +34,15 @@ const useStyles = makeStyles(theme => ({
     //}
   },
   shiftContent: {
-    paddingLeft: 240
+    //paddingLeft: 240
   },
   content: {
+    marginTop: 36,
     height: "100%"
   },
-  list: {
-    height: "100%"
-  },
+  //settingslist: {
+    //marginTop: "auto",
+  //},
   navlist: {
     backgroundColor: theme.palette.white,
     display: "flex",
@@ -58,11 +59,17 @@ const useStyles = makeStyles(theme => ({
   item: {
     display: "flex",
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
+    marginTop: "auto",
   },
   settings: {
-    position: 'fixed',
+    //marginTop: 'auto',
+    position: 'absolute',
     bottom: 50,
+    color: 'blue',
+  },
+  settingsItem: {
+    color: theme.palette.text.secondary,
   },
   button: {
     color: colors.blueGrey[800],
@@ -93,6 +100,8 @@ const useStyles = makeStyles(theme => ({
 export const Layout = ({ children }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
+  const location = useLocation();
+  const { pathname } = location;
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"), {
     defaultMatches: true
   });
@@ -111,8 +120,6 @@ export const Layout = ({ children }) => {
 
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
-  //if (!appTemplate) { return <div>Loading...</div>; }
-
   return (
     <div
       className={clsx({
@@ -129,13 +136,14 @@ export const Layout = ({ children }) => {
       >
 
       <div className={classes.navlist}>
-        <Grid container style={{height: '100%'}}>
-          <Grid item xs={12}>
+        <Grid container  style={{height: '100%'}}>
+          <Grid item xs={12} style={{height: '100%'}}>
 
-            <List className={classes.list}>
+            <List className={classes.list} style={{height: '100%'}}>
               { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
-                <ListItem key={`page-${k}`} className={classes.item} disableGutters>
+                <ListItem key={`page-${k}`} className={classes.item} key={`/${appTemplate.tabs[tabId].slug}`} disableGutters>
                   <Button
+                    activeClassName={classes.active}
                     className={classes.button}
                     component={Link}
                     to={`/${appTemplate.tabs[tabId].slug}`}
@@ -147,24 +155,15 @@ export const Layout = ({ children }) => {
                 </ListItem>
               )) }
 
-            </List>
-
-          </Grid>
-
-
-          <Grid item xs={12} style={{marginBottom: 0}}>
-
-            <List className={classes.list}>
-
               <Divider />
 
-              <ListItem className={clsx(classes.item, 'settings')} disableGutters>
+              <ListItem className={clsx(classes.item, classes.settings)} disableGutters>
                 <Button
                   className={classes.button}
                   component={Link}
                   to={'/_/settings'}
                 >
-                  <div className={classes.icon}><SettingsIcon /></div>
+                  <div className={clsx(classes.icon, classes.settingsItem)}><SettingsIcon /></div>
                   Settings
                 </Button>
               </ListItem>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Avatar,
   Card,
@@ -44,7 +45,7 @@ export const Tabs = () => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={tabs[tabKey].name}
-                  secondary={`/${tabs[tabKey].slug}`}
+                  secondary={<Link to={`/${tabs[tabKey].slug}`}>{`/${tabs[tabKey].slug}`}</Link>}
                 />
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete" onClick={() => onDelete(tabs[tabKey])}>

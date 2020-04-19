@@ -17,14 +17,12 @@ export default function App() {
   return (
     <Router history={history}>
       <AppTemplateProvider>
-        <Container>
-          <Box my={4}>
-            <Loading>
-              <Layout>
-                <Routes />
-              </Layout>
-            </Loading>
-          </Box>
+        <Container fixed>
+          <Loading>
+            <Layout>
+              <Routes />
+            </Layout>
+          </Loading>
         </Container>
       </AppTemplateProvider>
     </Router>

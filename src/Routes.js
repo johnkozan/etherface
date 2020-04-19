@@ -22,6 +22,7 @@ export const Routes = () => {
 
       <Route exact path="/_/settings" component={Settings} />
       <Route exact path="/_/settings/json" component={JsonView} />
+
       <Route path="/" render={() => <Redirect to={`/${defaultTab.slug}`} /> } />
     </Switch>
   );

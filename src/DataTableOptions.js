@@ -12,64 +12,72 @@ import {
 } from '@material-ui/core';
 
 import { useAppTemplate } from './AppTemplateStore';
+import { useRemoteSchema } from './thegraph';
+import { typeNameToQueryMany, typeNameToQuerySingle } from './graphql';
+import { Spinner } from './Spinner';
 
-import  fetchGraphqlSchema from 'fetch-graphql-schema';
 
 export const DataTableOptions = ({ onCreate, onCancel }) => {
   const appTemplate = useAppTemplate();
   const { integrations } = appTemplate;
-  const [dataLink, setDatalink] = useState();
-  const [remoteSchema, setRemoteSchema] = useState();
+  //const [dataLink, setDatalink] = useState();
+  //const [remoteSchema, setRemoteSchema] = useState();
   const [selectedModel, setSelectedModel] = useState();
   const [selectedFields, setSelectedFields] = useState();
 
+  // TODO: Select Graph datalink if multiple
   const thegraphLinks = Object.filter(integrations, i => i.type === 'thegraph');
 
-  useEffect(() => {
-    (
-    async () => {
-      if (!dataLink || remoteSchema) { return; }
-      const schema = await fetchGraphqlSchema(dataLink.endpoint);
-      setRemoteSchema(JSON.parse(schema));
-    })();
-  }, [dataLink, remoteSchema]);
+  const dataLink = thegraphLinks[0];
+  const remoteSchema = useRemoteSchema(dataLink.endpoint);
 
-  if (Object.keys(thegraphLinks).length === 0) {
-    return <div>TheGraph data link reqired.</div>;
-  }
-  if (!dataLink) {
-    setDatalink(thegraphLinks[0]);
-    return <div>Loading...</div>;
+  //useEffect(() => {
+    //(
+    //async () => {
+      //if (!dataLink || remoteSchema) { return; }
+      //const schema = await fetchGraphqlSchema(dataLink.endpoint);
+      //setRemoteSchema(JSON.parse(schema));
+    //})();
+  //}, [dataLink, remoteSchema]);
+
+  //if (Object.keys(thegraphLinks).length === 0) {
+    //return <div>TheGraph data link reqired.</div>;
+  //}
+  if (!remoteSchema) {
+    //setDatalink(thegraphLinks[0]);
+    return <Spinner />;
   }
 
   const handleOnCreate = () => {
-
     // Determine query list name
-    const queryObj = remoteSchema.data.__schema.types.find(
+    const queryObj = remoteSchema.types.find(
       t => t.kind === 'OBJECT' &&
-      t.name === remoteSchema.data.__schema.queryType.name);
+      t.name === remoteSchema.queryType.name);
 
-    const list = queryObj.fields.find(f =>
-        f.type.kind === 'NON_NULL' &&
-        f.type.ofType.kind === 'LIST' &&
-        f.type.ofType.ofType.kind === 'NON_NULL' &&
-        f.type.ofType.ofType.ofType.kind === 'OBJECT' &&
-        f.type.ofType.ofType.ofType.name === selectedModel
-    );
+    //const list = queryObj.fields.find(f =>
+        //f.type.kind === 'NON_NULL' &&
+        //f.type.ofType.kind === 'LIST' &&
+        //f.type.ofType.ofType.kind === 'NON_NULL' &&
+        //f.type.ofType.ofType.ofType.kind === 'OBJECT' &&
+        //f.type.ofType.ofType.ofType.name === selectedModel
+    //);
 
     // determine field types
-    const model = remoteSchema.data.__schema.types.find(
+    console.log('Remote Schea:: ', remoteSchema);
+    const model = remoteSchema.types.find(
       t => t.kind === 'OBJECT' &&
       t.name === selectedModel);
+    console.log('MODEL ', model);
 
-    const allFields = remoteSchema.data.__schema.types.find(t => t.name === model).fields;
-    const fields = allFields.map((fieldName, order) => {
-      const field = model.fields.find(f => f.name === fieldName);
+    const singleQuery = typeNameToQuerySingle(selectedModel, remoteSchema);
+    const listQuery = typeNameToQueryMany(selectedModel, remoteSchema);
+
+    //const allFields = remoteSchema.types.find(t => t.name === model).fields;
+    const fields = model.fields.map((field, order) => {
+      //const field = model.fields.find(f => f.name === fieldName);
       const { description, name } = field;
-      const enabled = selectedFields.includes(fieldName);
+      const enabled = selectedFields.includes(field.name);
       console.log('field: ', field);
-
-      // List?
       if (field.type.ofType && field.type.ofType.kind === 'LIST') {
         return {
           name,
@@ -106,7 +114,7 @@ export const DataTableOptions = ({ onCreate, onCancel }) => {
 
     onCreate({
       type: 'datatable',
-      options: { model: list.name, fields },
+      options: { typeName: selectedModel, fields, singleQuery, listQuery },
       data_source: {type: dataLink.type, endpoint: dataLink.endpoint },
     });
   };
@@ -151,10 +159,10 @@ const ModelSelect = ({ schema, onNext }) => {
 
   console.log('SCHEMA::: ', schema);
 
-  const models = schema.data.__schema.types.filter(
+  const models = schema.types.filter(
     t => t.kind === 'OBJECT' &&
     t.name.substr(0, 2) !== '__' &&
-    t.name !== schema.data.__schema.queryType.name && t.name !== schema.data.__schema.subscriptionType.name
+    t.name !== schema.queryType.name && t.name !== schema.subscriptionType.name
   );
 
   return (
@@ -186,7 +194,7 @@ const FieldsSelect = ({ schema, model, onNext }) => {
     return <div></div>;
   }
 
-  const fields = schema.data.__schema.types.find(t => t.name === model).fields;
+  const fields = schema.types.find(t => t.name === model).fields;
 
   const toggleSelected = (field) => {
     if (selectedFields.includes(field)) {

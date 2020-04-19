@@ -6,6 +6,7 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 
 import { useComponentsByPageId } from './AppTemplateStore';
 
+import { GraphQLComponent } from './GraphQLComponent';
 import { DataTableComponent } from './DataTableComponent';
 import { MarkdownComponent } from './MarkdownComponent';
 import { NewComponent } from './NewComponent';
@@ -22,7 +23,7 @@ export const Page = ({ page }) => {
     case 'markdown':
       return <MarkdownComponent component={components[componentKey]} key={componentKey} />;
     case 'datatable':
-      return <DataTableComponent component={components[componentKey]} key={componentKey} />;
+      return <GraphQLComponent RenderComponent={DataTableComponent} component={components[componentKey]} key={componentKey} />;
     default:
           throw new Error('Unknown component type ', type);
       }
