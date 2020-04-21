@@ -36,10 +36,13 @@ export const EditPage = ({ page, onCancel }) => {
     fields: [
       { name: 'title', label: 'title', required: false },
     ],
-    submit: values => { editPage({
-      ...page,
-      title: values.get('title'),
-    }); }
+    submit: values => {
+      editPage({
+        ...page,
+        title: values.get('title'),
+      });
+      onCancel();
+    }
   });
 
   if (editComponent !== undefined) {
@@ -65,7 +68,6 @@ export const EditPage = ({ page, onCancel }) => {
 
         <TextField {...fields.title} />
 
-
         <Typography gutterBottom underlined>Page Components</Typography>
           <List dense={false}>
             { components && Object.keys(components).map(componentKey => (
@@ -89,8 +91,6 @@ export const EditPage = ({ page, onCancel }) => {
               </ListItem>
             )) }
           </List>
-
-
 
       </CardContent>
 

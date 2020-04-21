@@ -58,7 +58,6 @@ export const DataTableComponent = ({ component, setSelectedQuery, graph_client }
     client: graph_client,
   });
 
-  console.log(loading, error, data);
   if (loading) {
     return <Spinner />;
   }
@@ -74,17 +73,17 @@ export const DataTableComponent = ({ component, setSelectedQuery, graph_client }
     return <div>No data</div>;
   }
 
-  const cols = Object.keys(rows[0]).filter(r => r.substr(0, 2) !== "__" && r !== 'id');
+  const cols = Object.keys(rows[0]).filter(r => r.substr(0, 2) !== "__");
 
-  function renderCell(value, type) {
-    if (type === 'id') {
-      return <div className={classes.fakelink} onClick={() => setSelectedQuery({model, id: value})}>{ value }</div>
+  function renderCell(value, colName, type) {
+    if (colName === 'id') {
+      return <div className={classes.fakelink} onClick={() => setSelectedQuery({model: type, id: value})}>{ value }</div>
     }
+
     return value;
   }
 
   const handleChangePage = (val) => {
-    console.log(val);
   };
 
   const handleChangeRowsPerPage = (evt => {
@@ -100,7 +99,6 @@ export const DataTableComponent = ({ component, setSelectedQuery, graph_client }
               <Table className={classes.table} aria-label="table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>id</TableCell>
                     {cols.map((c, k) => (
                       <TableCell key={`col-${k}`}>
                         {c}
@@ -111,12 +109,9 @@ export const DataTableComponent = ({ component, setSelectedQuery, graph_client }
                 <TableBody>
                   {rows.map((r, k) => (
                     <TableRow key={`row-${k}`}>
-                      <TableCell>
-                        { renderCell(r['id'], 'id') }
-                      </TableCell>
                       {cols.map((c, kk) => (
                         <TableCell key={`cell-${k}-${kk}`}>
-                          { renderCell(r[c], c) }
+                          { renderCell(r[c], c, r.__typename) }
                         </TableCell>
                       ))}
                     </TableRow>

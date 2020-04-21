@@ -123,6 +123,17 @@ export function reducer(state, action) {
       };
     }
 
+    case 'EDIT_PAGE':
+      return {
+        ...state,
+        pages: {
+          ...state.pages,
+          [action.payload.__id]: {
+            ...state.pages[action.payload.__id],
+            ...action.payload,
+          },
+        },
+      };
 
     case 'ADD_INTEGRATION':
       const integrationId = nextId(state.integrations);

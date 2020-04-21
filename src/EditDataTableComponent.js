@@ -40,7 +40,9 @@ export const EditDataTableComponent = ({ component, onCancel }) => {
   const handleSubmit = () => {
     let newComponent = Object.assign({}, component);
     // apply checks
-    checked.forEach(i => newComponent.options.fields[i].enabled = true);
+    newComponent.options.fields.forEach((f,k) => {
+      newComponent.options.fields[k].enabled = checked.includes(k);
+    });
     editComponent(newComponent);
     onCancel();
   }

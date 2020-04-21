@@ -33,7 +33,7 @@ export const Query = ({ graph_client, model, id, fields, onCancel, setSelectedQu
   const classes = useStyles();
   const [expandLists, setExpandLists] = useState({});
 
-  console.log('MODEL:::: ', model);
+  if (!model) { throw new Error('Model name required'); }
 
   const toggleExpand = (field) => {
     if (expandLists[field]) {
@@ -44,7 +44,7 @@ export const Query = ({ graph_client, model, id, fields, onCancel, setSelectedQu
   };
 
   const fieldQuery = field => {
-    if (field.kind === 'LIST') {
+    if (field.kind === 'LIST' || field.kind === 'OBJECT') {
       return `${field.name} { id }`;
     } else {
       return field.name;
@@ -71,7 +71,21 @@ export const Query = ({ graph_client, model, id, fields, onCancel, setSelectedQu
     return <div>Error: {error.toString()}</div>;
   }
 
-  console.log('Got data::: ', data);
+  const renderCell = (value) => {
+    if (value === null) { return value; }
+    if (typeof(value) === 'string') { return value; }
+    if (typeof(value) === 'object' && !!value.id && !!value.__typename) {
+      return <div
+        className={classes.fakelink}
+        onClick={() => setSelectedQuery({model: value.__typename, id: value.id})}
+      >
+        { value.__typename} - { value.id }
+      </div>;
+    }
+
+    return value;
+  }
+
   const rows = Object.keys(data[model]).filter(k => k.substr(0,2) !== '__');
   const m = data[model];
 
@@ -92,24 +106,20 @@ export const Query = ({ graph_client, model, id, fields, onCancel, setSelectedQu
                   <TableCell>
                     { Array.isArray(m[rowName]) ?
                         <div className={classes.fakelink} onClick={() => toggleExpand(rowName)}>
-                          { m[rowName].length } { m[rowName].length > 0 ? m[rowName][0].__typename : undefined }{m[rowName].length > 1 ? 's' : undefined}
+                          { m[rowName].length } { m[rowName].length > 0 ? m[rowName][0].__typename ? m[rowName][0].__typename : 'record' : undefined}{m[rowName].length > 1 ? 's' : undefined}
                           { expandLists[rowName] ? <KeyboardArrowDownIcon /> : <ChevronRightIcon /> }
                         </div>
-                        : data[model][rowName]
+                        : renderCell(data[model][rowName])
                     }
                   </TableCell>
                 </TableRow>
                 { Array.isArray(m[rowName]) && expandLists[rowName] ?
                     m[rowName].map((row, k) =>
                     <TableRow key={`${row}-${k}`}>
+                    <TableCell></TableCell>
                     <TableCell>
+                      { renderCell(row) }
                     </TableCell>
-                      <TableCell>
-                        { console.log(row) }
-                        <div className={classes.fakelink} onClick={() => setSelectedQuery({model: row.__typename, id: row.id})}>
-                          { row.id }
-                        </div>
-                      </TableCell>
                       </TableRow>
                     )
                     : undefined }

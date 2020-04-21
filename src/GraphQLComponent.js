@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { Query } from "./Query";
 import { useIntegration } from './AppTemplateStore';
 import { useRemoteSchema } from './thegraph';
-import { typeNameToQuerySingle } from './graphql';
+import { typeNameToQuerySingle, fieldsForTypeName } from './graphql';
 import { Spinner } from './Spinner';
 
 export const GraphQLComponent = ({ component, RenderComponent }) => {
   const integration = useIntegration(component.data_source.type, component.data_source.endpoint);
   const [selectedQuery, setSelectedQuery] = useState();
-  const needSchema = selectedQuery && selectedQuery === component.options.typeName;
+  const needSchema = selectedQuery !== undefined && selectedQuery.model !== component.options.typeName;
   const remoteSchema = useRemoteSchema(needSchema ? integration.endpoint : undefined);
 
   if (!RenderComponent) { throw new Error('No render component'); }
@@ -18,6 +18,7 @@ export const GraphQLComponent = ({ component, RenderComponent }) => {
     setSelectedQuery(undefined);
   };
 
+
   if (selectedQuery) {
 
     if (!remoteSchema && needSchema) {
@@ -25,11 +26,11 @@ export const GraphQLComponent = ({ component, RenderComponent }) => {
     }
 
     const model = needSchema ? typeNameToQuerySingle(selectedQuery.model, remoteSchema) : component.options.singleQuery;
-    console.log('QUERY MODE:  ', model,   ' selectedQuery: ', selectedQuery);
+    const fields = needSchema ? fieldsForTypeName(selectedQuery.model, remoteSchema) : component.options.fields;
     return <Query
       model={model}
       id={selectedQuery.id}
-      fields={component.options.fields}
+      fields={fields}
       graph_client={integration.__instance}
       schema={remoteSchema}
       onCancel={onCancel}

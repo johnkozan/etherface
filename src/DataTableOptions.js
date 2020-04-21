@@ -13,15 +13,13 @@ import {
 
 import { useAppTemplate } from './AppTemplateStore';
 import { useRemoteSchema } from './thegraph';
-import { typeNameToQueryMany, typeNameToQuerySingle } from './graphql';
+import { typeNameToQueryMany, typeNameToQuerySingle, normalizeFieldType } from './graphql';
 import { Spinner } from './Spinner';
 
 
 export const DataTableOptions = ({ onCreate, onCancel }) => {
   const appTemplate = useAppTemplate();
   const { integrations } = appTemplate;
-  //const [dataLink, setDatalink] = useState();
-  //const [remoteSchema, setRemoteSchema] = useState();
   const [selectedModel, setSelectedModel] = useState();
   const [selectedFields, setSelectedFields] = useState();
 
@@ -31,20 +29,7 @@ export const DataTableOptions = ({ onCreate, onCancel }) => {
   const dataLink = thegraphLinks[0];
   const remoteSchema = useRemoteSchema(dataLink.endpoint);
 
-  //useEffect(() => {
-    //(
-    //async () => {
-      //if (!dataLink || remoteSchema) { return; }
-      //const schema = await fetchGraphqlSchema(dataLink.endpoint);
-      //setRemoteSchema(JSON.parse(schema));
-    //})();
-  //}, [dataLink, remoteSchema]);
-
-  //if (Object.keys(thegraphLinks).length === 0) {
-    //return <div>TheGraph data link reqired.</div>;
-  //}
   if (!remoteSchema) {
-    //setDatalink(thegraphLinks[0]);
     return <Spinner />;
   }
 
@@ -54,62 +39,25 @@ export const DataTableOptions = ({ onCreate, onCancel }) => {
       t => t.kind === 'OBJECT' &&
       t.name === remoteSchema.queryType.name);
 
-    //const list = queryObj.fields.find(f =>
-        //f.type.kind === 'NON_NULL' &&
-        //f.type.ofType.kind === 'LIST' &&
-        //f.type.ofType.ofType.kind === 'NON_NULL' &&
-        //f.type.ofType.ofType.ofType.kind === 'OBJECT' &&
-        //f.type.ofType.ofType.ofType.name === selectedModel
-    //);
-
     // determine field types
-    console.log('Remote Schea:: ', remoteSchema);
     const model = remoteSchema.types.find(
       t => t.kind === 'OBJECT' &&
       t.name === selectedModel);
-    console.log('MODEL ', model);
 
     const singleQuery = typeNameToQuerySingle(selectedModel, remoteSchema);
     const listQuery = typeNameToQueryMany(selectedModel, remoteSchema);
 
-    //const allFields = remoteSchema.types.find(t => t.name === model).fields;
     const fields = model.fields.map((field, order) => {
-      //const field = model.fields.find(f => f.name === fieldName);
       const { description, name } = field;
       const enabled = selectedFields.includes(field.name);
-      console.log('field: ', field);
-      if (field.type.ofType && field.type.ofType.kind === 'LIST') {
-        return {
-          name,
-          description,
-          kind: 'LIST',
-          type: field.type.ofType.ofType.ofType.name,
-          enabled,
-          order,
-        };
-      }
 
-      // NON_NULL
-      if (field.type.kind === 'NON_NULL') {
-        return {
-          name,
-          description,
-          kind: field.type.ofType.kind,
-          type: field.type.ofType.name,
-          enabled,
-          order,
-        };
-      }
+      let newField = normalizeFieldType(field);
+      newField.description = description;
+      newField.name = name;
+      newField.order = order;
+      newField.enabled = enabled;
 
-      // ID or Object or Scalar
-      return {
-        name,
-        description,
-        kind: field.type.kind,
-        type: field.type.name,
-        enabled,
-        order,
-      };
+      return newField;
     });
 
     onCreate({
