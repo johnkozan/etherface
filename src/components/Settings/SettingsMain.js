@@ -14,14 +14,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { saveAppTemplate } from './localstorage';
-import { useAppTemplate, useExportTemplate, useSettings } from './AppTemplateStore';
-import { Integrations } from './Integrations';
-import { Tabs } from './Tabs';
+import { saveAppTemplate } from 'lib/localstorage';
+import { useAppTemplate, useExportTemplate, useSettings } from 'AppTemplateStore';
 
-import { useActions } from './actions';
 
-export const Settings = () => {
+import { useActions } from 'actions';
+
+export const SettingsMain = () => {
   const  template = useAppTemplate();
   const settings = useSettings();
   const exportTemplate = useExportTemplate();
@@ -75,10 +74,6 @@ export const Settings = () => {
           <Button variant="outlined" component={Link} to="/_/settings/json">See JSON</Button>
         </CardActions>
       </Card>
-
-      <Tabs />
-
-      <Integrations />
 
     </div>
   );

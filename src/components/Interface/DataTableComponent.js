@@ -15,9 +15,8 @@ import {
   Paper
 } from "@material-ui/core";
 
-import { typeNameToQueryMany } from './graphql';
 import { TablePaginationActions } from './TablePaginationActions';
-import { Spinner } from "./Spinner";
+import { Spinner } from "components/Controls/Spinner";
 
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
@@ -39,7 +38,7 @@ const PER_PAGE_OPTS = [10, 25, 50];
 
 export const DataTableComponent = ({ component, setSelectedQuery, graph_client }) => {
   const classes = useStyles();
-  const { model, fields } = component.options;
+  const { fields } = component.options;
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(PER_PAGE_OPTS[0]);
 

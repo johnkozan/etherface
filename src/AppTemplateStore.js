@@ -34,6 +34,7 @@ export function reducer(state, action) {
       let pages = {};
       let components = {};
       let integrations = {};
+      let addresses = {};
 
       // Flatten components, pages and tabs
       action.payload.tabs && action.payload.tabs.forEach((tab) => {
@@ -59,6 +60,8 @@ export function reducer(state, action) {
         }
       );
 
+      addresses = action.payload.addresses;
+
       return {
         ...state,
         name: action.payload.name,
@@ -67,6 +70,7 @@ export function reducer(state, action) {
         pages,
         components,
         integrations,
+        addresses,
         __loaded: true,
       };
 
@@ -193,6 +197,18 @@ export function reducer(state, action) {
         },
       };
 
+    case 'ADD_ADDRESS':
+      return {
+        ...state,
+        addresses: {
+          ...state.addresses,
+          [action.payload.address]: {
+            //...state.addresses[action.payload.address],
+            ...action.payload,
+          },
+        },
+      };
+
     case 'LOAD_SETTINGS':
       return {
         ...state,
@@ -274,7 +290,7 @@ function filterInternalFields(obj) {
 // Serialize internal structure to json.
 export const useExportTemplate = () => {
   const { state } = React.useContext(AppTemplateStore);
-  const { tabs, pages, components, integrations } = state;
+  const { tabs, pages, components, integrations, addresses } = state;
 
   return function(template) {
     let serializedTemplate = Object.assign({}, template, {tabs: [], integrations: []});
@@ -297,6 +313,8 @@ export const useExportTemplate = () => {
     Object.keys(integrations).forEach(integrationKey => {
       serializedTemplate.integrations.push(filterInternalFields(integrations[integrationKey]))
     });
+
+    serializedTemplate.addresses = addresses;
 
     return serializedTemplate;
   };

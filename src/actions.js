@@ -2,17 +2,18 @@
 import React from 'react';
 import { AppTemplateStore, useExportTemplate } from './AppTemplateStore';
 
-import { connectTheGraph } from './thegraph';
-import localstorage from './localstorage';
+import { connectTheGraph } from 'lib/thegraph';
+import localstorage from 'lib/localstorage';
 
 export const useActions = () => {
   const { state, dispatch } = React.useContext(AppTemplateStore);
   const exportTemplate = useExportTemplate();
 
   function autoSave() {
-    console.log('Autosave? ');
     if (state.settings.autosave) {
+      console.log('Autosaving...');
       const exportedTemplate = exportTemplate();
+      console.log('Exported template to autosave:: ', exportedTemplate);
       localstorage.saveAppTemplate(exportedTemplate);
       console.log('autosaved');
     }
@@ -52,16 +53,6 @@ export const useActions = () => {
     autoSave();
   }
 
-  function addComponent(component) {
-    dispatch({ type: 'ADD_COMPONENT', payload: component });
-    autoSave();
-  }
-
-  function editComponent(component) {
-    dispatch({ type: 'EDIT_COMPONENT', payload: component});
-    autoSave();
-  }
-
   function connectIntegration(integration) {
     const __instance = ((type) => {
       switch (type) {
@@ -72,6 +63,21 @@ export const useActions = () => {
       }
     })(integration.type);
     dispatch({ type: 'CONNECT_INTEGRATION', payload: {...integration, __instance}});
+  }
+
+  function addComponent(component) {
+    dispatch({ type: 'ADD_COMPONENT', payload: component });
+    autoSave();
+  }
+
+  function editComponent(component) {
+    dispatch({ type: 'EDIT_COMPONENT', payload: component});
+    autoSave();
+  }
+
+  function addAddress(address) {
+    dispatch({ type: 'ADD_ADDRESS', payload: address});
+    autoSave();
   }
 
   function loadSettings() {
@@ -95,6 +101,7 @@ export const useActions = () => {
     connectIntegration,
     addComponent,
     editComponent,
+    addAddress,
     loadSettings,
     setSetting,
   };

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
 import { Query } from "./Query";
-import { useIntegration } from './AppTemplateStore';
-import { useRemoteSchema } from './thegraph';
-import { typeNameToQuerySingle, fieldsForTypeName } from './graphql';
-import { Spinner } from './Spinner';
+import { useIntegration } from 'AppTemplateStore';
+import { useRemoteSchema } from 'lib/thegraph';
+import { typeNameToQuerySingle, fieldsForTypeName } from 'lib/graphql';
+import { Spinner } from 'components/Controls/Spinner';
 
 export const GraphQLComponent = ({ component, RenderComponent }) => {
   const integration = useIntegration(component.data_source.type, component.data_source.endpoint);
@@ -17,7 +17,6 @@ export const GraphQLComponent = ({ component, RenderComponent }) => {
   const onCancel = () => {
     setSelectedQuery(undefined);
   };
-
 
   if (selectedQuery) {
 

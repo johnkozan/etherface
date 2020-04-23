@@ -19,10 +19,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderIcon from '@material-ui/icons/Folder';
 
+import { fromJS } from 'immutable';
 import { useForm } from 'react-hooks-useform';
 
-import { useComponentsByPageId } from './AppTemplateStore';
-import { useActions } from './actions';
+import { useComponentsByPageId } from 'AppTemplateStore';
+import { useActions } from 'actions';
 
 import { EditMarkdownComponent } from './EditMarkdownComponent';
 import { EditDataTableComponent } from './EditDataTableComponent';
@@ -32,10 +33,12 @@ export const EditPage = ({ page, onCancel }) => {
   const components = useComponentsByPageId(page.__id);
   const [editComponent, setEditComponent] = useState();
 
+  const initialValues = fromJS(page);
   const [fields, form] = useForm({
     fields: [
       { name: 'title', label: 'title', required: false },
     ],
+    initialValues,
     submit: values => {
       editPage({
         ...page,

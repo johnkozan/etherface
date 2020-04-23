@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import { useComponentsByPageId } from './AppTemplateStore';
+import { useComponentsByPageId } from 'AppTemplateStore';
 
 import { GraphQLComponent } from './GraphQLComponent';
 import { DataTableComponent } from './DataTableComponent';

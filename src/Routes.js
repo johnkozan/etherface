@@ -4,9 +4,10 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { useAppTemplate } from './AppTemplateStore';
 
-import { Tab } from './Tab';
-import { Settings } from './Settings';
-import { JsonView } from './JsonView';
+import { Tab } from 'components/Interface/Tab';
+import { Settings } from 'components/Settings/Settings';
+
+export const SETTINGS_ROUTE = '/_/settings';
 
 export const Routes = () => {
   const appTemplate = useAppTemplate();
@@ -20,11 +21,9 @@ export const Routes = () => {
         <Route exact key={tabId} path={`/${appTemplate.tabs[tabId].slug}`} render={() => <Tab tab={appTemplate.tabs[tabId]} />} />
       ))}
 
-      <Route exact path="/_/settings" component={Settings} />
-      <Route exact path="/_/settings/json" component={JsonView} />
+      <Route path={SETTINGS_ROUTE} component={Settings} />
 
       <Route path="/" render={() => <Redirect to={`/${defaultTab.slug}`} /> } />
     </Switch>
   );
-
 }

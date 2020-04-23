@@ -7,7 +7,7 @@ import {
 
 import { useForm } from 'react-hooks-useform';
 
-import { useActions } from './actions';
+import { useActions } from 'actions';
 
 export const NewPage = ({ tab_id }) => {
   const { addPage } = useActions();

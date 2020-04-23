@@ -11,11 +11,10 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { useAppTemplate } from './AppTemplateStore';
-import { useRemoteSchema } from './thegraph';
-import { typeNameToQueryMany, typeNameToQuerySingle, normalizeFieldType } from './graphql';
-import { Spinner } from './Spinner';
-
+import { useAppTemplate } from 'AppTemplateStore';
+import { useRemoteSchema } from 'lib/thegraph';
+import { typeNameToQueryMany, typeNameToQuerySingle, normalizeFieldType } from 'lib/graphql';
+import { Spinner } from 'components/Controls/Spinner';
 
 export const DataTableOptions = ({ onCreate, onCancel }) => {
   const appTemplate = useAppTemplate();

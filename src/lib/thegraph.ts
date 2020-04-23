@@ -71,7 +71,6 @@ export function connectTheGraph(uri: string): ApolloClient<NormalizedCacheObject
 export const useRemoteSchema = (endpoint: string): string | undefined => {
   const [cachedSchemas, setCachedSchemas] = useState<{[key: string]:string}>({});
 
-  console.log('FETCH endpoing:: ', endpoint);
   useEffect(() => {
     (async () => {
       if (!endpoint || cachedSchemas[endpoint]) { return; }

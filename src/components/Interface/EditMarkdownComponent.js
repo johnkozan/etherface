@@ -10,7 +10,7 @@ import {
 import { useForm } from 'react-hooks-useform';
 import { fromJS } from 'immutable';
 
-import { useActions } from './actions';
+import { useActions } from 'actions';
 
 
 export const EditMarkdownComponent = ({ component, onCancel }) => {
@@ -33,7 +33,7 @@ export const EditMarkdownComponent = ({ component, onCancel }) => {
         <CardHeader title="Editing component" />
         <CardContent>
 
-        <TextField {...fields.content} multiline rowsMax="20" />
+        <TextField {...fields.content} multiline fullWidth rowsMax="20" />
 
       </CardContent>
 

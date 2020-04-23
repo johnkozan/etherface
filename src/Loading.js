@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 
 import { useActions } from './actions';
 import { useAppTemplate, useSettings } from './AppTemplateStore';
-import localstorageBackend from './localstorage';
+import localstorageBackend from 'lib/localstorage';
 
-import exampleTemplate from './example.json';
+import exampleTemplate from 'examples/default.json';
 
 export const Loading = ({ children }) => {
   const appTemplate = useAppTemplate();
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const { integrations } = appTemplate;
   const { loadAppTemplate, connectIntegration, loadSettings } = useActions();
+  const [appTemplatLoaded, setAppTemplateLoaded] = useState(false);
 
 
   // load user settings
@@ -40,6 +41,15 @@ export const Loading = ({ children }) => {
       if (!integration.__connected) { connectIntegration(integration); }
     }
   }, [appTemplate.__loaded, integrations]);
+
+  useEffect(() => {
+    if (!appTemplatLoaded) {
+      setAppTemplateLoaded(true);
+      return;
+    }
+
+    console.log('Template changed! ');
+  }, [appTemplate]);
 
   if (!appTemplate.__loaded) {
     return <div>Loading...</div>;

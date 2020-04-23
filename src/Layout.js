@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, forwardRef } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import {
   useMediaQuery,
-  colors,
   Button,
+  Collapse,
   Divider,
   Drawer,
   Grid,
@@ -14,7 +14,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { makeStyles, useTheme } from "@material-ui/styles";
 import clsx from "clsx";
 
-//import { TemplateContext } from './TemplateContext';
+import { SETTINGS_ROUTE } from './Routes';
 import { useAppTemplate } from './AppTemplateStore';
 
 
@@ -40,9 +40,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: 36,
     height: "100%"
   },
-  //settingslist: {
-    //marginTop: "auto",
-  //},
   navlist: {
     backgroundColor: theme.palette.white,
     display: "flex",
@@ -62,17 +59,17 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: 0,
     marginTop: "auto",
   },
-  settings: {
-    //marginTop: 'auto',
-    position: 'absolute',
-    bottom: 50,
-    color: 'blue',
-  },
   settingsItem: {
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.disabled,
+    padding: "10px 4px",
+    justifyContent: "flex-start",
+    textTransform: "none",
+    letterSpacing: 0,
+    width: "100%",
+    fontWeight: theme.typography.fontWeightMedium
   },
   button: {
-    color: colors.blueGrey[800],
+    //color: colors.blueGrey[800],
     padding: "10px 8px",
     justifyContent: "flex-start",
     textTransform: "none",
@@ -97,6 +94,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const NavLinkWithRef = forwardRef((props, ref) => (
+  <NavLink innerRef={ref} {...props} />
+));
+
+const settingsSubNavs = [
+  {name: 'Tabs', route: 'tabs', icon: SettingsIcon},
+  {name: 'Integrations', route: 'integrations', icon: SettingsIcon},
+  {name: 'Address book', route: 'addresses', icon: SettingsIcon},
+];
+
+
+
 export const Layout = ({ children }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -120,6 +129,22 @@ export const Layout = ({ children }) => {
 
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
+  const renderSettingsSubNavs = () => settingsSubNavs.map(s =>
+    <ListItem className={classes.subitem} key={s.name}>
+      <Button
+        activeClassName={classes.active}
+        className={clsx(classes.button, (showSubSettings ? undefined : classes.settingsItem))}
+        component={Link}
+        to={`/_/settings/${s.route}`}
+      >
+        <div className={classes.icon}></div>
+        { s.name }
+      </Button>
+    </ListItem>
+  );
+
+  const showSubSettings = pathname.startsWith(SETTINGS_ROUTE);
+
   return (
     <div
       className={clsx({
@@ -137,15 +162,15 @@ export const Layout = ({ children }) => {
 
       <div className={classes.navlist}>
         <Grid container  style={{height: '100%'}}>
-          <Grid item xs={12} style={{height: '100%'}}>
+          <Grid item xs={12} style={{marginBottom: 'auto'}}>
 
-            <List className={classes.list} style={{height: '100%'}}>
+            <List className={classes.list}>
               { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
-                <ListItem key={`page-${k}`} className={classes.item} key={`/${appTemplate.tabs[tabId].slug}`} disableGutters>
+                <ListItem className={classes.item} key={`/${appTemplate.tabs[tabId].slug}`} disableGutters>
                   <Button
                     activeClassName={classes.active}
                     className={classes.button}
-                    component={Link}
+                    component={NavLinkWithRef}
                     to={`/${appTemplate.tabs[tabId].slug}`}
                   >
                     <div className={classes.icon}></div>
@@ -154,30 +179,37 @@ export const Layout = ({ children }) => {
 
                 </ListItem>
               )) }
-
-              <Divider />
-
-              <ListItem className={clsx(classes.item, classes.settings)} disableGutters>
-                <Button
-                  className={classes.button}
-                  component={Link}
-                  to={'/_/settings'}
-                >
-                  <div className={clsx(classes.icon, classes.settingsItem)}><SettingsIcon /></div>
-                  Settings
-                </Button>
-              </ListItem>
             </List>
 
           </Grid>
 
+            <Grid item xs={12} style={{marginTop: 'auto'}}>
+            <List className={classes.list}>
+
+              <Divider />
+              <ListItem className={clsx(classes.item, classes.settings, (showSubSettings ? undefined : classes.settingsItem))} disableGutters>
+                <Button
+                  className={clsx(classes.button, (showSubSettings ? undefined : classes.settingsItem))}
+                  component={Link}
+                  to={'/_/settings'}
+                >
+                  <div className={clsx(classes.icon, classes.settingsItem)}>
+                    <SettingsIcon />
+                 </div>
+                  Settings
+                </Button>
+              </ListItem>
+
+              <Collapse in={showSubSettings}>
+                { renderSettingsSubNavs() }
+              </Collapse>
+
+            </List>
+          </Grid>
         </Grid>
 
       </div>
-
     </Drawer>
-
-
 
     <main className={classes.content}>
       { children }

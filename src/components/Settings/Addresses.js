@@ -1,8 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+
 import {
   Avatar,
+  Button,
   Card,
+  CardActions,
   CardHeader,
   CardContent,
   List,
@@ -15,40 +17,39 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderIcon from '@material-ui/icons/Folder';
 
-import { useActions } from './actions';
-import { useAppTemplate } from './AppTemplateStore';
-import { NewTab } from './NewTab';
+import { useAppTemplate } from 'AppTemplateStore';
+import { useActions } from 'actions';
+
+import { NewAddress } from './NewAddress';
 
 
-export const Tabs = () => {
+export const Addresses = () => {
   const  template = useAppTemplate();
-  const { tabs } = template;
-  const { deleteTab } = useActions();
+  const { addresses } = template;
+  const { deleteAddress } = useActions();
 
-  const onDelete = (tab) => {
-    deleteTab(tab);
+  const onDelete = (address) => {
+    deleteAddress(address);
   };
 
   return (
     <div>
       <Card>
-        <CardHeader title="Tabs" />
-
+        <CardHeader title="Addresses" />
         <CardContent>
           <List dense={false}>
-            { Object.keys(tabs).map(tabKey => (
-              <ListItem key={tabs[tabKey].__id}>
+            { addresses && Object.keys(addresses).map(addressKey => (
+              <ListItem key={addressKey}>
                 <ListItemAvatar>
                   <Avatar>
                     <FolderIcon />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={tabs[tabKey].name}
-                  secondary={<Link to={`/${tabs[tabKey].slug}`}>{`/${tabs[tabKey].slug}`}</Link>}
+                  primary={addressKey}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(tabs[tabKey])}>
+                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(addressKey)}>
                     <DeleteIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -56,9 +57,10 @@ export const Tabs = () => {
             )) }
           </List>
 
-          <NewTab />
+          <NewAddress />
 
         </CardContent>
+
       </Card>
     </div>
   );

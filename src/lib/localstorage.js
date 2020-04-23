@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 const localstorageKey = 'decentralhub';
 
 export const saveAppTemplate = (appTemplate) => {

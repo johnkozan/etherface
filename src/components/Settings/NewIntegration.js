@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { useForm } from 'react-hooks-useform';
 
-import { useActions } from './actions';
+import { useActions } from 'actions';
 
 export const NewIntegration = ({ onCancel }) => {
   const { addIntegration } = useActions();

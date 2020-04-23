@@ -16,10 +16,11 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderIcon from '@material-ui/icons/Folder';
 
-import { useAppTemplate } from './AppTemplateStore';
+import { useAppTemplate } from 'AppTemplateStore';
+import { useActions } from 'actions';
+
 import { NewIntegration } from './NewIntegration';
 
-import { useActions } from './actions';
 
 export const Integrations = () => {
   const  template = useAppTemplate();

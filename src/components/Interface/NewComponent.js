@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { useActions } from './actions';
+import { useActions } from 'actions';
 
 import { DataTableOptions } from './DataTableOptions';
 import { MarkdownOptions } from './MarkdownOptions';

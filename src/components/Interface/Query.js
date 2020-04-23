@@ -18,9 +18,9 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
-import { useRemoteSchema } from './thegraph';
-import { typeNameToQuerySingle } from './graphql';
-import { Spinner } from "./Spinner";
+import { useRemoteSchema } from 'lib/thegraph';
+import { typeNameToQuerySingle } from 'lib/graphql';
+import { Spinner } from "components/Controls/Spinner";
 
 const useStyles = makeStyles(theme => ({
   fakelink: {
