@@ -75,6 +75,11 @@ export const useActions = () => {
     autoSave();
   }
 
+  function deleteComponent(component) {
+    dispatch({ type: 'DELETE_COMPONENT', payload: component});
+    autoSave();
+  }
+
   function addAddress(address) {
     dispatch({ type: 'ADD_ADDRESS', payload: address});
     autoSave();
@@ -101,6 +106,7 @@ export const useActions = () => {
     connectIntegration,
     addComponent,
     editComponent,
+    deleteComponent,
     addAddress,
     loadSettings,
     setSetting,

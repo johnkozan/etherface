@@ -1,4 +1,4 @@
-import { useState, useEffect, EffectCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
   InMemoryCache,
   NormalizedCacheObject,
@@ -7,10 +7,9 @@ import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { onError } from "apollo-link-error";
 import { HttpLink } from "apollo-link-http";
-import { setContext } from "apollo-link-context";
-import { WebSocketLink } from "apollo-link-ws";
-import { getMainDefinition } from "apollo-utilities";
-import { SubscriptionClient } from "subscriptions-transport-ws";
+//import { WebSocketLink } from "apollo-link-ws";
+//import { getMainDefinition } from "apollo-utilities";
+//import { SubscriptionClient } from "subscriptions-transport-ws";
 
 import  fetchGraphqlSchema from 'fetch-graphql-schema';
 

@@ -10,7 +10,6 @@ import {
   TableBody,
   TableCell,
   TableRow,
-  Typography,
 } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -18,8 +17,6 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
-import { useRemoteSchema } from 'lib/thegraph';
-import { typeNameToQuerySingle } from 'lib/graphql';
 import { Spinner } from "components/Controls/Spinner";
 
 const useStyles = makeStyles(theme => ({

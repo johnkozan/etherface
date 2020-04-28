@@ -17,6 +17,8 @@ import clsx from "clsx";
 import { SETTINGS_ROUTE } from './Routes';
 import { useAppTemplate } from './AppTemplateStore';
 
+import { Footer } from './Footer';
+
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -132,7 +134,6 @@ export const Layout = ({ children }) => {
   const renderSettingsSubNavs = () => settingsSubNavs.map(s =>
     <ListItem className={classes.subitem} key={s.name}>
       <Button
-        activeClassName={classes.active}
         className={clsx(classes.button, (showSubSettings ? undefined : classes.settingsItem))}
         component={Link}
         to={`/_/settings/${s.route}`}
@@ -216,6 +217,7 @@ export const Layout = ({ children }) => {
     </main>
 
 
+    <Footer />
   </div>
   );
 }

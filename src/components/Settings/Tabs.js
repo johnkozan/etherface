@@ -15,6 +15,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderIcon from '@material-ui/icons/Folder';
 
+import { Confirm } from 'components/Controls/Confirm';
 import { useActions } from 'actions';
 import { useAppTemplate } from '../../AppTemplateStore';
 import { NewTab } from './NewTab';
@@ -48,9 +49,11 @@ export const Tabs = () => {
                   secondary={<Link to={`/${tabs[tabKey].slug}`}>{`/${tabs[tabKey].slug}`}</Link>}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(tabs[tabKey])}>
-                    <DeleteIcon />
-                  </IconButton>
+                  <Confirm onConfirm={() => onDelete(tabs[tabKey])} title="Delete Tab" description="Delete tab?">
+                    <IconButton edge="end" aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  </Confirm>
                 </ListItemSecondaryAction>
               </ListItem>
             )) }

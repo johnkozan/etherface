@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
-
+import React from 'react';
 import {
   Avatar,
-  Button,
   Card,
-  CardActions,
   CardHeader,
   CardContent,
   List,
@@ -20,6 +17,7 @@ import FolderIcon from '@material-ui/icons/Folder';
 import { useAppTemplate } from 'AppTemplateStore';
 import { useActions } from 'actions';
 
+import { Confirm } from 'components/Controls/Confirm';
 import { NewAddress } from './NewAddress';
 
 
@@ -49,9 +47,11 @@ export const Addresses = () => {
                   primary={addressKey}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(addressKey)}>
-                    <DeleteIcon />
-                  </IconButton>
+                  <Confirm onConfirm={() => onDelete(addressKey)} title="Delete Address" description="Remove address from address book?">
+                    <IconButton edge="end" aria-label="delete" >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Confirm>
                 </ListItemSecondaryAction>
               </ListItem>
             )) }

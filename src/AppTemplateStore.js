@@ -197,6 +197,12 @@ export function reducer(state, action) {
         },
       };
 
+    case 'DELETE_COMPONENT':
+      return {
+        ...state,
+        components: Object.filter(state.components, c => c.__id !== action.payload.__id),
+      };
+
     case 'ADD_ADDRESS':
       return {
         ...state,
@@ -241,6 +247,11 @@ export const AppTemplateProvider = ({ children }) => {
 export const useAppTemplate = () => {
   const { state } = React.useContext(AppTemplateStore);
   return state;
+};
+
+export const useAddresses = () => {
+  const { state } = React.useContext(AppTemplateStore);
+  return state.addresses;
 };
 
 export const usePagesByTabId = (tabId) => {

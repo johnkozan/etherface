@@ -24,12 +24,14 @@ import { useForm } from 'react-hooks-useform';
 
 import { useComponentsByPageId } from 'AppTemplateStore';
 import { useActions } from 'actions';
+import { Confirm } from 'components/Controls/Confirm';
 
 import { EditMarkdownComponent } from './EditMarkdownComponent';
 import { EditDataTableComponent } from './EditDataTableComponent';
+import { EditWeb3Tx } from './EditWeb3Tx';
 
 export const EditPage = ({ page, onCancel }) => {
-  const { editPage } = useActions();
+  const { editPage, deleteComponent } = useActions();
   const components = useComponentsByPageId(page.__id);
   const [editComponent, setEditComponent] = useState();
 
@@ -55,13 +57,16 @@ export const EditPage = ({ page, onCancel }) => {
         return <EditMarkdownComponent component={component} onCancel={() => setEditComponent(undefined)} />;
       case 'datatable':
         return <EditDataTableComponent component={component} onCancel={() => setEditComponent(undefined)} />;
+      case 'web3transaction':
+        return <EditWeb3Tx component={component} onCancel={() => setEditComponent(undefined)} />;
+
       default:
         throw new Error('unknown component type ', component.type);
     }
   }
 
   const onDelete = (component) => {
-
+    deleteComponent(component);
   };
 
   return (
@@ -87,9 +92,12 @@ export const EditPage = ({ page, onCancel }) => {
                   <IconButton edge="end" aria-label="delete" onClick={() => setEditComponent(components[componentKey].__id)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(components[componentKey])}>
-                    <DeleteIcon />
-                  </IconButton>
+
+                  <Confirm onConfirm={() => onDelete(components[componentKey])} title="Delete Component" description="Delete this component?">
+                    <IconButton edge="end" aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  </Confirm>
                 </ListItemSecondaryAction>
               </ListItem>
             )) }

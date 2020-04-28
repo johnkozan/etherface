@@ -13,7 +13,6 @@ import { useActions } from 'actions';
 
 
 export const MarkdownOptions = ({ component, onCancel, onCreate }) => {
-  const { addComponent } = useActions();
   const [fields, form] = useForm({
     fields: [
       { name: 'content', label: 'Content' },
@@ -44,8 +43,5 @@ export const MarkdownOptions = ({ component, onCancel, onCreate }) => {
 
     </Card>
     </div>
-
   );
-
-
 };

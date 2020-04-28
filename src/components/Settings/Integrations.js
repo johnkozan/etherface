@@ -6,6 +6,7 @@ import {
   CardActions,
   CardHeader,
   CardContent,
+  Collapse,
   List,
   ListItem,
   ListItemAvatar,
@@ -19,6 +20,7 @@ import FolderIcon from '@material-ui/icons/Folder';
 import { useAppTemplate } from 'AppTemplateStore';
 import { useActions } from 'actions';
 
+import { Confirm } from 'components/Controls/Confirm';
 import { NewIntegration } from './NewIntegration';
 
 
@@ -50,15 +52,19 @@ export const Integrations = () => {
                   secondary={integrations[integrationKey].endpoint}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(integrations[integrationKey])}>
-                    <DeleteIcon />
-                  </IconButton>
+                  <Confirm onConfirm={() => onDelete(integrations[integrationKey])} title="Delete Integration" description="Delete integration?">
+                    <IconButton edge="end" aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  </Confirm>
                 </ListItemSecondaryAction>
               </ListItem>
             )) }
           </List>
 
-        { showNewIntegration ? <NewIntegration onCancel={() => setShowNewIntegration(false)} /> : undefined }
+        <Collapse in={showNewIntegration}>
+          <NewIntegration onCancel={() => setShowNewIntegration(false)} />
+        </Collapse>
 
         </CardContent>
 

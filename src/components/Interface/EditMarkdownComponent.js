@@ -31,6 +31,7 @@ export const EditMarkdownComponent = ({ component, onCancel }) => {
     <div>
       <Card>
         <CardHeader title="Editing component" />
+
         <CardContent>
 
         <TextField {...fields.content} multiline fullWidth rowsMax="20" />
@@ -38,7 +39,6 @@ export const EditMarkdownComponent = ({ component, onCancel }) => {
       </CardContent>
 
       <CardActions>
-
         <Button variant="outlined" color="primary" onClick={form.submit}>Save</Button><Button variant="outlined" onClick={onCancel}>Cancel</Button>
       </CardActions>
 

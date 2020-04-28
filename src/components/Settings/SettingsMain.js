@@ -9,7 +9,6 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemSecondaryAction,
   ListItemText,
   Typography,
 } from '@material-ui/core';

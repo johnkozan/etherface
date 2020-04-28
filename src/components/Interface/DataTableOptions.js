@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -33,11 +33,6 @@ export const DataTableOptions = ({ onCreate, onCancel }) => {
   }
 
   const handleOnCreate = () => {
-    // Determine query list name
-    const queryObj = remoteSchema.types.find(
-      t => t.kind === 'OBJECT' &&
-      t.name === remoteSchema.queryType.name);
-
     // determine field types
     const model = remoteSchema.types.find(
       t => t.kind === 'OBJECT' &&

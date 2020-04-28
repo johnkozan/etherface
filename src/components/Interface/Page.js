@@ -9,6 +9,7 @@ import { useComponentsByPageId } from 'AppTemplateStore';
 import { GraphQLComponent } from './GraphQLComponent';
 import { DataTableComponent } from './DataTableComponent';
 import { MarkdownComponent } from './MarkdownComponent';
+import { Web3Transaction } from './Web3Transaction';
 import { NewComponent } from './NewComponent';
 import { EditButton } from './EditButton';
 import { EditPage } from './EditPage';
@@ -20,11 +21,14 @@ export const Page = ({ page }) => {
   const renderedComponents = components && Object.keys(components).map(componentKey =>
     ((type) => {
       switch (type) {
-    case 'markdown':
-      return <MarkdownComponent component={components[componentKey]} key={componentKey} />;
-    case 'datatable':
-      return <GraphQLComponent RenderComponent={DataTableComponent} component={components[componentKey]} key={componentKey} />;
-    default:
+        case 'markdown':
+          return <MarkdownComponent component={components[componentKey]} key={componentKey} />;
+        case 'datatable':
+          return <GraphQLComponent RenderComponent={DataTableComponent} component={components[componentKey]} key={componentKey} />;
+        case 'web3transaction':
+          return <Web3Transaction component={components[componentKey]} key={componentKey} />;
+
+        default:
           throw new Error('Unknown component type ', type);
       }
     })(components[componentKey].type)

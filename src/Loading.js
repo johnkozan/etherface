@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useWeb3React } from '@web3-react/core'
+import { InjectedConnector } from '@web3-react/injected-connector'
+
+import { injected, useWeb3ConnectExisting } from 'lib/web3';
 
 import { useActions } from './actions';
 import { useAppTemplate, useSettings } from './AppTemplateStore';
@@ -11,8 +15,9 @@ export const Loading = ({ children }) => {
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const { integrations } = appTemplate;
   const { loadAppTemplate, connectIntegration, loadSettings } = useActions();
-  const [appTemplatLoaded, setAppTemplateLoaded] = useState(false);
-
+  const [metamaskConnected, setMetamaskConnected] = useState(false);
+  const { activate, active } = useWeb3React();
+  const triedWeb3Existing = useWeb3ConnectExisting();
 
   // load user settings
   useEffect(() => {
@@ -42,16 +47,29 @@ export const Loading = ({ children }) => {
     }
   }, [appTemplate.__loaded, integrations]);
 
+  // connect metamask if exists
+  // probably could check for a infura integration here and add it as well.
   useEffect(() => {
-    if (!appTemplatLoaded) {
-      setAppTemplateLoaded(true);
-      return;
+    if (triedWeb3Existing) {
+      activate(injected);
     }
+  }, []);
 
-    console.log('Template changed! ');
-  }, [appTemplate]);
 
-  if (!appTemplate.__loaded) {
+  //useEffect(() => {
+    //if (!appTemplatLoaded) {
+      //setAppTemplateLoaded(true);
+      //return;
+    //}
+
+    //console.log('Template changed! ');
+  //}, [appTemplate]);
+
+  //if (web3context.error) {
+    //return <div>web3 error: { web3context.error }</div>;
+  //}
+
+  if (!appTemplate.__loaded || !active ) {
     return <div>Loading...</div>;
   }
 
