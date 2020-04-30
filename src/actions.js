@@ -1,6 +1,5 @@
-//import { types } from "./reducers";
 import React from 'react';
-import { AppTemplateStore, useExportTemplate } from './AppTemplateStore';
+import { AppTemplateStore, useExportTemplate } from 'contexts/AppTemplateContext';
 
 import { connectTheGraph } from 'lib/thegraph';
 import localstorage from 'lib/localstorage';

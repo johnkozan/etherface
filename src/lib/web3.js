@@ -4,21 +4,32 @@ import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { ethers } from 'ethers';
 
-import { useAddresses } from 'AppTemplateStore';
+import { useAddresses } from 'contexts/AppTemplateContext';
 
 export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] })
 
 export const useContractByAddress = (address) => {
   const addresses = useAddresses();
-  const { library, account } = useWeb3React();
+  const { library, account, active } = useWeb3React();
   const { abi } = addresses[address];
 
   return useMemo(() => {
-    const provider = new UncheckedJsonRpcSigner(library.getSigner(account));
+    const provider = active ?  new UncheckedJsonRpcSigner(library.getSigner(account)) : ethers.getDefaultProvider();
     return new ethers.Contract(address, abi, provider);
-  }, [address, abi, account, library]);
+  }, [address, abi, account, library, active]);
 };
 
+export const useHasSigner = () => {
+  const { library, account, active } = useWeb3React();
+
+  try {
+    const provider = new UncheckedJsonRpcSigner(library.getSigner(account));
+    return provider !== undefined;
+  } catch (err) {
+    return false;
+  }
+
+}
 
 export const useWeb3ConnectExisting = () => {
   const { activate, active } = useWeb3React();

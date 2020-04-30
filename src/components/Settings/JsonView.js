@@ -3,7 +3,9 @@ import {
   Button,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { useExportTemplate } from './AppTemplateStore';
+import fileDownload from 'js-file-download';
+
+import { useExportTemplate } from 'contexts/AppTemplateContext';
 
 export const JsonView = () => {
   const exportTemplate = useExportTemplate();
@@ -12,10 +14,17 @@ export const JsonView = () => {
 
   console.log('EXPORTED::: ', exportedTemplate);
 
+  const formatted = JSON.stringify(exportedTemplate, 1, '  ');
+
+  const download = () => {
+    fileDownload(formatted, 'template.json');
+  }
+
   return (
     <div>
+      <Button variant="outlined" onClick={download}>Save</Button>
       <pre>
-        { JSON.stringify(exportedTemplate, 1, '\t') }
+        { formatted }
       </pre>
 
       <br />

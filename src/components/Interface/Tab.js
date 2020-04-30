@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePagesByTabId } from 'AppTemplateStore';
+import { usePagesByTabId } from 'contexts/AppTemplateContext';
 import { NewPage } from './NewPage';
 import { Page } from './Page';
 

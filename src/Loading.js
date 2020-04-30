@@ -3,10 +3,10 @@ import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
 
 import { injected, useWeb3ConnectExisting } from 'lib/web3';
-
 import { useActions } from './actions';
-import { useAppTemplate, useSettings } from './AppTemplateStore';
+import { useAppTemplate, useSettings } from 'contexts/AppTemplateContext';
 import localstorageBackend from 'lib/localstorage';
+import { Spinner } from 'components/Controls/Spinner';
 
 import exampleTemplate from 'examples/default.json';
 
@@ -15,9 +15,9 @@ export const Loading = ({ children }) => {
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const { integrations } = appTemplate;
   const { loadAppTemplate, connectIntegration, loadSettings } = useActions();
-  const [metamaskConnected, setMetamaskConnected] = useState(false);
   const { activate, active } = useWeb3React();
   const triedWeb3Existing = useWeb3ConnectExisting();
+  const [initialLoad, setInitialLoad] = useState(true);
 
   // load user settings
   useEffect(() => {
@@ -56,26 +56,17 @@ export const Loading = ({ children }) => {
   }, []);
 
 
-  //useEffect(() => {
-    //if (!appTemplatLoaded) {
-      //setAppTemplateLoaded(true);
-      //return;
-    //}
-
-    //console.log('Template changed! ');
-  //}, [appTemplate]);
-
   //if (web3context.error) {
     //return <div>web3 error: { web3context.error }</div>;
   //}
 
-  if (!appTemplate.__loaded || !active ) {
-    return <div>Loading...</div>;
+  if (!appTemplate.__loaded || (!triedWeb3Existing)) {
+    return <Spinner />;
   }
 
   const connectingStatuses = Object.keys(integrations).map(integrationKey => integrations[integrationKey].__connected);
   if (connectingStatuses.includes(false)) {
-    return <div>Connecting...</div>;
+    return <Spinner />;
   }
 
   return (

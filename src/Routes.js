@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { useAppTemplate } from './AppTemplateStore';
+import { useAppTemplate } from 'contexts/AppTemplateContext';
 
 import { Tab } from 'components/Interface/Tab';
 import { Settings } from 'components/Settings/Settings';

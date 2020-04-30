@@ -15,7 +15,7 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import clsx from "clsx";
 
 import { SETTINGS_ROUTE } from './Routes';
-import { useAppTemplate } from './AppTemplateStore';
+import { useAppTemplate } from 'contexts/AppTemplateContext';
 
 import { Footer } from './Footer';
 

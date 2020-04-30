@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { saveAppTemplate } from 'lib/localstorage';
-import { useAppTemplate, useExportTemplate, useSettings } from 'AppTemplateStore';
+import { useAppTemplate, useExportTemplate, useSettings } from 'contexts/AppTemplateContext';
 
 
 import { useActions } from 'actions';

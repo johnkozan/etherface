@@ -14,7 +14,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderIcon from '@material-ui/icons/Folder';
 
-import { useAppTemplate } from 'AppTemplateStore';
+import { useAppTemplate } from 'contexts/AppTemplateContext';
 import { useActions } from 'actions';
 
 import { Confirm } from 'components/Controls/Confirm';

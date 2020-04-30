@@ -12,7 +12,7 @@ import { Layout } from './Layout';
 import { Routes } from './Routes';
 import { Loading } from './Loading';
 
-import { AppTemplateProvider } from './AppTemplateStore';
+import { AppTemplateProvider } from 'contexts/AppTemplateContext';
 
 const history = createBrowserHistory();
 

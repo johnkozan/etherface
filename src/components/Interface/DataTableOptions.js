@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { useAppTemplate } from 'AppTemplateStore';
+import { useAppTemplate } from 'contexts/AppTemplateContext';
 import { useRemoteSchema } from 'lib/thegraph';
 import { typeNameToQueryMany, typeNameToQuerySingle, normalizeFieldType } from 'lib/graphql';
 import { Spinner } from 'components/Controls/Spinner';

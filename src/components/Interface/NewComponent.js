@@ -26,7 +26,6 @@ export const NewComponent = ({page_id}) => {
 
   const onCreate = (component) => {
     addComponent({...component, __page_id: page_id });
-    console.log('Added!');
   }
 
   if (componentType) {

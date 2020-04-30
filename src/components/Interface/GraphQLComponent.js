@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Query } from "./Query";
-import { useIntegration } from 'AppTemplateStore';
+import { useIntegration } from 'contexts/AppTemplateContext';
 import { useRemoteSchema } from 'lib/thegraph';
 import { typeNameToQuerySingle, fieldsForTypeName } from 'lib/graphql';
 import { Spinner } from 'components/Controls/Spinner';

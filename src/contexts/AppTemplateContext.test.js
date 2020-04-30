@@ -1,6 +1,6 @@
 import React from 'react';
 //import { shallow } from 'enzyme';
-import { reducer } from './AppTemplateStore';
+import { reducer } from './AppTemplateContext';
 
 it('loads existing template json into internal state', () => {
   const initialState = {};

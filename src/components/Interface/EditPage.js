@@ -22,7 +22,7 @@ import FolderIcon from '@material-ui/icons/Folder';
 import { fromJS } from 'immutable';
 import { useForm } from 'react-hooks-useform';
 
-import { useComponentsByPageId } from 'AppTemplateStore';
+import { useComponentsByPageId } from 'contexts/AppTemplateContext';
 import { useActions } from 'actions';
 import { Confirm } from 'components/Controls/Confirm';
 

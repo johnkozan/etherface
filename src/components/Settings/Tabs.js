@@ -17,7 +17,7 @@ import FolderIcon from '@material-ui/icons/Folder';
 
 import { Confirm } from 'components/Controls/Confirm';
 import { useActions } from 'actions';
-import { useAppTemplate } from '../../AppTemplateStore';
+import { useAppTemplate } from 'contexts/AppTemplateContext';
 import { NewTab } from './NewTab';
 
 

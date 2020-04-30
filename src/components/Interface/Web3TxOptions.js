@@ -12,10 +12,11 @@ import { useForm } from 'react-hooks-useform';
 import { ethers } from 'ethers';
 import { Link } from 'react-router-dom';
 
-import { useAddresses } from 'AppTemplateStore';
+import { useAddresses } from 'contexts/AppTemplateContext';
 import { useActions } from 'actions';
 import { SelectField } from 'components/Controls/SelectField';
 
+import { NETWORKS } from '../../constants';
 import { useContractByAddress } from 'lib/web3';
 
 export const Web3TxOptions = ({ onCreate, onCancel }) => {
@@ -23,23 +24,26 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
   const { addComponent } = useActions();
   const [address, setAddress] = useState();
 
-  const addressOptions = Object.keys(addresses || {}).map(a => ({value: a, label: a}));
+  const addressOptions = Object.keys(addresses || {}).map(a => ({value: {network: addresses[a].network, address: a}, label: `${addresses[a].network} ${a}`}));
+  //const networkOptions = Object.keys(NETWORKS).map(n => ({value: n, label: NETWORKS[n].name}));
 
   const [fields, form] = useForm({
     fields: [
       {name: 'address', label: 'Address', type: 'select', options: addressOptions},
     ],
     submit: values => {
+      const { address, network } = values.get('address');
       onCreate({
         type: 'web3transaction',
-        address: values.get('address'),
+        address,
+        network,
         signature: values.get('function'),
       });
       onCancel();
     },
   });
 
-  const abi = fields.address.value !== '' ? addresses[fields.address.value].abi : undefined;
+  const abi = fields.address.value !== '' ? addresses[fields.address.value.address].abi : undefined;
 
   const addAddressLink = addresses ? undefined : <div>
     <Link to="/_/settings/addresses">
@@ -58,7 +62,7 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
             <SelectField {...fields.address} />
 
             { fields.address.value !== '' ?
-                <SelectFunction {...fields.function } address={fields.address.value} abi={abi} form={form} fields={fields} />
+                <SelectFunction {...fields.function } address={fields.address.value.address} abi={abi} form={form} fields={fields} />
                 :
                 undefined
             }
@@ -82,7 +86,7 @@ const SelectFunction = ({ address, abi, form, fields, ...rest }) => {
 
   const queries = Object.filter(
     contract.interface.functions,
-    i => i.type === "transaction"
+    i => i.type === "transaction" || i.type === 'call'
   );
 
   let queryFuncs = [];

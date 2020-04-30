@@ -26,7 +26,7 @@ export const SelectField = ({
         error={error}
       >
         {options.map((option) => {
-          return <MenuItem key={options.value} value={option.value}>{option.label}</MenuItem>
+          return <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
         })}
       </Select>
       <FormHelperText error={error}>{helperText}</FormHelperText>
