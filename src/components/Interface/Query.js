@@ -10,6 +10,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Typography,
 } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -88,52 +89,50 @@ export const Query = ({ graph_client, model, id, fields, onCancel, setSelectedQu
 
   return (
     <div>
-      <Card>
-        <CardHeader title={model} subheader={id} />
-        <CardContent>
+      <Typography variant="h5">
+        {model}
+      </Typography>
+      <Typography variant="h6">
+        {id}
+      </Typography>
+      <Table>
+        <TableBody>
+          { rows.map(rowName =>
+            <>
+            <TableRow>
+              <TableCell>
+                <strong>{rowName}</strong>
+              </TableCell>
+              <TableCell>
+                { Array.isArray(m[rowName]) ?
+                    <div className={classes.fakelink} onClick={() => toggleExpand(rowName)}>
+                      { m[rowName].length } { m[rowName].length > 0 ? m[rowName][0].__typename ? m[rowName][0].__typename : 'record' : undefined}{m[rowName].length > 1 ? 's' : undefined}
+                      { expandLists[rowName] ? <KeyboardArrowDownIcon /> : <ChevronRightIcon /> }
+                    </div>
+                    : renderCell(data[model][rowName])
+                }
+              </TableCell>
+            </TableRow>
+            { Array.isArray(m[rowName]) && expandLists[rowName] ?
+                m[rowName].map((row, k) =>
+                <TableRow key={`${row}-${k}`}>
+                <TableCell></TableCell>
+                <TableCell>
+                  { renderCell(row) }
+                </TableCell>
+                  </TableRow>
+                )
+                : undefined }
+            </>
 
-          <Table>
-            <TableBody>
-              { rows.map(rowName =>
-                <>
-                <TableRow>
-                  <TableCell>
-                    <strong>{rowName}</strong>
-                  </TableCell>
-                  <TableCell>
-                    { Array.isArray(m[rowName]) ?
-                        <div className={classes.fakelink} onClick={() => toggleExpand(rowName)}>
-                          { m[rowName].length } { m[rowName].length > 0 ? m[rowName][0].__typename ? m[rowName][0].__typename : 'record' : undefined}{m[rowName].length > 1 ? 's' : undefined}
-                          { expandLists[rowName] ? <KeyboardArrowDownIcon /> : <ChevronRightIcon /> }
-                        </div>
-                        : renderCell(data[model][rowName])
-                    }
-                  </TableCell>
-                </TableRow>
-                { Array.isArray(m[rowName]) && expandLists[rowName] ?
-                    m[rowName].map((row, k) =>
-                    <TableRow key={`${row}-${k}`}>
-                    <TableCell></TableCell>
-                    <TableCell>
-                      { renderCell(row) }
-                    </TableCell>
-                      </TableRow>
-                    )
-                    : undefined }
-                </>
+            ) }
 
-                ) }
+          </TableBody>
+        </Table>
 
-              </TableBody>
-            </Table>
+        <br />
 
-          </CardContent>
-
-          <CardActions>
-            <Button variant="outlined" onClick={onCancel}>Back</Button>
-          </CardActions>
-
-        </Card>
+        <Button variant="outlined" onClick={onCancel}>Back</Button>
       </div>
   );
 }

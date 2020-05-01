@@ -21,7 +21,6 @@ export const EditDataTableComponent = ({ component, onCancel }) => {
 
   const componentFields = component.options.fields;
   const initialChecked = componentFields.map((f,k) => f.enabled ? k : undefined).filter(f => !!f);
-  console.log('Initial checked:: ', initialChecked);
   const [checked, setChecked] = useState(initialChecked);
 
   const handleToggle = (value) => () => {

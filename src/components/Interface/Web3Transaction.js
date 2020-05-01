@@ -8,6 +8,7 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { useForm } from 'react-hooks-useform';
 
+import { useWeb3React } from '@web3-react/core'
 import { useContractByAddress, useHasSigner } from 'lib/web3';
 import { Spinner } from 'components/Controls/Spinner';
 
@@ -20,9 +21,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Web3Transaction = ({ component }) => {
+  console.log('CMPONENT: ', component);
   const classes = useStyles();
-  const contract = useContractByAddress(component.address);
+  const contract = useContractByAddress(component.address, component.network);
   const hasSigner = useHasSigner();
+  const { network } = useWeb3React();
 
   const [result, setResult] = useState();
   const [resultLoading, setResultLoading] = useState(false);
@@ -58,13 +61,13 @@ export const Web3Transaction = ({ component }) => {
     setResult(undefined);
   };
 
-  if (func.type === 'transaction' && !hasSigner) {
-    return <div>Web3 signer required...</div>;
-  }
+  const signerRequired = func.type === 'transaction';
+  const disabled = !contract || (signerRequired && !hasSigner);
 
-  if (!contract) {
-    return <div>No web3</div>;
-  }
+  console.log('NETWOR: ', network);
+  console.log('CONTRACT: ', contract);
+  //const networkMismatch = contract.network
+  const warningText = signerRequired && !hasSigner ? 'Web3 wallet required' : undefined;
 
   if (resultLoading) {
     return <Spinner />;
@@ -82,9 +85,11 @@ export const Web3Transaction = ({ component }) => {
       <form.Form>
       <Box flex="rows">
         { Object.keys(fields).map(fieldKey =>
-          <TextField {...fields[fieldKey] } key={fieldKey} />
+          <TextField {...fields[fieldKey] } disabled={disabled} key={fieldKey} />
         ) }
-        <Button color="primary" type="submit" onClick={form.submit}>{ component.buttonText || 'Send' }</Button>
+        <Button color="primary" type="submit" onClick={form.submit} disabled={disabled}>{ component.buttonText || 'Send' }</Button>
+
+        { warningText }
         </Box>
       </form.Form>
 

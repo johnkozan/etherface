@@ -96,10 +96,8 @@ const ModelSelect = ({ schema, onNext }) => {
   const [selectedModel, setSelectedModel] = useState();
 
   if (!schema) {
-    return <div>Loading schema...</div>;
+    return <Spinner />;
   }
-
-  console.log('SCHEMA::: ', schema);
 
   const models = schema.types.filter(
     t => t.kind === 'OBJECT' &&

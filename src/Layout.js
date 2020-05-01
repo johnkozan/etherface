@@ -15,6 +15,7 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import clsx from "clsx";
 
 import { SETTINGS_ROUTE } from './Routes';
+import { Web3Status } from './Web3Status';
 import { useAppTemplate } from 'contexts/AppTemplateContext';
 
 import { Footer } from './Footer';
@@ -22,7 +23,7 @@ import { Footer } from './Footer';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
-    width: 240,
+    //width: 220,
     //[theme.breakpoints.up("lg")]: {
       //marginTop: 64,
       //height: "calc(100% - 64px)"
@@ -213,11 +214,10 @@ export const Layout = ({ children }) => {
     </Drawer>
 
     <main className={classes.content}>
+      <Web3Status />
       { children }
     </main>
 
-
-    <Footer />
   </div>
   );
 }

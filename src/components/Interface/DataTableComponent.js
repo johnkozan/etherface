@@ -91,56 +91,48 @@ export const DataTableComponent = ({ component, setSelectedQuery, graph_client }
 
   return (
     <div className={classes.root}>
-      <Card>
-        <CardContent>
-          <div>
-            <TableContainer component={Paper}>
-              <Table className={classes.table} aria-label="table">
-                <TableHead>
-                  <TableRow>
-                    {cols.map((c, k) => (
-                      <TableCell key={`col-${k}`}>
-                        {c}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((r, k) => (
-                    <TableRow key={`row-${k}`}>
-                      {cols.map((c, kk) => (
-                        <TableCell key={`cell-${k}-${kk}`}>
-                          { renderCell(r[c], c, r.__typename) }
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
+      <TableContainer>
+        <Table className={classes.table} aria-label="table">
+          <TableHead>
+            <TableRow>
+              {cols.map((c, k) => (
+                <TableCell key={`col-${k}`}>
+                  {c}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((r, k) => (
+              <TableRow key={`row-${k}`}>
+                {cols.map((c, kk) => (
+                  <TableCell key={`cell-${k}-${kk}`}>
+                    { renderCell(r[c], c, r.__typename) }
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
 
-                <TableFooter>
-                  <TablePagination
-                    rowsPerPageOptions={PER_PAGE_OPTS}
-                    colSpan={3}
-                    pageCount={rows.length}
-                    rowsPerPage={perPage}
-                    page={page}
-                    SelectProps={{
-                      inputProps: { 'aria-label': 'rows per page' },
-                      native: true,
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    ActionsComponent={TablePaginationActions}
-                  />
-                </TableFooter>
+          <TableFooter>
+            <TablePagination
+              rowsPerPageOptions={PER_PAGE_OPTS}
+              colSpan={3}
+              pageCount={rows.length}
+              rowsPerPage={perPage}
+              page={page}
+              SelectProps={{
+                inputProps: { 'aria-label': 'rows per page' },
+                native: true,
+              }}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+              ActionsComponent={TablePaginationActions}
+            />
+          </TableFooter>
 
-              </Table>
-            </TableContainer>
-          </div>
-        </CardContent>
-
-        <CardActions></CardActions>
-      </Card>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

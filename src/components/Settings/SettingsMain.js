@@ -22,12 +22,12 @@ import { useActions } from 'actions';
 export const SettingsMain = () => {
   const  template = useAppTemplate();
   const settings = useSettings();
-  const exportTemplate = useExportTemplate();
+  //const exportTemplate = useExportTemplate();
   const { setSetting } = useActions();
 
   const saveToLocalstorage = () => {
-    const exportedTemplate = exportTemplate();
-    saveAppTemplate(exportedTemplate);
+    //const exportedTemplate = exportTemplate();
+    //saveAppTemplate(exportedTemplate);
   }
 
   const toggleOption = (option) => {

@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useRef, useMemo } from 'react';
 import slugify from 'slugify';
+import { useToasts } from 'react-toast-notifications'
+
+import localstorage from 'lib/localstorage';
 
 export const AppTemplateStore = React.createContext();
 
@@ -72,6 +75,7 @@ export function reducer(state, action) {
         integrations,
         addresses,
         __loaded: true,
+        __version: 0,
       };
 
     case 'ADD_TAB': {
@@ -101,6 +105,7 @@ export function reducer(state, action) {
           ...state.pages,
           [pageId]: firstPage,
         },
+        __version: state.__version + 1,
       };
     }
 
@@ -109,6 +114,7 @@ export function reducer(state, action) {
       return {
         ...state,
         tabs: Object.filter(state.tabs, t => t.__id !== action.payload.__id),
+        __version: state.__version + 1,
       };
 
     case 'ADD_PAGE': {
@@ -124,6 +130,7 @@ export function reducer(state, action) {
             __id: pageId,
           },
         },
+        __version: state.__version + 1,
       };
     }
 
@@ -137,6 +144,7 @@ export function reducer(state, action) {
             ...action.payload,
           },
         },
+        __version: state.__version + 1,
       };
 
     case 'ADD_INTEGRATION':
@@ -150,12 +158,14 @@ export function reducer(state, action) {
             __id: integrationId,
           },
         },
+        __version: state.__version + 1,
       };
 
     case 'DELETE_INTEGRATION':
       return {
         ...state,
         integrations: Object.filter(state.integrations, i => i.__id !== action.payload.__id),
+        __version: state.__version + 1,
       };
 
     case 'CONNECT_INTEGRATION':
@@ -183,6 +193,7 @@ export function reducer(state, action) {
             __id: componentId,
           },
         },
+        __version: state.__version + 1,
       };
 
     case 'EDIT_COMPONENT':
@@ -195,17 +206,21 @@ export function reducer(state, action) {
             ...action.payload,
           },
         },
+        __version: state.__version + 1,
       };
 
     case 'DELETE_COMPONENT':
       return {
         ...state,
         components: Object.filter(state.components, c => c.__id !== action.payload.__id),
+        __version: state.__version + 1,
       };
 
     case 'ADD_ADDRESS':
       return {
         ...state,
+        // TODO:: Append to array
+        // TODO:: Ensure address doesn't already exist
         addresses: {
           ...state.addresses,
           [action.payload.address]: {
@@ -213,6 +228,15 @@ export function reducer(state, action) {
             ...action.payload,
           },
         },
+        __version: state.__version + 1,
+      };
+
+      // TODO: Test this
+    case 'DELETE_ADDRESS':
+      return {
+        ...state,
+        addresses: state.addresses.filter(a => (a.address !== action.payload.address && a.network !== action.payload.network)),
+        __version: state.__version + 1,
       };
 
     case 'LOAD_SETTINGS':
@@ -238,6 +262,24 @@ export function reducer(state, action) {
 
 export const AppTemplateProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const { addToast } = useToasts();
+
+
+  // TODO: React warning about updating during state transition
+  function autoSave() {
+    const exportedTemplate = serializeTemplate(state);
+    localstorage.saveAppTemplate(exportedTemplate);
+    addToast('Autosaved to localstorage', {apperance: 'success', autoDismiss: true, autoDismissTimeout: 3000});
+  }
+
+  useMemo(() => {
+    console.log('Version:: ', state.__version);
+    if (state.__version && state.__version > 0) {
+      if (state.settings.autosave) {
+        autoSave();
+      }
+    }
+  }, [state.__version]);
 
   return <AppTemplateStore.Provider value={{state, dispatch}}>
     { children }
@@ -254,6 +296,11 @@ export const useAddresses = () => {
   return state.addresses;
 };
 
+export const useAddress = (address, network) => {
+  const { state } = React.useContext(AppTemplateStore);
+  return state.addresses.find(a => a.address === address && a.network === network);
+};
+
 export const usePagesByTabId = (tabId) => {
   const { state } = React.useContext(AppTemplateStore);
   const { pages } = state;
@@ -267,8 +314,8 @@ export const useComponentsByPageId = (pageId) => {
 };
 
 //export const useDebugState = () => {
-  //const { state } = React.useContext(AppTemplateStore);
-  //console.log('DATA STATE: ', state);
+//const { state } = React.useContext(AppTemplateStore);
+//console.log('DATA STATE: ', state);
 //};
 
 export const useIntegration = (type, endpoint) => {
@@ -286,8 +333,6 @@ export const useSettings = () => {
   return state.settings;
 };
 
-
-
 function filterInternalFields(obj) {
   let copy = Object.assign({}, obj);
   Object.keys(obj).forEach(key => {
@@ -298,35 +343,38 @@ function filterInternalFields(obj) {
   return copy;
 }
 
-// Serialize internal structure to json.
-export const useExportTemplate = () => {
-  const { state } = React.useContext(AppTemplateStore);
-  const { tabs, pages, components, integrations, addresses } = state;
 
-  return function(template) {
-    let serializedTemplate = Object.assign({}, template, {tabs: [], integrations: []});
-    Object.keys(tabs).forEach(tabKey => {
-      let tab = {...tabs[tabKey], pages: []};
-      //tab.pages = [];
-      let tab_pages = Object.filter(pages, p => p.__tab_id === tab.__id);
-      Object.keys(tab_pages).forEach(pageKey => {
-        let page = tab_pages[pageKey];
-        page.components = [];
-        let page_components = Object.filter(components, f => f.__page_id === page.__id);
-        Object.keys(page_components).forEach(componentKey => {
-          page.components.push(filterInternalFields(components[componentKey]));
-        });
-        tab.pages.push(filterInternalFields(page));
+function serializeTemplate(template) {
+  let serializedTemplate = Object.assign({}, template, {tabs: [], integrations: []});
+  Object.keys(template.tabs).forEach(tabKey => {
+    let tab = {...template.tabs[tabKey], pages: []};
+    let tab_pages = Object.filter(template.pages, p => p.__tab_id === tab.__id);
+    Object.keys(tab_pages).forEach(pageKey => {
+      let page = tab_pages[pageKey];
+      page.components = [];
+      let page_components = Object.filter(template.components, f => f.__page_id === page.__id);
+      Object.keys(page_components).forEach(componentKey => {
+        page.components.push(filterInternalFields(template.components[componentKey]));
       });
-      serializedTemplate.tabs.push(filterInternalFields(tab));
+      tab.pages.push(filterInternalFields(page));
     });
+    serializedTemplate.tabs.push(filterInternalFields(tab));
+  });
 
-    Object.keys(integrations).forEach(integrationKey => {
-      serializedTemplate.integrations.push(filterInternalFields(integrations[integrationKey]))
-    });
+  Object.keys(template.integrations).forEach(integrationKey => {
+    serializedTemplate.integrations.push(filterInternalFields(template.integrations[integrationKey]))
+  });
 
-    serializedTemplate.addresses = addresses;
+  serializedTemplate.addresses = Object.keys(template.addresses).map(addressKey  => template.addresses[addressKey]);
 
-    return serializedTemplate;
-  };
-};
+  return serializedTemplate;
+}
+
+// Serialize internal structure to json.
+//export const useExportTemplate = () => {
+//const { state } = React.useContext(AppTemplateStore);
+//const { tabs, pages, components, integrations, addresses } = state;
+
+//return serializeTemplate(template) {
+
+//};

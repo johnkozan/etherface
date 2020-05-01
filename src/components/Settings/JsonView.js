@@ -8,9 +8,11 @@ import fileDownload from 'js-file-download';
 import { useExportTemplate } from 'contexts/AppTemplateContext';
 
 export const JsonView = () => {
-  const exportTemplate = useExportTemplate();
+  //const exportTemplate = useExportTemplate();
 
-  const exportedTemplate = exportTemplate();
+  //const exportedTemplate = exportTemplate();
+  //
+  const exportedTemplate = '';
 
   console.log('EXPORTED::: ', exportedTemplate);
 

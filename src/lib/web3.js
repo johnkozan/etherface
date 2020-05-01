@@ -4,19 +4,20 @@ import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { ethers } from 'ethers';
 
-import { useAddresses } from 'contexts/AppTemplateContext';
+import { useAddress } from 'contexts/AppTemplateContext';
 
 export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] })
 
-export const useContractByAddress = (address) => {
-  const addresses = useAddresses();
+export const useContractByAddress = (address, network) => {
+  const addressRecord = useAddress(address, network);
   const { library, account, active } = useWeb3React();
-  const { abi } = addresses[address];
+
+  const { abi } = addressRecord;
 
   return useMemo(() => {
     const provider = active ?  new UncheckedJsonRpcSigner(library.getSigner(account)) : ethers.getDefaultProvider();
     return new ethers.Contract(address, abi, provider);
-  }, [address, abi, account, library, active]);
+  }, [address, network, account, library, active]);
 };
 
 export const useHasSigner = () => {

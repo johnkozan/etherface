@@ -1,13 +1,13 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-
 
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from "history";
 import { Web3Provider } from '@ethersproject/providers'
 import { Web3ReactProvider } from '@web3-react/core'
+import { ToastProvider } from 'react-toast-notifications'
 
+import { CustomToast } from './Notifications';
 import { Layout } from './Layout';
 import { Routes } from './Routes';
 import { Loading } from './Loading';
@@ -27,15 +27,17 @@ export default function App() {
   return (
     <Router history={history}>
       <Web3ReactProvider getLibrary={getLibrary}>
-        <AppTemplateProvider>
-          <Container fixed>
-            <Loading>
-              <Layout>
-                <Routes />
-              </Layout>
-            </Loading>
-          </Container>
-        </AppTemplateProvider>
+        <ToastProvider components={{Toast: CustomToast}}>
+          <AppTemplateProvider>
+            <Container fixed>
+              <Loading>
+                <Layout>
+                  <Routes />
+                </Layout>
+              </Loading>
+            </Container>
+          </AppTemplateProvider>
+        </ToastProvider>
       </Web3ReactProvider>
     </Router>
   );

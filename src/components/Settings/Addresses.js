@@ -36,18 +36,18 @@ export const Addresses = () => {
         <CardHeader title="Addresses" />
         <CardContent>
           <List dense={false}>
-            { addresses && Object.keys(addresses).map(addressKey => (
-              <ListItem key={addressKey}>
+            { addresses && addresses.map(address => (
+              <ListItem key={address.address}>
                 <ListItemAvatar>
                   <Avatar>
                     <FolderIcon />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={addressKey}
+                  primary={address.address}
                 />
                 <ListItemSecondaryAction>
-                  <Confirm onConfirm={() => onDelete(addressKey)} title="Delete Address" description="Remove address from address book?">
+                  <Confirm onConfirm={() => onDelete(address)} title="Delete Address" description="Remove address from address book?">
                     <IconButton edge="end" aria-label="delete" >
                       <DeleteIcon />
                     </IconButton>
