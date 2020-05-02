@@ -4,6 +4,7 @@ import {
   useMediaQuery,
   Button,
   Collapse,
+  Container,
   Divider,
   Drawer,
   Grid,
@@ -137,7 +138,7 @@ export const Layout = ({ children }) => {
       <Button
         className={clsx(classes.button, (showSubSettings ? undefined : classes.settingsItem))}
         component={Link}
-        to={`/_/settings/${s.route}`}
+        to={`/_/${s.route}`}
       >
         <div className={classes.icon}></div>
         { s.name }
@@ -154,6 +155,7 @@ export const Layout = ({ children }) => {
         [classes.shiftContent]: isDesktop
       })}
     >
+      <Container fixed>
       <Drawer
         anchor="left"
         classes={{ paper: classes.drawer }}
@@ -218,6 +220,7 @@ export const Layout = ({ children }) => {
       { children }
     </main>
 
+  </Container>
   </div>
   );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -10,16 +10,18 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useForm } from 'react-hooks-useform';
+import { fromJS } from 'immutable';
 
+import { ErrorMsg } from 'components/Controls/ErrorMsg';
+import { SelectField } from 'components/Controls/SelectField';
+import { Spinner } from 'components/Controls/Spinner';
+import { NETWORKS } from '../../constants';
 import { useActions } from 'actions';
 
 const validateAddress = (address) => address.startsWith('0x') && address.length === 42 ? '' : 'Invalid address';
 
 
 const fetchAbi = async (address, network) => {
-  try {
-    //const network = 'mainnet';
-    //const address = '0xf5dce57282a584d2746faf1593d3121fcac444dc'
     let result = await fetch(
       `https://${
           network === 'mainnet' ? 'api' : `api-${network}`
@@ -29,51 +31,63 @@ const fetchAbi = async (address, network) => {
     if (json.status === '1') {
       return json.result;
     } else {
-      console.log('Failed to fetch ABI from etherscan');
-      return;
+      throw new Error('Failed to fetch ABI from etherscan');
     }
-
-  } catch (err) {
-    console.error(err);
-    return;
-  }
 };
 
 export const NewAddress = ({ onCancel }) => {
   const { addAddress } = useActions();
-  const network = 'mainnet';
+  const [fetching, setFetching] = useState(false);
+  const [error, setError] = useState(null);
 
+  const networkOptions = Object.keys(NETWORKS).map(n => ({value: NETWORKS[n].id, label: NETWORKS[n].name}));
+  const initialValues = fromJS({network: 'mainnet'});
   const [fields, form] = useForm({
     fields: [
+      { name: 'name', label: 'Name', optional: true },
       { name: 'address', label: 'Address', validate: validateAddress },
+      { name: 'network', label: 'Network', type: 'select', options: networkOptions },
     ],
+    initialValues,
     submit: async (values) => {
       const address = values.get('address');
-      const abi = await fetchAbi(address, network);
-      addAddress({network, address, abi});
+      const network = values.get('network');
+      const name = values.get('name');
+      setFetching(true);
+      let abi;
+      try {
+        abi = await fetchAbi(address, network);
+        addAddress({network, address, abi, name});
+        setFetching(false);
+      } catch (err) {
+        setError(err.toString());
+        setFetching(false);
+      }
     }
-
   });
 
-  return (
+
+  if (fetching) { return <Spinner />; }
+
+  const errMsg = error ? <ErrorMsg message={error} /> : undefined;
+
+    return (
     <Card>
       <CardHeader title="Add Ethereum address to addressbook" />
       <CardContent>
-
-        <Typography>Network: mainnet</Typography>
+        { errMsg }
 
         <form.Form>
-          <Box flexDirection='column'>
-            <TextField {...fields.address} />
-          </Box>
+          <TextField fullWidth {...fields.name} />
+
+          <SelectField fullWidth {...fields.network } />
+
+          <TextField fullWidth {...fields.address} />
+
           <Button type='submit' onClick={form.submit}>Submit</Button>
         </form.Form>
 
       </CardContent>
-      <CardActions>
-        <Button color="primary">Save</Button>
-        <Button onClick={onCancel}>Cancel</Button>
-      </CardActions>
     </Card>
   );
 }

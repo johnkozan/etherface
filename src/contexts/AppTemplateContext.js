@@ -37,7 +37,7 @@ export function reducer(state, action) {
       let pages = {};
       let components = {};
       let integrations = {};
-      let addresses = {};
+      let addresses = [];
 
       // Flatten components, pages and tabs
       action.payload.tabs && action.payload.tabs.forEach((tab) => {
@@ -63,7 +63,7 @@ export function reducer(state, action) {
         }
       );
 
-      addresses = action.payload.addresses;
+      addresses = action.payload.addresses || [];
 
       return {
         ...state,
@@ -219,19 +219,11 @@ export function reducer(state, action) {
     case 'ADD_ADDRESS':
       return {
         ...state,
-        // TODO:: Append to array
         // TODO:: Ensure address doesn't already exist
-        addresses: {
-          ...state.addresses,
-          [action.payload.address]: {
-            //...state.addresses[action.payload.address],
-            ...action.payload,
-          },
-        },
+        addresses: [...state.addresses, action.payload],
         __version: state.__version + 1,
       };
 
-      // TODO: Test this
     case 'DELETE_ADDRESS':
       return {
         ...state,
@@ -264,7 +256,6 @@ export const AppTemplateProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const { addToast } = useToasts();
 
-
   // TODO: React warning about updating during state transition
   function autoSave() {
     const exportedTemplate = serializeTemplate(state);
@@ -272,8 +263,8 @@ export const AppTemplateProvider = ({ children }) => {
     addToast('Autosaved to localstorage', {apperance: 'success', autoDismiss: true, autoDismissTimeout: 3000});
   }
 
+  // Autosave on changes to template
   useMemo(() => {
-    console.log('Version:: ', state.__version);
     if (state.__version && state.__version > 0) {
       if (state.settings.autosave) {
         autoSave();
@@ -343,9 +334,8 @@ function filterInternalFields(obj) {
   return copy;
 }
 
-
-function serializeTemplate(template) {
-  let serializedTemplate = Object.assign({}, template, {tabs: [], integrations: []});
+export function serializeTemplate(template) {
+  let serializedTemplate = {tabs: [], integrations: [], addresses: []};
   Object.keys(template.tabs).forEach(tabKey => {
     let tab = {...template.tabs[tabKey], pages: []};
     let tab_pages = Object.filter(template.pages, p => p.__tab_id === tab.__id);
@@ -369,12 +359,3 @@ function serializeTemplate(template) {
 
   return serializedTemplate;
 }
-
-// Serialize internal structure to json.
-//export const useExportTemplate = () => {
-//const { state } = React.useContext(AppTemplateStore);
-//const { tabs, pages, components, integrations, addresses } = state;
-
-//return serializeTemplate(template) {
-
-//};

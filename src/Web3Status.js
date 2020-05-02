@@ -15,6 +15,10 @@ const useStyles = makeStyles(theme => ({
     right: theme.spacing(2),
     //fontSize: 'smaller',
   },
+  identicon: {
+    marginLeft: 6,
+    marginTop: 4,
+  },
 }));
 
 export const Web3Status = () => {
@@ -37,7 +41,7 @@ export const Web3Status = () => {
       <Chip
         className={classes.chip}
         label={`${account.substr(0,6)}...${account.substr(38, 4)}`}
-        avatar={<Identicon address={account} />}
+        avatar={<span className={classes.identicon}><Identicon address={account} /></span>}
       />
     </div>
   );

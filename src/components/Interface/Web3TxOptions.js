@@ -24,8 +24,7 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
   const { addComponent } = useActions();
   const [address, setAddress] = useState();
 
-  const addressOptions = Object.keys(addresses || {}).map(a => ({value: {network: addresses[a].network, address: a}, label: `${addresses[a].network} ${a}`}));
-  //const networkOptions = Object.keys(NETWORKS).map(n => ({value: n, label: NETWORKS[n].name}));
+  const addressOptions = (addresses || []).map(a => ({value: {network: a.network, address: a.address}, label: `${a.name || ''} ${a.address} (${a.network}) `}));
 
   const [fields, form] = useForm({
     fields: [
@@ -43,14 +42,13 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
     },
   });
 
-  const abi = fields.address.value !== '' ? addresses[fields.address.value.address].abi : undefined;
-
   const addAddressLink = addresses ? undefined : <div>
-    <Link to="/_/settings/addresses">
+    <Link to="/_/addresses">
       Add an Ethereum contract to the address book in order to interact with it.
     </Link>
   </div>;
 
+  console.log('Fields: ', fields);
   return (
     <div>
       <form.Form>
@@ -59,10 +57,10 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
           <CardContent>
             { addAddressLink }
 
-            <SelectField {...fields.address} />
+            <SelectField fullWidth {...fields.address} />
 
             { fields.address.value !== '' ?
-                <SelectFunction {...fields.function } address={fields.address.value.address} abi={abi} form={form} fields={fields} />
+                <SelectFunction {...fields.function } address={fields.address.value.address} network={fields.address.value.network} form={form} fields={fields} />
                 :
                 undefined
             }
@@ -81,8 +79,8 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
 
 };
 
-const SelectFunction = ({ address, abi, form, fields, ...rest }) => {
-  const contract = useContractByAddress(address);
+const SelectFunction = ({ address, network, form, fields, ...rest }) => {
+  const contract = useContractByAddress(address, network);
 
   const queries = Object.filter(
     contract.interface.functions,

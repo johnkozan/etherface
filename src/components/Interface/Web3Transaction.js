@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  FormHelperText,
   TextField,
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/styles";
 import { useForm } from 'react-hooks-useform';
 
+import { NETWORKS } from '../../constants';
 import { useWeb3React } from '@web3-react/core'
 import { useContractByAddress, useHasSigner } from 'lib/web3';
 import { Spinner } from 'components/Controls/Spinner';
@@ -21,11 +23,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Web3Transaction = ({ component }) => {
-  console.log('CMPONENT: ', component);
   const classes = useStyles();
   const contract = useContractByAddress(component.address, component.network);
   const hasSigner = useHasSigner();
-  const { network } = useWeb3React();
+  const { chainId } = useWeb3React();
 
   const [result, setResult] = useState();
   const [resultLoading, setResultLoading] = useState(false);
@@ -62,12 +63,10 @@ export const Web3Transaction = ({ component }) => {
   };
 
   const signerRequired = func.type === 'transaction';
-  const disabled = !contract || (signerRequired && !hasSigner);
-
-  console.log('NETWOR: ', network);
-  console.log('CONTRACT: ', contract);
-  //const networkMismatch = contract.network
+  const componentNetworkId = NETWORKS.find(n => n.id === component.network).chainId;
+  const networkMismatch = componentNetworkId !== chainId ? `Connect your wallet to ${component.network}` : undefined;
   const warningText = signerRequired && !hasSigner ? 'Web3 wallet required' : undefined;
+  const disabled = !contract || (signerRequired && !hasSigner) || networkMismatch || warningText;
 
   if (resultLoading) {
     return <Spinner />;
@@ -89,7 +88,10 @@ export const Web3Transaction = ({ component }) => {
         ) }
         <Button color="primary" type="submit" onClick={form.submit} disabled={disabled}>{ component.buttonText || 'Send' }</Button>
 
-        { warningText }
+        <FormHelperText>
+          { warningText }
+          { networkMismatch }
+        </FormHelperText>
         </Box>
       </form.Form>
 

@@ -1,22 +1,30 @@
 
-export const NETWORKS = {
-  1: {
+export const NETWORKS = [
+  {
+    chainId: 1,
+    id: 'mainnet',
     name: 'Mainnet',
   },
-
-  3: {
+  {
+    chainId: 3,
+    id: 'ropsten',
     name: 'Ropsten',
   },
-
-  4: {
+  {
+    chainId: 4,
+    id: 'rinkeby',
     name: 'Rinkeby',
   },
 
-  5: {
+  {
+    chainId: 5,
+    id: 'goerli',
     name: 'Goerli',
   },
 
-  42: {
+  {
+    chainId: 42,
+    id: 'kovan',
     name: 'Kovan',
   },
-};
+];

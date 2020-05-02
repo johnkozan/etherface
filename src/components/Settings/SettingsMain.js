@@ -14,20 +14,22 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { saveAppTemplate } from 'lib/localstorage';
-import { useAppTemplate, useExportTemplate, useSettings } from 'contexts/AppTemplateContext';
-
+import { useAppTemplate, useExportTemplate, useSettings, serializeTemplate } from 'contexts/AppTemplateContext';
+import { useToasts } from 'react-toast-notifications'
 
 import { useActions } from 'actions';
+
 
 export const SettingsMain = () => {
   const  template = useAppTemplate();
   const settings = useSettings();
-  //const exportTemplate = useExportTemplate();
   const { setSetting } = useActions();
+  const { addToast } = useToasts();
 
   const saveToLocalstorage = () => {
-    //const exportedTemplate = exportTemplate();
-    //saveAppTemplate(exportedTemplate);
+    const exportedTemplate = serializeTemplate(template);
+    saveAppTemplate(exportedTemplate);
+    addToast('Template saved to localstorage', {apperance: 'success', autoDismiss: true, autoDismissTimeout: 3000});
   }
 
   const toggleOption = (option) => {
@@ -70,7 +72,7 @@ export const SettingsMain = () => {
 
         <CardActions>
           <Button color="primary" variant="outlined" onClick={saveToLocalstorage}>Save to LocalStorage</Button>
-          <Button variant="outlined" component={Link} to="/_/settings/json">See JSON</Button>
+          <Button variant="outlined" component={Link} to="/_/json">See JSON</Button>
         </CardActions>
       </Card>
 

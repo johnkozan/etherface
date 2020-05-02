@@ -1,5 +1,4 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
 
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from "history";
@@ -29,13 +28,11 @@ export default function App() {
       <Web3ReactProvider getLibrary={getLibrary}>
         <ToastProvider components={{Toast: CustomToast}}>
           <AppTemplateProvider>
-            <Container fixed>
-              <Loading>
-                <Layout>
-                  <Routes />
-                </Layout>
-              </Loading>
-            </Container>
+            <Loading>
+              <Layout>
+                <Routes />
+              </Layout>
+            </Loading>
           </AppTemplateProvider>
         </ToastProvider>
       </Web3ReactProvider>

@@ -4,9 +4,10 @@ import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { ethers } from 'ethers';
 
+import { NETWORKS } from '../constants';
 import { useAddress } from 'contexts/AppTemplateContext';
 
-export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] })
+export const injected = new InjectedConnector({ supportedChainIds: NETWORKS.map(n => n.chainId) })
 
 export const useContractByAddress = (address, network) => {
   const addressRecord = useAddress(address, network);
@@ -29,8 +30,7 @@ export const useHasSigner = () => {
   } catch (err) {
     return false;
   }
-
-}
+};
 
 export const useWeb3ConnectExisting = () => {
   const { activate, active } = useWeb3React();
@@ -56,7 +56,7 @@ export const useWeb3ConnectExisting = () => {
   }, [tried, active]);
 
     return tried;
-}
+};
 
 
 class UncheckedJsonRpcSigner extends ethers.Signer {
