@@ -12,7 +12,14 @@ export const useActions = () => {
   }
 
   function addTab(tab){
+    // should not have existing name
+    console.log('TAB:: ', tab);
+      throw new Error('ALAYSSS');
     dispatch({ type: 'ADD_TAB', payload: tab });
+  }
+
+  function editTab(tab) {
+    dispatch({ type: 'EDIT_TAB', payload: tab});
   }
 
   function deleteTab(tab){
@@ -80,6 +87,7 @@ export const useActions = () => {
   return {
     loadAppTemplate,
     addTab,
+    editTab,
     deleteTab,
     addPage,
     editPage,

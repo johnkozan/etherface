@@ -14,11 +14,12 @@ export const SelectField = ({
   helperText,
   children,
   options,
+  fullWidth,
   ...rest
 }) => {
 
   return (
-    <FormControl>
+    <FormControl fullWidth={fullWidth}>
       {label && <InputLabel error={error}>{label}</InputLabel>}
       <Select
         value={value}

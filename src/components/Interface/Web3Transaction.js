@@ -79,6 +79,7 @@ export const Web3Transaction = ({ component }) => {
   return (
     <Box className={classes.root}>
 
+      <Typography variant="h5">{ component.title || '' }</Typography>
       <Typography>{ component.description || '' }</Typography>
 
       <form.Form>

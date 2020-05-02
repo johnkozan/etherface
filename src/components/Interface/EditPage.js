@@ -6,6 +6,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Collapse,
   List,
   ListItem,
   ListItemAvatar,
@@ -26,6 +27,7 @@ import { useComponentsByPageId } from 'contexts/AppTemplateContext';
 import { useActions } from 'actions';
 import { Confirm } from 'components/Controls/Confirm';
 
+import { NewComponent } from './NewComponent';
 import { EditMarkdownComponent } from './EditMarkdownComponent';
 import { EditDataTableComponent } from './EditDataTableComponent';
 import { EditWeb3Tx } from './EditWeb3Tx';
@@ -34,6 +36,7 @@ export const EditPage = ({ page, onCancel }) => {
   const { editPage, deleteComponent } = useActions();
   const components = useComponentsByPageId(page.__id);
   const [editComponent, setEditComponent] = useState();
+  const [showAddComponent, setShowAddComponent] = useState(true);
 
   const initialValues = fromJS(page);
   const [fields, form] = useForm({
@@ -102,6 +105,10 @@ export const EditPage = ({ page, onCancel }) => {
               </ListItem>
             )) }
           </List>
+
+        <Collapse in={showAddComponent}>
+          <NewComponent page_id={page.__id} />
+        </Collapse>
 
       </CardContent>
 

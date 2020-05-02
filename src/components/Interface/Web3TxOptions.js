@@ -28,6 +28,8 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
 
   const [fields, form] = useForm({
     fields: [
+      {name: 'title', label: 'Title', optional: true},
+      {name: 'description', label: 'Description', optional: true},
       {name: 'address', label: 'Address', type: 'select', options: addressOptions},
     ],
     submit: values => {
@@ -56,6 +58,10 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
           <CardHeader title="New Web3 Transaction" />
           <CardContent>
             { addAddressLink }
+
+            <TextField fullWidth {...fields.title} />
+
+            <TextField fullWidth {...fields.description} />
 
             <SelectField fullWidth {...fields.address} />
 

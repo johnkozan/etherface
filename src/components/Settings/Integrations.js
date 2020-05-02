@@ -15,13 +15,14 @@ import {
   IconButton,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FolderIcon from '@material-ui/icons/Folder';
 
 import { useAppTemplate } from 'contexts/AppTemplateContext';
 import { useActions } from 'actions';
 
 import { Confirm } from 'components/Controls/Confirm';
 import { NewIntegration } from './NewIntegration';
+
+import thegraphLogo from 'assets/images/thegraph.jpg';
 
 
 export const Integrations = () => {
@@ -43,9 +44,7 @@ export const Integrations = () => {
             { integrations && Object.keys(integrations).map(integrationKey => (
               <ListItem key={integrations[integrationKey].__id}>
                 <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
+                  <Avatar src={thegraphLogo} alt="The Graph" />
                 </ListItemAvatar>
                 <ListItemText
                   primary={integrations[integrationKey].type}

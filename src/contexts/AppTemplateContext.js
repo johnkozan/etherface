@@ -79,8 +79,8 @@ export function reducer(state, action) {
       };
 
     case 'ADD_TAB': {
-      // Need to get max ID from tabs
       const tabId = nextId(state.tabs);
+      // TODO: Move validation error throwing to action creator
       if (!action.payload.name) { throw new Error('Name required'); }
       const slug = slugify(action.payload.name);
 
@@ -108,6 +108,19 @@ export function reducer(state, action) {
         __version: state.__version + 1,
       };
     }
+
+    case 'EDIT_TAB':
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          [action.payload.__id]: {
+            ...state.tabs[action.payload.__id],
+            ...action.payload,
+          },
+        },
+        __version: state.__version + 1,
+      };
 
     case 'DELETE_TAB':
       // TODO: Need to delete Pages and Tabs also
@@ -181,6 +194,7 @@ export function reducer(state, action) {
       };
 
     case 'ADD_COMPONENT':
+      //TODO: move valiation to action creator
       if (action.payload.__page_id === undefined) { throw new Error('Page id required on component'); }
       // TODO: ensure page_id actually exists also??
       const componentId = nextId(state.components);

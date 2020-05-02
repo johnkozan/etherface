@@ -6,12 +6,23 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { makeStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    //backgroundColor: red[500],
+  },
+}));
+
 export const Confirm = ({ onConfirm, title, description, children }) => {
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -53,10 +64,10 @@ export const Confirm = ({ onConfirm, title, description, children }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onOk} color="inherit">
+          <Button onClick={onOk} variant="contained" startIcon={<DeleteIcon />} className={classes.button}>
             Delete
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} variant="contained" color="primary">
             Cancel
           </Button>
         </DialogActions>

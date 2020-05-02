@@ -2,6 +2,7 @@ import React, { useState, forwardRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import {
   useMediaQuery,
+  Avatar,
   Button,
   Collapse,
   Container,
@@ -10,6 +11,7 @@ import {
   Grid,
   List,
   ListItem,
+  ListItemAvatar,
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { makeStyles, useTheme } from "@material-ui/styles";
@@ -21,6 +23,8 @@ import { useAppTemplate } from 'contexts/AppTemplateContext';
 
 import { Footer } from './Footer';
 
+import { Emoji } from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -177,7 +181,11 @@ export const Layout = ({ children }) => {
                     component={NavLinkWithRef}
                     to={`/${appTemplate.tabs[tabId].slug}`}
                   >
-                    <div className={classes.icon}></div>
+                    <div className={classes.icon}>
+                    { appTemplate.tabs[tabId].icon ?
+                        <Emoji emoji={appTemplate.tabs[tabId].icon} size={24} set={'apple'} /> : undefined
+                    }
+                    </div>
                     { appTemplate.tabs[tabId].name }
                   </Button>
 
@@ -187,7 +195,7 @@ export const Layout = ({ children }) => {
 
           </Grid>
 
-            <Grid item xs={12} style={{marginTop: 'auto'}}>
+          <Grid item xs={12} style={{marginTop: 'auto'}}>
             <List className={classes.list}>
 
               <Divider />
@@ -199,7 +207,7 @@ export const Layout = ({ children }) => {
                 >
                   <div className={clsx(classes.icon, classes.settingsItem)}>
                     <SettingsIcon />
-                 </div>
+                  </div>
                   Settings
                 </Button>
               </ListItem>
@@ -221,6 +229,6 @@ export const Layout = ({ children }) => {
     </main>
 
   </Container>
-  </div>
+</div>
   );
 }

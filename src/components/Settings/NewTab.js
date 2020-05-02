@@ -1,38 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
+  InputAdornment,
   TextField,
-  Typography,
 } from '@material-ui/core';
 
 import { useForm } from 'react-hooks-useform';
 
+import { ErrorMsg } from 'components/Controls/ErrorMsg';
 import { useActions } from 'actions';
 
 export const NewTab = () => {
   const { addTab } = useActions();
+  const [error, setError] = useState(null);
 
   const [fields, form] = useForm({
     fields: [
       { name: 'name', label: 'Name' },
     ],
-    submit: values => { addTab({name: values.get('name')}); }
+    submit: values => {
+      try {
+        addTab({name: values.get('name')});
+      } catch (err) {
+        setError(err.toString());
+      }
+    }
   });
+
+  const errMsg = error ? <ErrorMsg message={error} /> : undefined;
 
   return (
     <div>
-
-      <Typography>Add tab</Typography>
-
+      { errMsg }
       <form.Form>
-
-        <TextField {...fields.name } />
-
-        <br />
-
-        <Button color="primary" onClick={form.submit}>Add Tab</Button>
+        <TextField
+          fullWidth
+          {...fields.name }
+          InputProps={{endAdornment: <InputAdornment position="end"><Button type="submit" color="primary" onClick={form.submit}>Add Tab</Button></InputAdornment>}}
+        />
       </form.Form>
-
     </div>
   );
 }

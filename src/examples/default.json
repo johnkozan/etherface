@@ -6,7 +6,7 @@
     {
       "name": "Welcome",
       "slug": "welcome",
-      "icon": "Home",
+      "icon": "slightly_smiling_face",
       "pages": [
         {
           "title": "Example App Template",
