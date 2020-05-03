@@ -15,16 +15,19 @@ export const NETWORKS = [
     id: 'rinkeby',
     name: 'Rinkeby',
   },
-
   {
     chainId: 5,
     id: 'goerli',
     name: 'Goerli',
   },
-
   {
     chainId: 42,
     id: 'kovan',
     name: 'Kovan',
+  },
+  {
+    chainId: 5777,
+    id: 'ganache',
+    name: 'Ganache',
   },
 ];

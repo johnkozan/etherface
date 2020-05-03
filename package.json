@@ -43,6 +43,7 @@
     "js-file-download": "^0.4.11",
     "react": "latest",
     "react-dom": "latest",
+    "react-files": "^2.4.8",
     "react-hooks-useform": "^0.1.66",
     "react-markdown": "^4.3.1",
     "react-router-dom": "^5.1.2",
@@ -51,7 +52,8 @@
     "slugify": "^1.4.0",
     "string_decoder": "^1.3.0",
     "subscriptions-transport-ws": "^0.9.16",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "use-file-input": "^1.0.0"
   },
   "browserslist": {
     "production": [
