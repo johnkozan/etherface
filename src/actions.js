@@ -12,9 +12,6 @@ export const useActions = () => {
   }
 
   function addTab(tab){
-    // should not have existing name
-    console.log('TAB:: ', tab);
-      throw new Error('ALAYSSS');
     dispatch({ type: 'ADD_TAB', payload: tab });
   }
 

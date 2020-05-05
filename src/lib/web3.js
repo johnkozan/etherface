@@ -9,6 +9,9 @@ import { useAddress } from 'contexts/AppTemplateContext';
 
 export const injected = new InjectedConnector({ supportedChainIds: NETWORKS.map(n => n.chainId) })
 
+export const shortenTxHash = (hash) =>
+  `${hash.substr(0,6)}...${hash.substr(62,4)}`;
+
 export const useContractByAddress = (address, network) => {
   const addressRecord = useAddress(address, network);
   const { library, account, active } = useWeb3React();
@@ -33,14 +36,15 @@ export const useHasSigner = () => {
 };
 
 export const useWeb3ConnectExisting = () => {
-  const { activate, active } = useWeb3React();
-
+  const { activate, active, chainId,library } = useWeb3React();
   const [tried, setTried] = useState(false);
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
+        activate(injected, undefined, true).catch((err) => {
+          // TODO: Push this error to UI?  Can be "unsupported chain Id"..
+          console.warn(err);
           setTried(true);
         })
       } else {

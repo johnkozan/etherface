@@ -26,6 +26,11 @@ export const NETWORKS = [
     name: 'Kovan',
   },
   {
+    chainId: 1337,
+    id: 'private',
+    name: 'Private chain',
+  },
+  {
     chainId: 5777,
     id: 'ganache',
     name: 'Ganache',

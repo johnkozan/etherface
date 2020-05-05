@@ -35,6 +35,7 @@ import { SelectField } from 'components/Controls/SelectField';
 import { Spinner } from 'components/Controls/Spinner';
 import { NETWORKS } from '../../constants';
 import { useActions } from 'actions';
+import { fetchAbi } from 'lib/etherscan';
 
 const validateAddress = (address) => address.startsWith('0x') && address.length === 42 ? '' : 'Invalid address';
 
@@ -44,20 +45,6 @@ const useStyles = makeStyles({
     color: blue[600],
   },
 });
-
-const fetchAbi = async (address, network) => {
-    let result = await fetch(
-      `https://${
-          network === 'mainnet' ? 'api' : `api-${network}`
-        }.etherscan.io/api?module=contract&action=getabi&address=${address}`,
-    )
-    let json = await result.json()
-    if (json.status === '1') {
-      return json.result;
-    } else {
-      throw new Error('Failed to fetch ABI from etherscan');
-    }
-};
 
 export const NewAddress = ({ onCancel }) => {
   const { addAddress } = useActions();

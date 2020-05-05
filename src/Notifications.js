@@ -8,12 +8,6 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-
-//import { ToastProvider } from 'react-toast-notifications';
-  //<div style={{ background: appearance === 'error' ? 'red' : 'green' }}>
-    //{children}
-//</div>
-//
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',

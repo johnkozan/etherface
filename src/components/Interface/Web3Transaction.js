@@ -8,11 +8,15 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/styles";
 import { useForm } from 'react-hooks-useform';
+import { useWeb3React } from '@web3-react/core'
+
+import { useWeb3Context } from 'contexts/Web3Context';
 
 import { NETWORKS } from '../../constants';
-import { useWeb3React } from '@web3-react/core'
 import { useContractByAddress, useHasSigner } from 'lib/web3';
+import { ErrorMsg } from 'components/Controls/ErrorMsg';
 import { Spinner } from 'components/Controls/Spinner';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -27,9 +31,11 @@ export const Web3Transaction = ({ component }) => {
   const contract = useContractByAddress(component.address, component.network);
   const hasSigner = useHasSigner();
   const { chainId } = useWeb3React();
+  const [,{ addTx }] = useWeb3Context();
 
   const [result, setResult] = useState();
   const [resultLoading, setResultLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const func = contract ? contract.interface.functions[component.signature] : undefined;
   const funcFields = func ? func.inputs.map(i => ({name: i.name, label: i.name, type: 'text'})) : [];
@@ -48,17 +54,21 @@ export const Web3Transaction = ({ component }) => {
 
         const args = Object.keys(fields).map(fieldKey => values.get(fieldKey));
         setResultLoading(true);
-        const result = await contract[component.signature](...args);
-
-        setResult(result);
-        setResultLoading(false);
-
+        try {
+          const result = await contract[component.signature](...args);
+          addTx({...result, chainId});
+          setResult(result.hash);
+          setResultLoading(false);
+        } catch (err) {
+          setError(err.toString());
+          setResultLoading(false);
+        }
       }
     },
   });
 
   const clearForm = () => {
-    // TODO actually clear form
+    form.reset();
     setResult(undefined);
   };
 
@@ -66,7 +76,7 @@ export const Web3Transaction = ({ component }) => {
   const componentNetworkId = NETWORKS.find(n => n.id === component.network).chainId;
   const networkMismatch = componentNetworkId !== chainId ? `Connect your wallet to ${component.network}` : undefined;
   const warningText = signerRequired && !hasSigner ? 'Web3 wallet required' : undefined;
-  const disabled = !contract || (signerRequired && !hasSigner) || networkMismatch || warningText;
+  const disabled = !!(!contract || (signerRequired && !hasSigner) || networkMismatch || warningText);
 
   if (resultLoading) {
     return <Spinner />;
@@ -78,6 +88,8 @@ export const Web3Transaction = ({ component }) => {
 
   return (
     <Box className={classes.root}>
+
+      { error ? <ErrorMsg message={error} /> : undefined }
 
       <Typography variant="h5">{ component.title || '' }</Typography>
       <Typography>{ component.description || '' }</Typography>

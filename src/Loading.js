@@ -7,6 +7,7 @@ import { useActions } from './actions';
 import { useAppTemplate, useSettings } from 'contexts/AppTemplateContext';
 import localstorageBackend from 'lib/localstorage';
 import { Spinner } from 'components/Controls/Spinner';
+import { ErrorMsg } from 'components/Controls/ErrorMsg';
 
 import exampleTemplate from 'examples/default.json';
 
@@ -56,10 +57,6 @@ export const Loading = ({ children }) => {
   }, []);
 
 
-  //if (web3context.error) {
-    //return <div>web3 error: { web3context.error }</div>;
-  //}
-
   if (!appTemplate.__loaded || (!triedWeb3Existing)) {
     return <Spinner />;
   }
@@ -71,6 +68,7 @@ export const Loading = ({ children }) => {
 
   return (
     <div>
+      { /* web3context.error ? <ErrorMsg message={web3context.error} /> : undefined */ }
       { children }
     </div>
   );

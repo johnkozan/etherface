@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Button,
   Card,
@@ -6,23 +6,17 @@ import {
   CardContent,
   CardHeader,
   TextField,
-  Typography,
 } from '@material-ui/core';
 import { useForm } from 'react-hooks-useform';
-import { ethers } from 'ethers';
 import { Link } from 'react-router-dom';
 
 import { useAddresses } from 'contexts/AppTemplateContext';
-import { useActions } from 'actions';
 import { SelectField } from 'components/Controls/SelectField';
 
-import { NETWORKS } from '../../constants';
 import { useContractByAddress } from 'lib/web3';
 
 export const Web3TxOptions = ({ onCreate, onCancel }) => {
   const addresses = useAddresses();
-  const { addComponent } = useActions();
-  const [address, setAddress] = useState();
 
   const addressOptions = (addresses || []).map(a => ({value: {network: a.network, address: a.address}, label: `${a.name || ''} ${a.address} (${a.network}) `}));
 
@@ -31,6 +25,7 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
       {name: 'title', label: 'Title', optional: true},
       {name: 'description', label: 'Description', optional: true},
       {name: 'address', label: 'Address', type: 'select', options: addressOptions},
+      {name: 'buttonText', label: 'Button text', optional: true},
     ],
     submit: values => {
       const { address, network } = values.get('address');
@@ -39,6 +34,9 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
         address,
         network,
         signature: values.get('function'),
+        title: values.get('title'),
+        description: values.get('description'),
+        buttonText: values.get('buttonText'),
       });
       onCancel();
     },
@@ -50,7 +48,6 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
     </Link>
   </div>;
 
-  console.log('Fields: ', fields);
   return (
     <div>
       <form.Form>
@@ -70,6 +67,8 @@ export const Web3TxOptions = ({ onCreate, onCancel }) => {
                 :
                 undefined
             }
+
+            <TextField fullWidth {...fields.buttonText} />
 
           </CardContent>
 

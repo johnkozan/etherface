@@ -98,8 +98,8 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightMedium,
     "& $icon": {
       color: theme.palette.primary.main
-    }
-  }
+    },
+  },
 }));
 
 const NavLinkWithRef = forwardRef((props, ref) => (

@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { saveAppTemplate } from 'lib/localstorage';
-import { useAppTemplate, useExportTemplate, useSettings, serializeTemplate } from 'contexts/AppTemplateContext';
+import { useAppTemplate, useSettings, serializeTemplate } from 'contexts/AppTemplateContext';
 import { useToasts } from 'react-toast-notifications'
 
 import { useActions } from 'actions';
