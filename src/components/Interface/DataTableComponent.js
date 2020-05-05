@@ -82,11 +82,12 @@ export const DataTableComponent = ({ component, setSelectedQuery, graph_client }
     return value;
   }
 
-  const handleChangePage = (val) => {
+  const handleChangePage = (evt, page) => {
+    setPage(page);
   };
 
   const handleChangeRowsPerPage = (evt => {
-    setPerPage(evt.target.value);
+    setPerPage(parseInt(evt.target.value));
   });
 
   return (
@@ -115,20 +116,22 @@ export const DataTableComponent = ({ component, setSelectedQuery, graph_client }
           </TableBody>
 
           <TableFooter>
-            <TablePagination
-              rowsPerPageOptions={PER_PAGE_OPTS}
-              colSpan={3}
-              pageCount={rows.length}
-              rowsPerPage={perPage}
-              page={page}
-              SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={PER_PAGE_OPTS}
+                count={-1}
+                colSpan={3}
+                rowsPerPage={perPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { 'aria-label': 'rows per page' },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
           </TableFooter>
 
         </Table>
