@@ -20,7 +20,6 @@ import { useTheme, withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FolderIcon from '@material-ui/icons/Folder';
 
 import { fromJS } from 'immutable';
 import { useForm } from 'react-hooks-useform';

@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core'
-import { InjectedConnector } from '@web3-react/injected-connector'
 
 import { injected, useWeb3ConnectExisting } from 'lib/web3';
 import { useActions } from './actions';
-import { useAppTemplate, useSettings } from 'contexts/AppTemplateContext';
+import { useAppTemplate } from 'contexts/AppTemplateContext';
 import localstorageBackend from 'lib/localstorage';
 import { Spinner } from 'components/Controls/Spinner';
-import { ErrorMsg } from 'components/Controls/ErrorMsg';
 
 import exampleTemplate from 'examples/default.json';
 
@@ -16,9 +14,8 @@ export const Loading = ({ children }) => {
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const { integrations } = appTemplate;
   const { loadAppTemplate, connectIntegration, loadSettings } = useActions();
-  const { activate, active } = useWeb3React();
+  const { activate } = useWeb3React();
   const triedWeb3Existing = useWeb3ConnectExisting();
-  const [initialLoad, setInitialLoad] = useState(true);
 
   // load user settings
   useEffect(() => {

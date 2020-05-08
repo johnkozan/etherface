@@ -44,7 +44,7 @@ export const Page = ({ page }) => {
           <Grid container spacing={1}>
             { rowComponents.map(component => {
               const ShowComponent = componentForType(component.type, 'show');
-              return <Grid item xs={GRID_COLS}>
+              return <Grid item xs={GRID_COLS} key={`component-${component.__id}`}>
                 <ShowComponent component={component} />
               </Grid>;
             })}

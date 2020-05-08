@@ -1,14 +1,13 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import {
   Chip,
-  Snackbar,
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/styles";
 import { useWeb3React } from '@web3-react/core'
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import { EtherscanTxLink } from 'lib/etherscan'
 
-import { useTransactions, useWeb3Context, BlockNumberWatcher, TransactionStatusWatcher } from 'contexts/Web3Context';
+import { useTransactions, BlockNumberWatcher, TransactionStatusWatcher } from 'contexts/Web3Context';
 
 import { Identicon } from 'components/Controls/Identicon';
 
@@ -29,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Web3Status = () => {
   const classes = useStyles();
-  const { active, account } = useWeb3React();
+  const { account } = useWeb3React();
 
 	if (!account) {
     return (

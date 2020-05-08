@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import {
   Avatar,
-  Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   Collapse,
@@ -16,13 +14,10 @@ import {
   ListItemAvatar,
   ListItemText,
   FormControlLabel,
-  FormGroup,
   TextField,
-  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ApartmentIcon from '@material-ui/icons/Apartment';
-import AddIcon from '@material-ui/icons/Add';
 import { blue } from '@material-ui/core/colors';
 
 

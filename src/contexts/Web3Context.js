@@ -155,7 +155,7 @@ export function BlockNumberWatcher() {
 
 export function TransactionStatusWatcher() {
   const { chainId, library } = useWeb3React();
-  const [state, { setTxBlockNumber, setTxReceipt }] = useWeb3Context();
+  const [, { setTxBlockNumber, setTxReceipt }] = useWeb3Context();
 
   const blockNumber = useBlockNumber(chainId);
   const transactions = useTransactions();

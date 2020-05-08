@@ -2,7 +2,6 @@ import React, { useState, forwardRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import {
   useMediaQuery,
-  Avatar,
   Button,
   Collapse,
   Container,
@@ -11,7 +10,6 @@ import {
   Grid,
   List,
   ListItem,
-  ListItemAvatar,
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { makeStyles, useTheme } from "@material-ui/styles";
@@ -21,7 +19,7 @@ import { SETTINGS_ROUTE } from './Routes';
 import { Web3Status } from './Web3Status';
 import { useAppTemplate } from 'contexts/AppTemplateContext';
 
-import { Footer } from './Footer';
+//import { Footer } from './Footer';
 
 import { Emoji } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';

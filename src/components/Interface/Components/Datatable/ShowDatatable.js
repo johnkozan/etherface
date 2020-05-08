@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
-  Card,
-  CardActions,
-  CardContent,
   Table,
   TableBody,
   TableCell,
@@ -12,7 +9,6 @@ import {
   TablePagination,
   TableHead,
   TableRow,
-  Paper
 } from "@material-ui/core";
 
 import { TablePaginationActions } from './TablePaginationActions';

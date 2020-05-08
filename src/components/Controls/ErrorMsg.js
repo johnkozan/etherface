@@ -38,7 +38,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const ErrorMsg = ({ message }) => {
   const variant = "error";
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
 
   const classes = useStyles();
 

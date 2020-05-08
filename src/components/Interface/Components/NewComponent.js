@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  Typography,
 } from '@material-ui/core';
 
 import { useActions } from 'actions';

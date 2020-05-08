@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import slugify from 'slugify';
 import { useToasts } from 'react-toast-notifications'
 
@@ -6,6 +6,7 @@ import localstorage from 'lib/localstorage';
 
 export const AppTemplateStore = React.createContext();
 
+// TODO Move this somewhere else
 Object.filter = (obj, predicate) =>
   Object.keys(obj)
     .filter( key => predicate(obj[key]) )

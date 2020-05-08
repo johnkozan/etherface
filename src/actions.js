@@ -1,11 +1,11 @@
 import React from 'react';
-import { AppTemplateStore, useExportTemplate } from 'contexts/AppTemplateContext';
+import { AppTemplateStore } from 'contexts/AppTemplateContext';
 
 import { connectTheGraph } from 'lib/thegraph';
 import localstorage from 'lib/localstorage';
 
 export const useActions = () => {
-  const { state, dispatch } = React.useContext(AppTemplateStore);
+  const { dispatch } = React.useContext(AppTemplateStore);
 
   function loadAppTemplate(template) {
     dispatch({ type: 'LOAD_TEMPLATE', payload: template });
