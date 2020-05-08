@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 
 const PER_PAGE_OPTS = [10, 25, 50];
 
-export const DataTableComponent = ({ component, setSelectedQuery, graph_client }) => {
+export const ShowDatatable = ({ component, setSelectedQuery, graph_client }) => {
   const classes = useStyles();
   const { fields } = component.options;
   const [page, setPage] = useState(0);

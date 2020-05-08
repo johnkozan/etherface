@@ -1,3 +1,4 @@
+export const GRID_COLS = 12; // Number of columns in the grid
 
 export const NETWORKS = [
   {

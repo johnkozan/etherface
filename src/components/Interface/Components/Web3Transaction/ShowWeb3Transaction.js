@@ -12,7 +12,7 @@ import { useWeb3React } from '@web3-react/core'
 
 import { useWeb3Context } from 'contexts/Web3Context';
 
-import { NETWORKS } from '../../constants';
+import { NETWORKS } from '../../../../constants';
 import { useContractByAddress, useHasSigner } from 'lib/web3';
 import { ErrorMsg } from 'components/Controls/ErrorMsg';
 import { Spinner } from 'components/Controls/Spinner';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const Web3Transaction = ({ component }) => {
+export const ShowWeb3Transaction = ({ component }) => {
   const classes = useStyles();
   const contract = useContractByAddress(component.address, component.network);
   const hasSigner = useHasSigner();

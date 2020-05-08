@@ -15,7 +15,7 @@ import { SelectField } from 'components/Controls/SelectField';
 
 import { useContractByAddress } from 'lib/web3';
 
-export const Web3TxOptions = ({ onCreate, onCancel }) => {
+export const NewWeb3Transaction = ({ onCreate, onCancel }) => {
   const addresses = useAddresses();
 
   const addressOptions = (addresses || []).map(a => ({value: {network: a.network, address: a.address}, label: `${a.name || ''} ${a.address} (${a.network}) `}));

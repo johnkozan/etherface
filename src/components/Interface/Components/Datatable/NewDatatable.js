@@ -16,7 +16,7 @@ import { useRemoteSchema } from 'lib/thegraph';
 import { typeNameToQueryMany, typeNameToQuerySingle, normalizeFieldType } from 'lib/graphql';
 import { Spinner } from 'components/Controls/Spinner';
 
-export const DataTableOptions = ({ onCreate, onCancel }) => {
+export const NewDatatable = ({ onCreate, onCancel }) => {
   const appTemplate = useAppTemplate();
   const { integrations } = appTemplate;
   const [selectedModel, setSelectedModel] = useState();

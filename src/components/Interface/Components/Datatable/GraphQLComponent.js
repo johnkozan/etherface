@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 
 import { Query } from "./Query";
+import { ShowDatatable } from './ShowDatatable';
 import { useIntegration } from 'contexts/AppTemplateContext';
 import { useRemoteSchema } from 'lib/thegraph';
 import { typeNameToQuerySingle, fieldsForTypeName } from 'lib/graphql';
 import { Spinner } from 'components/Controls/Spinner';
 
-export const GraphQLComponent = ({ component, RenderComponent }) => {
+export const GraphQLComponent = ({ component }) => {
   const integration = useIntegration(component.data_source.type, component.data_source.endpoint);
   const [selectedQuery, setSelectedQuery] = useState();
   const needSchema = selectedQuery !== undefined && selectedQuery.model !== component.options.typeName;
   const remoteSchema = useRemoteSchema(needSchema ? integration.endpoint : undefined);
-
-  if (!RenderComponent) { throw new Error('No render component'); }
 
   const onCancel = () => {
     setSelectedQuery(undefined);
@@ -37,7 +36,7 @@ export const GraphQLComponent = ({ component, RenderComponent }) => {
     />;
   }
 
-  return <RenderComponent
+  return <ShowDatatable
     component={component}
     setSelectedQuery={setSelectedQuery}
     graph_client={integration.__instance}

@@ -14,7 +14,7 @@ import { fromJS } from 'immutable';
 import { useActions } from 'actions';
 
 
-export const EditWeb3Tx = ({ component, onCancel }) => {
+export const EditWeb3Transaction = ({ component, onCancel }) => {
   const { editComponent } = useActions();
   const initialValues = fromJS(component);
   const [fields, form] = useForm({

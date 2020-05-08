@@ -13,7 +13,7 @@ import { fromJS } from 'immutable';
 import { useActions } from 'actions';
 
 
-export const EditMarkdownComponent = ({ component, onCancel }) => {
+export const EditMarkdown = ({ component, onCancel }) => {
   const { editComponent } = useActions();
   const initialValues = fromJS(component);
   const [fields, form] = useForm({

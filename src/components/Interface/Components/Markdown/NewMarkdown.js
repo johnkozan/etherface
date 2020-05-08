@@ -10,7 +10,7 @@ import {
 import { useForm } from 'react-hooks-useform';
 
 
-export const MarkdownOptions = ({ component, onCancel, onCreate }) => {
+export const NewMarkdown = ({ component, onCancel, onCreate }) => {
   const [fields, form] = useForm({
     fields: [
       { name: 'content', label: 'Content' },

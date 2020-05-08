@@ -16,7 +16,7 @@ import {
 
 import { useActions } from 'actions';
 
-export const EditDataTableComponent = ({ component, onCancel }) => {
+export const EditDatatable = ({ component, onCancel }) => {
   const { editComponent } = useActions();
 
   const componentFields = component.options.fields;

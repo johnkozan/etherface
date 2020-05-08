@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
   root: {}
 }));
 
-export const MarkdownComponent = ({ component }) => {
+export const ShowMarkdown = ({ component }) => {
   const classes = useStyles();
 
   return (

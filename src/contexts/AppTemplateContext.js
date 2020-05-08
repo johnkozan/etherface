@@ -89,6 +89,7 @@ export function reducer(state, action) {
       const firstPage = {
         __id: pageId,
         __tab_id: tabId,
+        title: action.payload.title,
       };
 
       return {

@@ -1,5 +1,4 @@
-const localstorageKey = 'decentralhub';
-//const localstorageKey = 'etherface';
+const localstorageKey = 'etherface';
 
 export const saveAppTemplate = (appTemplate) => {
   localStorage.setItem(localstorageKey, JSON.stringify(appTemplate));

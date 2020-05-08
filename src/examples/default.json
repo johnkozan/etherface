@@ -25,7 +25,8 @@
   "integrations": [
     {
       "type": "thegraph",
-      "endpoint": "http://thegraph.io/...."
+      "name": "Compound",
+      "endpoint": "https://api.thegraph.com/subgraphs/name/graphprotocol/compound-v2"
     }
   ]
 

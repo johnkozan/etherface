@@ -1,60 +1,66 @@
 import React, { useState } from 'react';
 import {
+  Grid,
   Typography,
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 import { useComponentsByPageId } from 'contexts/AppTemplateContext';
 
-import { GraphQLComponent } from './GraphQLComponent';
-import { DataTableComponent } from './DataTableComponent';
-import { MarkdownComponent } from './MarkdownComponent';
-import { Web3Transaction } from './Web3Transaction';
-import { NewComponent } from './NewComponent';
+import { GRID_COLS } from '../../constants';
+import { NewComponent, componentForType, componentsByColumn } from './Components';
 import { EditButton } from './EditButton';
 import { EditPage } from './EditPage';
+
+export const defaultLayout = {row: 1, column: 1};
+
 
 export const Page = ({ page }) => {
   const components = useComponentsByPageId(page.__id);
   const [editMode, setEditMode] = useState(false);
 
-  const renderedComponents = components && Object.keys(components).map(componentKey =>
-    ((type) => {
-      switch (type) {
-        case 'markdown':
-          return <MarkdownComponent component={components[componentKey]} key={componentKey} />;
-        case 'datatable':
-          return <GraphQLComponent RenderComponent={DataTableComponent} component={components[componentKey]} key={componentKey} />;
-        case 'web3transaction':
-          return <Web3Transaction component={components[componentKey]} key={componentKey} />;
-
-        default:
-          throw new Error('Unknown component type ', type);
-      }
-    })(components[componentKey].type)
-  );
-
   if (editMode) {
     return <EditPage page={page} onCancel={() => setEditMode(false)} />
   }
 
-  const content = !renderedComponents || renderedComponents.length === 0 ?
+  if (components.length === 0) {
+    return (
     <div>
       <Alert severity="warning">
         <AlertTitle>Page has no components</AlertTitle>
       </Alert>
       <NewComponent page_id={page.__id} />
     </div>
-    : renderedComponents;
+    );
+  }
+
+  const columnWidths = page.layout && page.layout.columns ? page.layout.columns : [GRID_COLS];
+  let componentGrid = (
+    <Grid container spacing={1}>
+      { columnWidths.map((colSize,colNum) => {
+        const actualColNum = colNum + 1; // columns are 1 based
+        const rowComponents = componentsByColumn(components, actualColNum);
+        return <Grid item xs={colSize} key={`col-${actualColNum}`}>
+          <Grid container spacing={1}>
+            { rowComponents.map(component => {
+              const ShowComponent = componentForType(component.type, 'show');
+              return <Grid item xs={GRID_COLS}>
+                <ShowComponent component={component} />
+              </Grid>;
+            })}
+          </Grid>
+        </Grid>
+      })}
+    </Grid>
+  );
 
   return (
     <div>
       <Typography variant="h4"> { page.title }</Typography>
       <div>
-        { content }
-        <EditButton onClick={() => setEditMode(true)} />
+        { componentGrid }
       </div>
+        <EditButton onClick={() => setEditMode(true)} />
     </div>
   );
-
 }

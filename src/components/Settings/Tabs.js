@@ -5,12 +5,14 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Grid,
   List,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
   IconButton,
+  Typography,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderIcon from '@material-ui/icons/Folder';
@@ -66,6 +68,8 @@ export const Tabs = () => {
         <CardHeader title="Tabs" />
 
         <CardContent>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={8}>
           <List dense={false}>
             { Object.keys(tabs).map(tabKey => (
               <ListItem key={tabs[tabKey].__id}>
@@ -99,6 +103,22 @@ export const Tabs = () => {
 
             </ListItem>
           </List>
+
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <Typography>
+            Tabs defined the navigation of your interface.
+          </Typography>
+          <Typography>
+            Each tab will appear in the navigation bar on the left.
+          </Typography>
+          <Typography>
+            A tab can have multiple pages.
+          </Typography>
+        </Grid>
+
+      </Grid>
 
         </CardContent>
       </Card>
