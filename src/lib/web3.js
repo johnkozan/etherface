@@ -5,7 +5,7 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { ethers } from 'ethers';
 
 import { NETWORKS } from '../constants';
-import { useAddress } from 'contexts/AppTemplateContext';
+import { useAddress } from '../contexts/AppTemplateContext';
 
 export const injected = new InjectedConnector({ supportedChainIds: NETWORKS.map(n => n.chainId) })
 

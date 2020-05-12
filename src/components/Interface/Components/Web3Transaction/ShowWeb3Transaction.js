@@ -10,12 +10,12 @@ import { makeStyles } from "@material-ui/styles";
 import { useForm } from 'react-hooks-useform';
 import { useWeb3React } from '@web3-react/core'
 
-import { useWeb3Context } from 'contexts/Web3Context';
+import { useWeb3Context } from '../../../../contexts/Web3Context';
 
 import { NETWORKS } from '../../../../constants';
-import { useContractByAddress, useHasSigner } from 'lib/web3';
-import { ErrorMsg } from 'components/Controls/ErrorMsg';
-import { Spinner } from 'components/Controls/Spinner';
+import { useContractByAddress, useHasSigner } from '../../../../lib/web3';
+import { ErrorMsg } from '../../../../components/Controls/ErrorMsg';
+import { Spinner } from '../../../../components/Controls/Spinner';
 
 
 const useStyles = makeStyles(theme => ({

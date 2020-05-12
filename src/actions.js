@@ -1,8 +1,8 @@
 import React from 'react';
-import { AppTemplateStore } from 'contexts/AppTemplateContext';
+import { AppTemplateStore } from './contexts/AppTemplateContext';
 
-import { connectTheGraph } from 'lib/thegraph';
-import localstorage from 'lib/localstorage';
+import { connectTheGraph } from './lib/thegraph';
+import localstorage from './lib/localstorage';
 
 export const useActions = () => {
   const { dispatch } = React.useContext(AppTemplateStore);

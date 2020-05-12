@@ -17,7 +17,7 @@ import clsx from "clsx";
 
 import { SETTINGS_ROUTE } from './Routes';
 import { Web3Status } from './Web3Status';
-import { useAppTemplate } from 'contexts/AppTemplateContext';
+import { useAppTemplate } from './contexts/AppTemplateContext';
 
 //import { Footer } from './Footer';
 

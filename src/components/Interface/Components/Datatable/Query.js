@@ -14,7 +14,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
-import { Spinner } from "components/Controls/Spinner";
+import { Spinner } from "../../../../components/Controls/Spinner";
 
 const useStyles = makeStyles(theme => ({
   fakelink: {

@@ -20,12 +20,12 @@ import AddIcon from '@material-ui/icons/Add';
 import { Emoji } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
 
-import { Confirm } from 'components/Controls/Confirm';
-import { useActions } from 'actions';
-import { useAppTemplate } from 'contexts/AppTemplateContext';
+import { Confirm } from '../../components/Controls/Confirm';
+import { useActions } from '../../actions';
+import { useAppTemplate } from '../../contexts/AppTemplateContext';
 import { NewTab } from './NewTab';
 
-import { EmojiPicker } from 'components/Controls/EmojiPicker';
+import { EmojiPicker } from '../../components/Controls/EmojiPicker';
 
 function byId(set, id) {
   const keys = Object.keys(set);

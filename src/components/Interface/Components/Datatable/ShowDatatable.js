@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 
 import { TablePaginationActions } from './TablePaginationActions';
-import { Spinner } from "components/Controls/Spinner";
+import { Spinner } from "../../../../components/Controls/Spinner";
 
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";

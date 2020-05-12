@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core'
 
-import { injected, useWeb3ConnectExisting } from 'lib/web3';
+import { injected, useWeb3ConnectExisting } from './lib/web3';
 import { useActions } from './actions';
-import { useAppTemplate } from 'contexts/AppTemplateContext';
-import localstorageBackend from 'lib/localstorage';
-import { Spinner } from 'components/Controls/Spinner';
+import { useAppTemplate } from './contexts/AppTemplateContext';
+import localstorageBackend from './lib/localstorage';
+import { Spinner } from './components/Controls/Spinner';
 
-import exampleTemplate from 'examples/default.json';
+import exampleTemplate from './examples/default.json';
 
 export const Loading = ({ children }) => {
   const appTemplate = useAppTemplate();

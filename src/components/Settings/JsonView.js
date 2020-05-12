@@ -8,7 +8,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { Link } from 'react-router-dom';
 import fileDownload from 'js-file-download';
 
-import { serializeTemplate, useAppTemplate } from 'contexts/AppTemplateContext';
+import { serializeTemplate, useAppTemplate } from '../../contexts/AppTemplateContext';
 
 export const JsonView = () => {
   const template = useAppTemplate();

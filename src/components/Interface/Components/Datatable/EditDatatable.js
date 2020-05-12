@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { useActions } from 'actions';
+import { useActions } from '../../../../actions';
 
 export const EditDatatable = ({ component, onCancel }) => {
   const { editComponent } = useActions();

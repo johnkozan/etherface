@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import slugify from 'slugify';
 import { useToasts } from 'react-toast-notifications'
 
-import localstorage from 'lib/localstorage';
+import localstorage from '../lib/localstorage';
 
 export const AppTemplateStore = React.createContext();
 

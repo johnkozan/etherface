@@ -24,11 +24,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { fromJS } from 'immutable';
 import { useForm } from 'react-hooks-useform';
 
-import { useComponentsByPageId } from 'contexts/AppTemplateContext';
-import { useActions } from 'actions';
-import { Confirm } from 'components/Controls/Confirm';
+import { useComponentsByPageId } from '../../contexts/AppTemplateContext';
+import { useActions } from '../../actions';
+import { Confirm } from '../../components/Controls/Confirm';
 import { GRID_COLS } from '../../constants';
-import { defaultLayout } from 'components/Interface/Page';
+import { defaultLayout } from './Page';
 import { NewComponent, componentForType, componentsByColumn } from './Components';
 
 
@@ -143,7 +143,7 @@ export const EditPage = ({ page, onCancel }) => {
         return <Grid item xs={colSize} key={`col-${actualColNum}`}>
           <Grid container spacing={1}>
             { rowComponents.map(component =>
-              <Grid item xs={GRID_COLS}>
+              <Grid item xs={GRID_COLS} key={`component-${component.__id}`}>
                 { componentPreview(component, deleteComponent, setEditComponent) }
               </Grid>
             )}

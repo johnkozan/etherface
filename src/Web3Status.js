@@ -5,11 +5,11 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { useWeb3React } from '@web3-react/core'
 import { SnackbarProvider, useSnackbar } from 'notistack';
-import { EtherscanTxLink } from 'lib/etherscan'
+import { EtherscanTxLink } from './lib/etherscan'
 
-import { useTransactions, BlockNumberWatcher, TransactionStatusWatcher } from 'contexts/Web3Context';
+import { useTransactions, BlockNumberWatcher, TransactionStatusWatcher } from './contexts/Web3Context';
 
-import { Identicon } from 'components/Controls/Identicon';
+import { Identicon } from './components/Controls/Identicon';
 
 const useStyles = makeStyles(theme => ({
   chip: {

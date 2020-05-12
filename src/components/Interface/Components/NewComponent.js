@@ -7,11 +7,11 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { useActions } from 'actions';
-import { useComponentsByPageId } from 'contexts/AppTemplateContext';
+import { useActions } from '../../../actions';
+import { useComponentsByPageId } from '../../../contexts/AppTemplateContext';
 
 import { COMPONENT_TYPES, componentForType } from '.';
-import { defaultLayout } from 'components/Interface/Page';
+import { defaultLayout } from '../Page';
 
 export const NewComponent = ({page_id, row, column, preSave}) => {
   const [componentType, setComponentType] = useState();

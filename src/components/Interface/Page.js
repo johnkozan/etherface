@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import { useComponentsByPageId } from 'contexts/AppTemplateContext';
+import { useComponentsByPageId } from '../../contexts/AppTemplateContext';
 
 import { GRID_COLS } from '../../constants';
 import { NewComponent, componentForType, componentsByColumn } from './Components';

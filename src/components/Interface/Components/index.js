@@ -3,7 +3,7 @@ import web3Components from './Web3Transaction';
 import datatableComponents from './Datatable';
 import markdownComponents from './Markdown';
 
-import { defaultLayout } from 'components/Interface/Page'
+import { defaultLayout } from '../../../components/Interface/Page'
 
 const COMPONENT_TYPES = [
   { value: 'markdown', label: 'Text', components: markdownComponents },

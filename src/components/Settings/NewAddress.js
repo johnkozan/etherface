@@ -24,13 +24,13 @@ import { blue } from '@material-ui/core/colors';
 import { useForm } from 'react-hooks-useform';
 import { fromJS } from 'immutable';
 
-import { FileUploader } from 'components/Controls/FileUploader';
-import { ErrorMsg } from 'components/Controls/ErrorMsg';
-import { SelectField } from 'components/Controls/SelectField';
-import { Spinner } from 'components/Controls/Spinner';
+import { FileUploader } from '../../components/Controls/FileUploader';
+import { ErrorMsg } from '../../components/Controls/ErrorMsg';
+import { SelectField } from '../../components/Controls/SelectField';
+import { Spinner } from '../../components/Controls/Spinner';
 import { NETWORKS } from '../../constants';
-import { useActions } from 'actions';
-import { fetchAbi } from 'lib/etherscan';
+import { useActions } from '../../actions';
+import { fetchAbi } from '../../lib/etherscan';
 
 const validateAddress = (address) => address.startsWith('0x') && address.length === 42 ? '' : 'Invalid address';
 

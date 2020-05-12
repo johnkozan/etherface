@@ -10,10 +10,10 @@ import {
 import { useForm } from 'react-hooks-useform';
 import { Link } from 'react-router-dom';
 
-import { useAddresses } from 'contexts/AppTemplateContext';
-import { SelectField } from 'components/Controls/SelectField';
+import { useAddresses } from '../../../../contexts/AppTemplateContext';
+import { SelectField } from '../../../../components/Controls/SelectField';
 
-import { useContractByAddress } from 'lib/web3';
+import { useContractByAddress } from '../../../../lib/web3';
 
 export const NewWeb3Transaction = ({ onCreate, onCancel }) => {
   const addresses = useAddresses();

@@ -7,8 +7,8 @@ import {
 
 import { useForm } from 'react-hooks-useform';
 
-import { ErrorMsg } from 'components/Controls/ErrorMsg';
-import { useActions } from 'actions';
+import { ErrorMsg } from '../../components/Controls/ErrorMsg';
+import { useActions } from '../../actions';
 
 export const NewTab = () => {
   const { addTab } = useActions();

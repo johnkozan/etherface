@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import useFileInput from "use-file-input";
 
-import { Spinner } from 'components/Controls/Spinner';
+import { Spinner } from '../../components/Controls/Spinner';
 
 
 export const FileUploader = ({ accept, children, onFileUpload, ...rest }) => {

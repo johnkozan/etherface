@@ -13,11 +13,11 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { saveAppTemplate } from 'lib/localstorage';
-import { useAppTemplate, useSettings, serializeTemplate } from 'contexts/AppTemplateContext';
+import { saveAppTemplate } from '../../lib/localstorage';
+import { useAppTemplate, useSettings, serializeTemplate } from '../../contexts/AppTemplateContext';
 import { useToasts } from 'react-toast-notifications'
 
-import { useActions } from 'actions';
+import { useActions } from '../../actions';
 
 
 export const SettingsMain = () => {

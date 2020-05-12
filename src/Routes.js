@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { useAppTemplate } from 'contexts/AppTemplateContext';
+import { useAppTemplate } from './contexts/AppTemplateContext';
 
-import { Tab } from 'components/Interface/Tab';
-import { Settings } from 'components/Settings/Settings';
+import { Tab } from './components/Interface/Tab';
+import { Settings } from './components/Settings/Settings';
 
 export const SETTINGS_ROUTE = '/_';
 

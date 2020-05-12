@@ -16,14 +16,23 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { useAppTemplate } from 'contexts/AppTemplateContext';
-import { useActions } from 'actions';
+import { useAppTemplate } from '../../contexts/AppTemplateContext';
+import { useActions } from '../../actions';
 
-import { Confirm } from 'components/Controls/Confirm';
+import { Confirm } from '../../components/Controls/Confirm';
 import { NewIntegration } from './NewIntegration';
 
-import thegraphLogo from 'assets/images/thegraph.jpg';
+import thegraphLogo from '../../assets/images/thegraph.jpg';
 
+
+function nameForIntegraion(integrationType) {
+  switch (integrationType) {
+    case 'thegraph':
+      return <a href="http://thegraph.com" target="_blank" rel="noopener noreferrer">The Graph</a>;
+    default:
+      throw new Error(`unknown integration type ${integrationType}`);
+  }
+}
 
 export const Integrations = () => {
   const  template = useAppTemplate();
@@ -34,6 +43,8 @@ export const Integrations = () => {
   const onDelete = (integration) => {
     deleteIntegration(integration);
   };
+
+  // TODO: Link to endpoint.  But sanitize first because it's user specified
 
   return (
     <div>
@@ -47,7 +58,7 @@ export const Integrations = () => {
                   <Avatar src={thegraphLogo} alt="The Graph" />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={integrations[integrationKey].type}
+                  primary={nameForIntegraion(integrations[integrationKey].type)}
                   secondary={integrations[integrationKey].endpoint}
                 />
                 <ListItemSecondaryAction>

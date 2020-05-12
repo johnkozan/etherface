@@ -15,11 +15,11 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { useAppTemplate } from 'contexts/AppTemplateContext';
-import { useActions } from 'actions';
+import { useAppTemplate } from '../../contexts/AppTemplateContext';
+import { useActions } from '../../actions';
 
-import { Identicon } from 'components/Controls/Identicon';
-import { Confirm } from 'components/Controls/Confirm';
+import { Identicon } from '../Controls/Identicon';
+import { Confirm } from '../Controls/Confirm';
 import { NewAddress } from './NewAddress';
 
 const useStyles = makeStyles(theme => ({

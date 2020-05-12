@@ -10,7 +10,7 @@ import {
 import { useForm } from 'react-hooks-useform';
 import { fromJS } from 'immutable';
 
-import { useActions } from 'actions';
+import { useActions } from '../../../../actions';
 
 
 export const EditMarkdown = ({ component, onCancel }) => {

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 import { Query } from "./Query";
 import { ShowDatatable } from './ShowDatatable';
-import { useIntegration } from 'contexts/AppTemplateContext';
-import { useRemoteSchema } from 'lib/thegraph';
-import { typeNameToQuerySingle, fieldsForTypeName } from 'lib/graphql';
-import { Spinner } from 'components/Controls/Spinner';
+import { useIntegration } from '../../../../contexts/AppTemplateContext';
+import { useRemoteSchema } from '../../../../lib/thegraph';
+import { typeNameToQuerySingle, fieldsForTypeName } from '../../../../lib/graphql';
+import { Spinner } from '../../../../components/Controls/Spinner';
 
 export const GraphQLComponent = ({ component }) => {
   const integration = useIntegration(component.data_source.type, component.data_source.endpoint);

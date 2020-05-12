@@ -1,6 +1,6 @@
 import React from 'react';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import { shortenTxHash } from 'lib/web3';
+import { shortenTxHash } from '../lib/web3';
 import { NETWORKS } from '../constants';
 
 const ETHERSCAN_NETWORKS = ['mainnet', 'ropsten', 'kovan', 'rinkeby', 'goerli'];
