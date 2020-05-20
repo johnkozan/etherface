@@ -7,6 +7,7 @@ import {
   CardHeader,
   TextField,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import { useForm } from 'react-hooks-useform';
 import { Link } from 'react-router-dom';
 
@@ -42,15 +43,16 @@ export const NewWeb3Transaction = ({ onCreate, onCancel }) => {
     },
   });
 
-  const addAddressLink = addresses ? undefined : <div>
+  const addressesExist = addresses && Array.isArray(addresses) && addresses.length === 0;
+  const addAddressLink =  addressesExist ? <Alert severity="warning">
     <Link to="/_/addresses">
       Add an Ethereum contract to the address book in order to interact with it.
     </Link>
-  </div>;
+  </Alert> : undefined;
 
   return (
     <div>
-      <form.Form>
+      <form.Form disabled={!addressesExist}>
         <Card>
           <CardHeader title="New Web3 Transaction" />
           <CardContent>

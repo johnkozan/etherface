@@ -69,7 +69,6 @@ export function reducer(state, action) {
       return {
         ...state,
         name: action.payload.name,
-        // TODO: and other top level keys...
         tabs,
         pages,
         components,
@@ -77,6 +76,7 @@ export function reducer(state, action) {
         addresses,
         __loaded: true,
         __version: 0,
+        __source: action.payload.__source,
       };
 
     case 'ADD_TAB': {
@@ -268,15 +268,15 @@ export function reducer(state, action) {
 
 }
 
-export const AppTemplateProvider = ({ children }) => {
+export const AppTemplateProvider = ({ children, storage }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const { addToast } = useToasts();
 
   // TODO: React warning about updating during state transition
   function autoSave() {
     const exportedTemplate = serializeTemplate(state);
-    localstorage.saveAppTemplate(exportedTemplate);
-    addToast('Autosaved to localstorage', {apperance: 'success', autoDismiss: true, autoDismissTimeout: 3000});
+    storage.save(exportedTemplate);
+    addToast(`Autosaved to ${storage.name}`, {apperance: 'success', autoDismiss: true, autoDismissTimeout: 3000});
   }
 
   // Autosave on changes to template

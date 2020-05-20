@@ -58,7 +58,11 @@ export const Tabs = () => {
     setSelectIconTabId(undefined);
   }
 
-  const selectIcon = !!selectIconTabId ? <EmojiPicker onSelect={onSelectEmoji} onRemove={onRemoveIcon} /> : undefined;
+  const onCancelEmojii = () => {
+    setSelectIconTabId(undefined);
+  };
+
+  const selectIcon = !!selectIconTabId ? <EmojiPicker onSelect={onSelectEmoji} onRemove={onRemoveIcon} onCancel={onCancelEmojii} /> : undefined;
 
   return (
     <div>

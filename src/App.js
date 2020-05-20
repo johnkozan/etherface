@@ -26,7 +26,7 @@ function getLibrary(provider) {
 }
 
 
-export default function App() {
+export default function App({ storage }) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -34,8 +34,8 @@ export default function App() {
         <Web3ReactProvider getLibrary={getLibrary}>
           <ToastProvider components={{Toast: CustomToast}}>
             <Web3ContextProvider>
-              <AppTemplateProvider>
-                <Loading>
+              <AppTemplateProvider storage={storage}>
+                <Loading storage={storage}>
                   <Layout>
                     <Routes />
                   </Layout>

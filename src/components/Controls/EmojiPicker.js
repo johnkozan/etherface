@@ -8,7 +8,7 @@ import 'emoji-mart/css/emoji-mart.css';
 import data from 'emoji-mart/data/apple.json'
 import { NimblePicker } from 'emoji-mart';
 
-export const EmojiPicker = ({ onSelect, onRemove }) => {
+export const EmojiPicker = ({ onSelect, onRemove, onCancel }) => {
   return (
     <div>
       <Dialog
@@ -22,6 +22,7 @@ export const EmojiPicker = ({ onSelect, onRemove }) => {
       </DialogContent>
 
       <DialogActions>
+        <Button onClick={onCancel}>Cancel</Button>
         <Button onClick={onRemove}>
           Remove Icon
         </Button>

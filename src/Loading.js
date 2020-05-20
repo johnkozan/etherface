@@ -6,12 +6,14 @@ import { useActions } from './actions';
 import { useAppTemplate } from './contexts/AppTemplateContext';
 import localstorageBackend from './lib/localstorage';
 import { Spinner } from './components/Controls/Spinner';
+import { ErrorMsg } from './components/Controls/ErrorMsg';
 
 import exampleTemplate from './examples/default.json';
 
-export const Loading = ({ children }) => {
+export const Loading = ({ children, storage }) => {
   const appTemplate = useAppTemplate();
   const [settingsLoaded, setSettingsLoaded] = useState(false);
+  const [loadingError, setLoadingError] = useState(false);
   const { integrations } = appTemplate;
   const { loadAppTemplate, connectIntegration, loadSettings } = useActions();
   const { activate } = useWeb3React();
@@ -27,12 +29,25 @@ export const Loading = ({ children }) => {
 
   // Load saved app template from localstorage if exsits, otherwise load example template
   useEffect(() => {
-    const savedTemplate = localstorageBackend.loadAppTemplate();
-    if (!savedTemplate) {
-      loadAppTemplate(exampleTemplate);
-    } else {
-      loadAppTemplate(savedTemplate);
-    }
+    (async () => {
+      try {
+        const savedTemplate = await storage.load();
+
+        const newTemplate = {
+          __source: {
+            type: storage.type,
+            name: storage.name,
+            options: storage.options,
+          },
+          ...(savedTemplate || exampleTemplate),
+        };
+
+        loadAppTemplate(newTemplate);
+
+      } catch (err) {
+        setLoadingError(err.toString());
+      }
+    })();
   }, []);
 
   // Connect integrations
@@ -53,6 +68,9 @@ export const Loading = ({ children }) => {
     }
   }, []);
 
+  if (loadingError) {
+    return <ErrorMsg message={loadingError} />;
+  }
 
   if (!appTemplate.__loaded || (!triedWeb3Existing)) {
     return <Spinner />;

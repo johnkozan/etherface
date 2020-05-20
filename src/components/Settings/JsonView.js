@@ -22,13 +22,13 @@ export const JsonView = () => {
   return (
     <div>
       <Button component={Link} to="/_/settings" variant="outlined"><ArrowBackIcon />{' '}Back</Button>
-      <Button variant="outlined" onClick={download}><GetAppIcon />{' '}Download Template JSON</Button>
+      <Button variant="outlined" onClick={download} startIcon={<GetAppIcon />}>Download Template JSON</Button>
       <pre>
         { formatted }
       </pre>
 
       <br />
-      <Button component={Link} to="/_/settings" variant="outlined"><ArrowBackIcon />{' '}Back</Button>
+      <Button component={Link} to="/_/settings" variant="outlined" startIcon={<ArrowBackIcon />}>Back</Button>
     </div>
   );
 };

@@ -122,7 +122,7 @@ export const EditPage = ({ page, onCancel }) => {
   });
 
   if (editComponent !== undefined) {
-    const component = components[editComponent];
+    const component = components[editComponent.__id];
     const EditComponent = componentForType(component.type, 'edit');
     return <EditComponent component={component} onCancel={() => setEditComponent(undefined)} />;
   }
