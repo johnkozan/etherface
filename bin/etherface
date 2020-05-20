@@ -1,0 +1,72 @@
+#!/usr/bin/env node
+
+const fastify = require('fastify')({ logger: false });
+const fs = require('fs');
+const cheerio = require('cheerio');
+const path = require('path');
+const opn = require('opn');
+
+const args = process.argv.slice(2);
+
+const PROTOCOL = 'http';
+const PORT = 3331;
+const HOST = '127.0.0.1';
+const LOAD_TEMPLATE_PATH = '/_backend/template';
+const TEMPLATE_URL = `${PROTOCOL}://${HOST}:${PORT}${LOAD_TEMPLATE_PATH}`;
+
+console.log('ARG:: ', args);
+
+// Adds some javascript to the index.html to share the file provided on the command line
+function sendIndex(req, resp) {
+  var html = fs.readFileSync(__dirname + '/../build/index.html', 'utf8');
+  let result;
+  if (args.length > 0) {
+    var $ = cheerio.load(html);
+    var scriptNode = `<script>window.REACT_APP_ETHERFACE_STORAGE="http";window.REACT_APP_ETHERFACE_TEMPLATE_URL="${TEMPLATE_URL}";</script>`;
+    $('body').prepend(scriptNode);
+    result = $.html();
+  } else {
+    result = html;
+  }
+  resp
+    .code(200)
+    .header('Content-Type', 'text/html; charset=utf-8')
+    .send(result);
+}
+
+fastify.get(LOAD_TEMPLATE_PATH, function (req, resp) {
+  if (args.length < 1) {
+    console.log(' LT 1 ???');
+    resp
+      .code(404)
+      .send();
+    return;
+  }
+  var templateFile = fs.readFileSync(path.join('.', args[0]), 'utf8');
+
+  resp
+    .code(200)
+    .header('Content-Type', 'application/json; charset=utf-8')
+    .send(templateFile);
+});
+
+fastify.get('/', sendIndex);
+fastify.get('/index.html', sendIndex);
+fastify.register(require('fastify-static'), {
+  root: path.join(__dirname, '..', 'build'),
+});
+fastify.setNotFoundHandler(sendIndex);
+
+const start = async () => {
+  try {
+    await fastify.listen(PORT)
+    fastify.log.info(`server listening on ${fastify.server.address().port}`)
+    console.log(`Started Etherface app on ${PROTOCOL}://${HOST}:${PORT}`);
+    opn(`${PROTOCOL}://${HOST}:${PORT}`);
+  } catch (err) {
+    console.log(err);
+    process.exit(1)
+  }
+}
+
+start();
