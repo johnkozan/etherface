@@ -7,8 +7,8 @@ import localstorage from './lib/localstorage';
 export const useActions = () => {
   const { dispatch } = React.useContext(AppTemplateStore);
 
-  function loadAppTemplate(template) {
-    dispatch({ type: 'LOAD_TEMPLATE', payload: template });
+  function loadAppTemplate(template, storage) {
+    dispatch({ type: 'LOAD_TEMPLATE', payload: {template, storage} });
   }
 
   function addTab(tab){

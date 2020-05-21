@@ -14,8 +14,6 @@ const HOST = '127.0.0.1';
 const LOAD_TEMPLATE_PATH = '/_backend/template';
 const TEMPLATE_URL = `${PROTOCOL}://${HOST}:${PORT}${LOAD_TEMPLATE_PATH}`;
 
-console.log('ARG:: ', args);
-
 // Adds some javascript to the index.html to share the file provided on the command line
 function sendIndex(req, resp) {
   var html = fs.readFileSync(__dirname + '/../build/index.html', 'utf8');
@@ -36,7 +34,7 @@ function sendIndex(req, resp) {
 
 fastify.get(LOAD_TEMPLATE_PATH, function (req, resp) {
   if (args.length < 1) {
-    console.log(' LT 1 ???');
+    console.log('No file specified');
     resp
       .code(404)
       .send();

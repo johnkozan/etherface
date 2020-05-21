@@ -1,17 +1,9 @@
-const localstorageKey = 'etherface';
-
-export const saveAppTemplate = (appTemplate) => {
-  localStorage.setItem(localstorageKey, JSON.stringify(appTemplate));
-};
-
-export const loadAppTemplate = () => {
-  const templateJSON = localStorage.getItem(localstorageKey);
-  return JSON.parse(templateJSON);
-};
-
 const OPTIONS = [
   'autosave',
 ];
+
+
+const localstorageKey = 'etherface-setting';
 
 const optionsKey = (key, opt) => `${key}.options.${opt}`;
 
@@ -26,8 +18,6 @@ export const setSetting = (setting, val) => {
 };
 
 export default {
-  loadAppTemplate,
-  saveAppTemplate,
   loadSettings,
   setSetting,
 };

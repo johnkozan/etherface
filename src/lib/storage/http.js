@@ -6,7 +6,7 @@ export default class {
     this.name = 'HTTP Source';
     this.httpLocation = httpLocation;
     this.canSave = false;
-    this.options = HttpStorageOptions;
+    this.settingsComponent = HttpStorageOptions;
   }
 
   async load() {
@@ -16,6 +16,11 @@ export default class {
   }
 
   async save() {
-      console.log('file save unsupported...');
-    }
+    console.error('save to http source not implemented');
+  }
+
+  async delete() {
+    console.error('Delete from http source not implemented');
+  }
+
 }

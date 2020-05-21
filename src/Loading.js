@@ -4,7 +4,6 @@ import { useWeb3React } from '@web3-react/core'
 import { injected, useWeb3ConnectExisting } from './lib/web3';
 import { useActions } from './actions';
 import { useAppTemplate } from './contexts/AppTemplateContext';
-import localstorageBackend from './lib/localstorage';
 import { Spinner } from './components/Controls/Spinner';
 import { ErrorMsg } from './components/Controls/ErrorMsg';
 
@@ -32,18 +31,7 @@ export const Loading = ({ children, storage }) => {
     (async () => {
       try {
         const savedTemplate = await storage.load();
-
-        const newTemplate = {
-          __source: {
-            type: storage.type,
-            name: storage.name,
-            options: storage.options,
-          },
-          ...(savedTemplate || exampleTemplate),
-        };
-
-        loadAppTemplate(newTemplate);
-
+        loadAppTemplate((savedTemplate || exampleTemplate), storage);
       } catch (err) {
         setLoadingError(err.toString());
       }

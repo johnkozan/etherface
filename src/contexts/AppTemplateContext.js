@@ -2,8 +2,6 @@ import React, { useMemo } from 'react';
 import slugify from 'slugify';
 import { useToasts } from 'react-toast-notifications'
 
-import localstorage from '../lib/localstorage';
-
 export const AppTemplateStore = React.createContext();
 
 // TODO Move this somewhere else
@@ -39,9 +37,10 @@ export function reducer(state, action) {
       let components = {};
       let integrations = {};
       let addresses = [];
+      const { template, storage } = action.payload;
 
       // Flatten components, pages and tabs
-      action.payload.tabs && action.payload.tabs.forEach((tab) => {
+      template.tabs && template.tabs.forEach((tab) => {
         const tabId = nextId(tabs);
         tabs[tabId] = {...tab, __id: tabId};
         tab.pages.forEach((page)  => {
@@ -56,7 +55,7 @@ export function reducer(state, action) {
         delete tabs[tabId].pages;
       });
 
-      action.payload.integrations && action.payload.integrations.forEach((integration, integrationKey) =>
+      template.integrations && template.integrations.forEach((integration, integrationKey) =>
         integrations[integrationKey] = {
           ...integration,
           __id: integrationKey,
@@ -64,7 +63,7 @@ export function reducer(state, action) {
         }
       );
 
-      addresses = action.payload.addresses || [];
+      addresses = template.addresses || [];
 
       return {
         ...state,
@@ -76,7 +75,7 @@ export function reducer(state, action) {
         addresses,
         __loaded: true,
         __version: 0,
-        __source: action.payload.__source,
+        __source: storage,
       };
 
     case 'ADD_TAB': {
@@ -338,6 +337,11 @@ export const useIntegration = (type, endpoint) => {
 export const useSettings = () => {
   const { state } = React.useContext(AppTemplateStore);
   return state.settings;
+};
+
+export const useStorage = () => {
+  const { state } = React.useContext(AppTemplateStore);
+  return state.__source;
 };
 
 function filterInternalFields(obj) {

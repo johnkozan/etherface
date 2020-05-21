@@ -6,7 +6,7 @@ export default class {
     this.type = 'browser';
     this.name = 'Browser file storage';
     this.localstoragePrefix = localstoragePrefix;
-    this.options = LocalstorageOptions;
+    this.settingsComponent = LocalstorageOptions;
     this.canSave = true;
   }
 
@@ -19,5 +19,8 @@ export default class {
     localStorage.setItem(this.localstoragePrefix, JSON.stringify(appTemplate));
   }
 
+  async delete() {
+    localStorage.removeItem(this.localstoragePrefix);
+  }
 
 };
