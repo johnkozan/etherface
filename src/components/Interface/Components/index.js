@@ -1,5 +1,6 @@
 import { NewComponent } from './NewComponent';
-import web3Components from './Web3Transaction';
+import web3TransactionComponents from './Web3Transaction';
+import web3CallComponents from './Web3Call';
 import datatableComponents from './Datatable';
 import markdownComponents from './Markdown';
 
@@ -8,7 +9,8 @@ import { defaultLayout } from '../../../components/Interface/Page'
 const COMPONENT_TYPES = [
   { value: 'markdown', label: 'Text', components: markdownComponents },
   { value: 'datatable', label: 'TheGraph data table', components: datatableComponents },
-  { value: 'web3transaction', label: 'Web3 Transaction', components: web3Components },
+  { value: 'web3transaction', label: 'Web3 Transaction', components: web3TransactionComponents },
+  { value: 'web3call', label: 'Web3 Call', components: web3CallComponents },
 ];
 
 function componentForType(type, componentType) {

@@ -16,7 +16,7 @@ import { SelectField } from '../../../../components/Controls/SelectField';
 
 import { useContractByAddress } from '../../../../lib/web3';
 
-export const NewWeb3Transaction = ({ onCreate, onCancel }) => {
+export const NewWeb3Call = ({ onCreate, onCancel }) => {
   const addresses = useAddresses();
 
   const addressOptions = (addresses || []).map(a => ({value: {network: a.network, address: a.address}, label: `${a.name || ''} ${a.address} (${a.network}) `}));
@@ -31,13 +31,12 @@ export const NewWeb3Transaction = ({ onCreate, onCancel }) => {
     submit: values => {
       const { address, network } = values.get('address');
       onCreate({
-        type: 'web3transaction',
+        type: 'web3call',
         address,
         network,
         signature: values.get('function'),
         title: values.get('title'),
         description: values.get('description'),
-        buttonText: values.get('buttonText'),
       });
       onCancel();
     },
@@ -54,7 +53,7 @@ export const NewWeb3Transaction = ({ onCreate, onCancel }) => {
     <div>
       <form.Form disabled={!addressesExist}>
         <Card>
-          <CardHeader title="New Web3 Transaction" />
+          <CardHeader title="New Web3 Call" />
           <CardContent>
             { addAddressLink }
 
@@ -69,8 +68,6 @@ export const NewWeb3Transaction = ({ onCreate, onCancel }) => {
                 :
                 undefined
             }
-
-            <TextField fullWidth {...fields.buttonText} />
 
           </CardContent>
 
@@ -91,7 +88,7 @@ const SelectFunction = ({ address, network, form, fields, ...rest }) => {
 
   const queries = Object.filter(
     contract.interface.functions,
-    i => i.type === 'transaction' || i.type === 'call'
+    i => i.type === 'call'
   );
 
   let queryFuncs = [];
