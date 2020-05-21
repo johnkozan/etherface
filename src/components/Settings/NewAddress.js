@@ -20,7 +20,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { blue } from '@material-ui/core/colors';
 
-
+import { useToasts } from 'react-toast-notifications'
 import { useForm } from 'react-hooks-useform';
 import { fromJS } from 'immutable';
 
@@ -46,6 +46,7 @@ export const NewAddress = ({ onCancel }) => {
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState(null);
   const [deployedOptions, setDeployedOptions] = useState(null);
+  const { addToast } = useToasts();
 
   const networkOptions = Object.keys(NETWORKS).map(n => ({value: NETWORKS[n].id, label: NETWORKS[n].name}));
   const initialValues = fromJS({network: 'mainnet', fetchabi: true});
@@ -73,6 +74,7 @@ export const NewAddress = ({ onCancel }) => {
         }
         addAddress({network, address, abi, name});
         form.reset();
+        addToast(`Added address ${name || address}`, {apperance: 'success', autoDismiss: true, autoDismissTimeout: 3000});
         setFetching(false);
 
       } catch (err) {

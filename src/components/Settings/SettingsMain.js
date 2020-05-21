@@ -12,6 +12,7 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core';
+import CodeIcon from '@material-ui/icons/Code';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Link } from 'react-router-dom';
 import { useAppTemplate, useSettings, serializeTemplate } from '../../contexts/AppTemplateContext';
@@ -54,7 +55,7 @@ export const SettingsMain = () => {
         </CardContent>
 
         <CardActions>
-          <Button variant="outlined" component={Link} to="/_/json">See JSON</Button>
+          <Button variant="outlined" startIcon={<CodeIcon />} component={Link} to="/_/json">Template source JSON</Button>
           <Button variant="outlined" startIcon={<GetAppIcon />} onClick={download}>Download Template</Button>
         </CardActions>
       </Card>

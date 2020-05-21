@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Avatar,
   Card,
@@ -54,7 +55,7 @@ export const Addresses = () => {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={address.name ? address.name: <span>{ address.address}{' '}<Chip label={address.network} variant="outlined" size="small" /></span>}
+                  primary={address.name ? <Link to={`/_/addresses/${address.network}/${address.address}`}>{ address.name }</Link>: <span><Link to={`/_/addresses/${address.network}/${address.address}`}>{ address.address}{' '}</Link><Chip label={address.network} variant="outlined" size="small" /></span>}
                   secondary={address.name ? <span>{ address.address }{' '}<Chip label={address.network} variant="outlined" size="small" /></span> : null }
                 />
                 <ListItemSecondaryAction>

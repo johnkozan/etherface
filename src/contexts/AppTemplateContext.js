@@ -239,6 +239,21 @@ export function reducer(state, action) {
         __version: state.__version + 1,
       };
 
+    case 'EDIT_ADDRESS':
+      return {
+        ...state,
+        addresses: state.addresses.map((address) => {
+          if (address.address !== action.payload.address && address.network !== action.payload.network) {
+            return address;
+          }
+          return {
+            ...address,
+            ...action.payload,
+          };
+        }),
+        __version: state.__version + 1,
+      };
+
     case 'DELETE_ADDRESS':
       return {
         ...state,

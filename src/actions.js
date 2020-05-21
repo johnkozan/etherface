@@ -67,6 +67,10 @@ export const useActions = () => {
     dispatch({ type: 'ADD_ADDRESS', payload: address});
   }
 
+  function editAddress(address) {
+    dispatch({ type: 'EDIT_ADDRESS', payload: address});
+  }
+
   function deleteAddress(address) {
     dispatch({ type: 'DELETE_ADDRESS', payload: address});
   }
@@ -96,6 +100,7 @@ export const useActions = () => {
     deleteComponent,
     addAddress,
     deleteAddress,
+    editAddress,
     loadSettings,
     setSetting,
   };
