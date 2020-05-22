@@ -16,7 +16,7 @@ import {
 
 import { useActions } from '../../../../actions';
 
-export const EditDatatable = ({ component, onCancel }) => {
+export const EditDatatable = ({ component, onCancel, onSave }) => {
   const { editComponent } = useActions();
 
   const componentFields = component.options.fields;
@@ -41,7 +41,7 @@ export const EditDatatable = ({ component, onCancel }) => {
       newComponent.options.fields[k].enabled = checked.includes(k);
     });
     editComponent(newComponent);
-    onCancel();
+    onSave();
   }
 
   return (

@@ -10,6 +10,12 @@ import { useContractByAddress, useHasSigner } from '../../lib/web3';
 export const AddressABI = ({ address, network }) => {
   const contract = useContractByAddress(address, network);
 
+  if (!contract) {
+    // Not a contract, or do not have ABI
+    // Add option to add an ABI?
+    return null;
+  }
+
   const calls = Object.filter(contract.interface.functions, f => f.type === 'call');
   const callFns = Object.keys(calls).filter(n => n.indexOf('(') > -1);
 

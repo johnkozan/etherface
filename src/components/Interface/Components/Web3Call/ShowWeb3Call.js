@@ -47,14 +47,9 @@ export const ShowWeb3Call = ({ component }) => {
     })();
   });
 
-
   const componentNetworkId = NETWORKS.find(n => n.id === component.network).chainId;
   const networkMismatch = componentNetworkId !== chainId ? `Connect your wallet to ${component.network}` : undefined;
   const disabled = !!(!contract || networkMismatch );
-
-  //if (resultLoading) {
-    //return <Spinner />;
-  //}
   const displayResult = result ? <Web3CallResult result={result} /> : null;
 
   return (

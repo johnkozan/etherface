@@ -20,7 +20,9 @@ export const NewTab = () => {
     ],
     submit: values => {
       try {
-        addTab({name: values.get('name')});
+        addTab({
+          name: values.get('name'),
+        });
       } catch (err) {
         setError(err.toString());
       }

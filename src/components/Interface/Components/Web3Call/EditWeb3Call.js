@@ -14,7 +14,7 @@ import { fromJS } from 'immutable';
 import { useActions } from '../../../../actions';
 
 
-export const EditWeb3Call = ({ component, onCancel }) => {
+export const EditWeb3Call = ({ component, onCancel, onSave }) => {
   const { editComponent } = useActions();
   const initialValues = fromJS(component);
   const [fields, form] = useForm({
@@ -30,7 +30,7 @@ export const EditWeb3Call = ({ component, onCancel }) => {
         ...component,
         ...formValues,
       });
-      onCancel();
+      onSave();
     },
   });
 

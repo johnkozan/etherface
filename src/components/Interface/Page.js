@@ -23,7 +23,7 @@ export const Page = ({ page }) => {
     return <EditPage page={page} onCancel={() => setEditMode(false)} />
   }
 
-  if (components.length === 0) {
+  if (Object.keys(components).length === 0) {
     return (
     <div>
       <Alert severity="warning">

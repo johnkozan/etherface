@@ -19,6 +19,7 @@ export const useContractByAddress = (address, network) => {
   const { abi } = addressRecord;
 
   return useMemo(() => {
+    if (!abi) { return; }
     const provider = active ?  new UncheckedJsonRpcSigner(library.getSigner(account)) : ethers.getDefaultProvider();
     return new ethers.Contract(address, abi, provider);
   }, [address, network, account, library, active]);

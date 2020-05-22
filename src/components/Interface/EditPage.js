@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   useMediaQuery,
   Box,
@@ -92,6 +93,7 @@ export const EditPage = ({ page, onCancel }) => {
   const components = useComponentsByPageId(page.__id);
   const [editComponent, setEditComponent] = useState();
   const [showAddComponent, setShowAddComponent] = useState(false);
+  const history = useHistory();
 
   let pageColumns;
   let pageColumnPositions;
@@ -121,10 +123,14 @@ export const EditPage = ({ page, onCancel }) => {
     }
   });
 
+  const returnToPage = () => {
+    onCancel();
+  };
+
   if (editComponent !== undefined) {
     const component = components[editComponent.__id];
     const EditComponent = componentForType(component.type, 'edit');
-    return <EditComponent component={component} onCancel={() => setEditComponent(undefined)} />;
+    return <EditComponent component={component} onCancel={() => setEditComponent(undefined)} onSave={returnToPage} />;
   }
 
   let maxRow = 1;

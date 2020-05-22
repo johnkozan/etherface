@@ -13,7 +13,7 @@ import { fromJS } from 'immutable';
 import { useActions } from '../../../../actions';
 
 
-export const EditMarkdown = ({ component, onCancel }) => {
+export const EditMarkdown = ({ component, onCancel, onSave }) => {
   const { editComponent } = useActions();
   const initialValues = fromJS(component);
   const [fields, form] = useForm({
@@ -23,7 +23,7 @@ export const EditMarkdown = ({ component, onCancel }) => {
     initialValues,
     submit: values => {
       editComponent({__id: component.__id, content: values.get('content')});
-      onCancel();
+      onSave();
     },
   });
 

@@ -41,11 +41,14 @@ export const Addresses = () => {
     deleteAddress(address);
   };
 
+  const noAddresses = addresses.length === 0 ? <div>No Addresses.  Add one below</div> : undefined;
+
   return (
     <div>
       <Card>
         <CardHeader title="Addresses" />
         <CardContent>
+          { noAddresses }
           <List dense={false}>
             { addresses && addresses.map(address => (
               <ListItem key={address.address}>

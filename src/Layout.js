@@ -26,7 +26,7 @@ import 'emoji-mart/css/emoji-mart.css';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
-    //width: 220,
+    width: 280,
     //[theme.breakpoints.up("lg")]: {
       //marginTop: 64,
       //height: "calc(100% - 64px)"
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
   navlist: {
     backgroundColor: theme.palette.white,
-    display: "flex",
+    //display: "flex",
     flexDirection: "column",
     height: "100%",
     padding: theme.spacing(2)
@@ -170,7 +170,7 @@ export const Layout = ({ children }) => {
         <Grid container  style={{height: '100%'}}>
           <Grid item xs={12} style={{marginBottom: 'auto'}}>
 
-            <List className={classes.list}>
+            <List>
               { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
                 <ListItem className={classes.item} key={`/${appTemplate.tabs[tabId].slug}`} disableGutters>
                   <Button
