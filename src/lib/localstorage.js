@@ -1,7 +1,6 @@
-const OPTIONS = [
-  'autosave',
-];
-
+const OPTIONS = {
+  autosave: {default: true},
+};
 
 const localstorageKey = 'etherface-setting';
 
@@ -9,7 +8,14 @@ const optionsKey = (key, opt) => `${key}.options.${opt}`;
 
 export const loadSettings = () => {
   let options = {};
-  OPTIONS.forEach(opt => options[opt] = JSON.parse(localStorage.getItem(optionsKey(opt, localstorageKey))));
+  Object.keys(OPTIONS).forEach(opt => {
+    const optionVal = localStorage.getItem(optionsKey(opt, localstorageKey));
+    if (optionVal === null && OPTIONS[opt].default !== undefined) {
+      options[opt] = OPTIONS[opt].default;
+    } else {
+      options[opt] = JSON.parse(optionVal);
+    }
+  });
   return options;
 };
 
