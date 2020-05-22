@@ -31,7 +31,8 @@ function componentsByColumn(components, colNumber) {
       res.push(component);
     }
   });
-  return res;
+  const sorted = res.sort((a,b) => (a.layout ? a.layout.row || 0 : 0) - (b.layout ? b.layout.row || 0 : 0));
+  return sorted;
 }
 
 export {

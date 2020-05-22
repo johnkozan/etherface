@@ -14,6 +14,7 @@ export const PreviewMarkdown = ({ component }) => {
 
   return (
     <div>
+      <Typography><strong>{ component.title }</strong></Typography>
       <ReactMarkdown source={previewContent} />
       <Typography><strong>...</strong></Typography>
     </div>

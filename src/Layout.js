@@ -8,6 +8,7 @@ import {
   Divider,
   Drawer,
   Grid,
+  Hidden,
   List,
   ListItem,
 } from '@material-ui/core';
@@ -24,27 +25,26 @@ import { useAppTemplate } from './contexts/AppTemplateContext';
 import { Emoji } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
 
+const drawerWidth = 240;
+
 const useStyles = makeStyles(theme => ({
-  drawer: {
-    width: 280,
-    //[theme.breakpoints.up("lg")]: {
-      //marginTop: 64,
-      //height: "calc(100% - 64px)"
-    //}
-  },
   root: {
-    //paddingTop: 56,
+    display: 'flex',
     height: "100%",
-    //[theme.breakpoints.up("sm")]: {
-      //paddingTop: 64
-    //}
   },
-  shiftContent: {
-    //paddingLeft: 240
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
+  drawerPaper: {
+    width: drawerWidth,
   },
   content: {
-    marginTop: 36,
-    height: "100%"
+    height: "100%",
+    flexGrow: 1,
+    padding: theme.spacing(3),
   },
   navlist: {
     backgroundColor: theme.palette.white,
@@ -125,12 +125,8 @@ export const Layout = ({ children }) => {
 
   const [openSidebar, setOpenSidebar] = useState(false);
 
-  const handleSidebarOpen = () => {
-    setOpenSidebar(true);
-  };
-
-  const handleSidebarClose = () => {
-    setOpenSidebar(false);
+  const toggleSidebar = () => {
+    setOpenSidebar(!openSidebar);
   };
 
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
@@ -150,83 +146,101 @@ export const Layout = ({ children }) => {
 
   const showSubSettings = pathname.startsWith(SETTINGS_ROUTE);
 
+  const container = window !== undefined ? () => window.document.body : undefined;
+
+  const drawer = <div>
+    <Grid container  style={{height: '100%'}}>
+      <Grid item xs={12} style={{marginBottom: 'auto'}}>
+
+        <List>
+          { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
+            <ListItem className={classes.item} key={`/${appTemplate.tabs[tabId].slug}`} disableGutters>
+              <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                component={NavLinkWithRef}
+                to={`/${appTemplate.tabs[tabId].slug}`}
+              >
+                <div className={classes.icon}>
+                  { appTemplate.tabs[tabId].icon ?
+                    <Emoji emoji={appTemplate.tabs[tabId].icon} size={24} set={'apple'} /> : undefined
+                  }
+                </div>
+                { appTemplate.tabs[tabId].name }
+              </Button>
+
+            </ListItem>
+          )) }
+        </List>
+
+      </Grid>
+
+      <Grid item xs={12}>
+        <List className={classes.list} style={{marginTop: 'auto'}}>
+
+          <Divider />
+          <ListItem className={clsx(classes.item, classes.settings, (showSubSettings ? undefined : classes.settingsItem))} disableGutters>
+            <Button
+              className={clsx(classes.button, (showSubSettings ? undefined : classes.settingsItem))}
+              component={Link}
+              to={'/_/settings'}
+            >
+              <div className={clsx(classes.icon, classes.settingsItem)}>
+                <SettingsIcon />
+              </div>
+              Settings
+            </Button>
+          </ListItem>
+
+          <Collapse in={showSubSettings}>
+            { renderSettingsSubNavs() }
+          </Collapse>
+
+        </List>
+      </Grid>
+    </Grid>
+  </div>;
+
   return (
-    <div
-      className={clsx({
-        [classes.root]: true,
-        [classes.shiftContent]: isDesktop
-      })}
-    >
-      <Container fixed>
-      <Drawer
-        anchor="left"
-        classes={{ paper: classes.drawer }}
-        open={shouldOpenSidebar}
-        variant={isDesktop ? "persistent" : "temporary"}
-        onClose={handleSidebarClose}
-      >
+    <div className={classes.root}>
+      <nav className={classes.drawer} aria-label="Navigation">
 
-      <div className={classes.navlist}>
-        <Grid container  style={{height: '100%'}}>
-          <Grid item xs={12} style={{marginBottom: 'auto'}}>
+        { /* Mobile */ }
+        <Hidden smUp implementation="css">
+          <Drawer
+            container={container}
+            variant="temporary"
+            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            open={openSidebar}
+            onClose={toggleSidebar}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
 
-            <List>
-              { appTemplate.tabs && Object.keys(appTemplate.tabs).map((tabId, k) => (
-                <ListItem className={classes.item} key={`/${appTemplate.tabs[tabId].slug}`} disableGutters>
-                  <Button
-                    activeClassName={classes.active}
-                    className={classes.button}
-                    component={NavLinkWithRef}
-                    to={`/${appTemplate.tabs[tabId].slug}`}
-                  >
-                    <div className={classes.icon}>
-                    { appTemplate.tabs[tabId].icon ?
-                        <Emoji emoji={appTemplate.tabs[tabId].icon} size={24} set={'apple'} /> : undefined
-                    }
-                    </div>
-                    { appTemplate.tabs[tabId].name }
-                  </Button>
-
-                </ListItem>
-              )) }
-            </List>
-
-          </Grid>
-
-          <Grid item xs={12} style={{marginTop: 'auto'}}>
-            <List className={classes.list}>
-
-              <Divider />
-              <ListItem className={clsx(classes.item, classes.settings, (showSubSettings ? undefined : classes.settingsItem))} disableGutters>
-                <Button
-                  className={clsx(classes.button, (showSubSettings ? undefined : classes.settingsItem))}
-                  component={Link}
-                  to={'/_/settings'}
-                >
-                  <div className={clsx(classes.icon, classes.settingsItem)}>
-                    <SettingsIcon />
-                  </div>
-                  Settings
-                </Button>
-              </ListItem>
-
-              <Collapse in={showSubSettings}>
-                { renderSettingsSubNavs() }
-              </Collapse>
-
-            </List>
-          </Grid>
-        </Grid>
-
-      </div>
-    </Drawer>
-
-    <main className={classes.content}>
-      <Web3Status />
-      { children }
-    </main>
-
-  </Container>
-</div>
+        { /* Desktop */ }
+        <Hidden xsDown implementation="css">
+          <Drawer
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            variant="permanent"
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
+      <main className={classes.content}>
+        <Web3Status />
+        { children }
+      </main>
+    </div>
   );
 }
