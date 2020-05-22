@@ -15,7 +15,7 @@ import { useActions } from '../../../../actions';
 
 export const EditMarkdown = ({ component, onCancel, onSave }) => {
   const { editComponent } = useActions();
-  const initialValues = fromJS(component);
+  const initialValues = fromJS({content: component.content});
   const [fields, form] = useForm({
     fields: [
       { name: 'content', label: 'Content' },

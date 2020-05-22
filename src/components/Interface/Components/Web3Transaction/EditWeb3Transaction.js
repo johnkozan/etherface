@@ -16,7 +16,10 @@ import { useActions } from '../../../../actions';
 
 export const EditWeb3Transaction = ({ component, onCancel, onSave }) => {
   const { editComponent } = useActions();
-  const initialValues = fromJS(component);
+  const initialValues = fromJS({
+    description: component.description,
+    buttonText: component.buttonText,
+  });
   const [fields, form] = useForm({
     fields: [
       {name: 'description', label: 'Description', type: 'text', optional: true},
