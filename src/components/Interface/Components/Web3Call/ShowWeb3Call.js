@@ -45,7 +45,7 @@ export const ShowWeb3Call = ({ component }) => {
         setResult(result);
         setResultLoading(false);
     })();
-  });
+  }, []);
 
   const componentNetworkId = NETWORKS.find(n => n.id === component.network).chainId;
   const disabled = !!(!contract);

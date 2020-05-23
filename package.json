@@ -15,6 +15,7 @@
     "type": "git",
     "url": "https://github.com/johnkozan/etherface.git"
   },
+  "homepage": ".",
   "bugs": {
     "url": "https://github.com/johnkozan/etherface/issues"
   },
@@ -22,10 +23,18 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "release": "release-it"
   },
   "module": "src/App.js",
   "bin": "bin/etherface",
+  "files": [
+    "build/*",
+    "src/*",
+    "bin/*",
+    "public/*",
+    "test/*"
+  ],
   "dependencies": {
     "@apollo/react-common": "^3.1.3",
     "@apollo/react-components": "^3.1.3",
@@ -88,6 +97,7 @@
     "@welldone-software/why-did-you-render": "welldone-software/why-did-you-render",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "release-it": "^13.6.1"
   }
 }
