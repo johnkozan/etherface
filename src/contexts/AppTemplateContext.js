@@ -317,6 +317,11 @@ export const useAddresses = () => {
   return state.addresses;
 };
 
+export const useContractAddresses = () => {
+  const { state } = React.useContext(AppTemplateStore);
+  return state.addresses.filter(a => !!a.abi);
+};
+
 export const useAddress = (address, network) => {
   const { state } = React.useContext(AppTemplateStore);
   return state.addresses.find(a => a.address === address && a.network === network);

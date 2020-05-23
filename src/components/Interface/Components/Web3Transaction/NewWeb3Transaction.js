@@ -11,13 +11,13 @@ import Alert from '@material-ui/lab/Alert';
 import { useForm } from 'react-hooks-useform';
 import { Link } from 'react-router-dom';
 
-import { useAddresses } from '../../../../contexts/AppTemplateContext';
+import { useContractAddresses } from '../../../../contexts/AppTemplateContext';
 import { SelectField } from '../../../../components/Controls/SelectField';
 
 import { useContractByAddress } from '../../../../lib/web3';
 
 export const NewWeb3Transaction = ({ onCreate, onCancel }) => {
-  const addresses = useAddresses();
+  const addresses = useContractAddresses();
 
   const addressOptions = (addresses || []).map(a => ({value: {network: a.network, address: a.address}, label: `${a.name || ''} ${a.address} (${a.network}) `}));
 
