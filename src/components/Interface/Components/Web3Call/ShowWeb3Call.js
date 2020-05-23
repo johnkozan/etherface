@@ -48,8 +48,7 @@ export const ShowWeb3Call = ({ component }) => {
   });
 
   const componentNetworkId = NETWORKS.find(n => n.id === component.network).chainId;
-  const networkMismatch = componentNetworkId !== chainId ? `Connect your wallet to ${component.network}` : undefined;
-  const disabled = !!(!contract || networkMismatch );
+  const disabled = !!(!contract);
   const displayResult = result ? <Web3CallResult result={result} /> : null;
 
   return (
@@ -62,9 +61,6 @@ export const ShowWeb3Call = ({ component }) => {
 
       <Box flex="rows">
         { displayResult }
-        <FormHelperText>
-          { networkMismatch }
-        </FormHelperText>
       </Box>
 
     </Box>
