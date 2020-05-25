@@ -41,7 +41,7 @@ export const Tabs = () => {
   const [selectIconTabId, setSelectIconTabId] = useState();
   const [selectedEditTab, setSelectedEditTab] = useState();
 
-  if (selectedEditTab) {
+  if (selectedEditTab !== undefined) {
     const tab = byId(tabs, selectedEditTab);
     return <EditTab tab={tab} onCancel={() => setSelectedEditTab(undefined)} />;
   }
@@ -64,7 +64,7 @@ export const Tabs = () => {
     setSelectIconTabId(undefined);
   };
 
-  const selectIcon = !!selectIconTabId ? <EmojiPicker onSelect={onSelectEmoji} onRemove={onRemoveIcon} onCancel={onCancelEmojii} /> : undefined;
+  const selectIcon = selectIconTabId !== undefined ? <EmojiPicker onSelect={onSelectEmoji} onRemove={onRemoveIcon} onCancel={onCancelEmojii} /> : undefined;
 
   return (
     <div>
@@ -77,7 +77,7 @@ export const Tabs = () => {
             <Grid item xs={12} md={8}>
               <List dense={false}>
                 { Object.keys(tabs).map(tabKey => (
-                  <ListItem key={tabs[tabKey].__id}>
+                  return <ListItem key={tabs[tabKey].__id}>
                     <ListItemAvatar onClick={() => setSelectIconTabId(tabs[tabKey].__id)} >
                       { tabs[tabKey].icon ?
                           <Emoji emoji={tabs[tabKey].icon} size={32} set={'apple'} /> :
