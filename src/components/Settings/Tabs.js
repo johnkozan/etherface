@@ -77,7 +77,7 @@ export const Tabs = () => {
             <Grid item xs={12} md={8}>
               <List dense={false}>
                 { Object.keys(tabs).map(tabKey => (
-                  return <ListItem key={tabs[tabKey].__id}>
+                  <ListItem key={tabs[tabKey].__id}>
                     <ListItemAvatar onClick={() => setSelectIconTabId(tabs[tabKey].__id)} >
                       { tabs[tabKey].icon ?
                           <Emoji emoji={tabs[tabKey].icon} size={32} set={'apple'} /> :

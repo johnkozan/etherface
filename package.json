@@ -29,8 +29,8 @@
     "eject": "react-scripts eject",
     "release": "release-it",
     "prerelease": "npm run build",
-    "publish": "node_modules/.bin/gh-pages -d build",
-    "prepublish": "npm run build"
+    "ghpages": "node_modules/.bin/gh-pages -d build",
+    "preghpages": "npm run build"
   },
   "module": "src/App.js",
   "bin": "bin/etherface",
