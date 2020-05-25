@@ -19,6 +19,9 @@
   "bugs": {
     "url": "https://github.com/johnkozan/etherface/issues"
   },
+  "publishConfig": {
+  "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
