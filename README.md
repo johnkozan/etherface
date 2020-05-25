@@ -6,19 +6,29 @@ Ethereum dApp UI Builder.
 Project is a work in progress, for testing use only.  Feedback / suggestions / contributions appreciated.
 
 
+Try out the demo at [https://johnkozan.github.io/etherface](https://johnkozan.github.io/etherface)
 
-## Development
 
-To run:
+Run on your own computer:
+```
+$ npx etherface
+```
+
+
+Development:
+
 
 * Clone this repo
-* `yarn run start`
+* Run dev server: `npm run start`
+* Build for deployment: `npm run build`
 
+
+Can also be included as a module in an existing React project.
 
 
 ## Template file
 
-User interfaces for dApps defined in a JSON file.   By default, the template file is saved to the browser's localstorage.
+User interfaces for dApps are defined in a JSON file.   By default, the template file is saved to the browser's localstorage.
 When running the app for the first time, a default introduction template is loaded.
 
 
