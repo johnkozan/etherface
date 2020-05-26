@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -10,19 +10,46 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  TextField,
   Typography,
 } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Link } from 'react-router-dom';
-import { useAppTemplate, useSettings, serializeTemplate } from '../../contexts/AppTemplateContext';
-import { useToasts } from 'react-toast-notifications'
 import fileDownload from 'js-file-download';
+import { useForm } from 'react-hooks-useform';
+import { useToasts } from 'react-toast-notifications'
+import { fromJS } from 'immutable';
+
+import { useActions } from '../../actions';
+import { ErrorMsg } from '../../components/Controls/ErrorMsg';
+import { useAppTemplate, useSettings, serializeTemplate } from '../../contexts/AppTemplateContext';
 
 
 export const SettingsMain = () => {
   const template = useAppTemplate();
+  const { editTemplate } = useActions();
   const { addToast } = useToasts();
+  const [error, setError] = useState(null);
+
+  const initialValues = fromJS({
+    name: template.name,
+  });
+  const [fields, form] = useForm({
+    fields: [
+      { name: 'name', label: 'Name' },
+    ],
+    initialValues,
+    submit: values => {
+      try {
+        editTemplate({
+          name: values.get('name'),
+        });
+      } catch (err) {
+        setError(err.toString());
+      }
+    }
+  });
 
   const SettingsOptions = template.__source.settingsComponent;
 
@@ -32,19 +59,23 @@ export const SettingsMain = () => {
     fileDownload(formatted, 'template.json');
   };
 
+  const errMsg = error ? <ErrorMsg message={error} /> : undefined;
+
   return (
     <div>
+      { errMsg }
       <Typography variant="h4" gutterBottom>
         Settings
       </Typography>
 
       <Card>
+          <form.Form>
         <CardHeader title="App Template" />
 
         <CardContent>
           <List>
             <ListItem>
-              <ListItemText primary={`Name: ${template.name}`} />
+              <TextField {...fields.name } />
             </ListItem>
 
             <ListItem>
@@ -55,9 +86,11 @@ export const SettingsMain = () => {
         </CardContent>
 
         <CardActions>
+          <Button vairant="outlined" color="primary" type="submit" onClick={form.submit} disabled={form.getIsPristine()}>Save changes</Button>
           <Button variant="outlined" startIcon={<CodeIcon />} component={Link} to="/_/json">Template source JSON</Button>
           <Button variant="outlined" startIcon={<GetAppIcon />} onClick={download}>Download Template</Button>
         </CardActions>
+      </form.Form>
       </Card>
 
       <Card>

@@ -25,12 +25,14 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "prebuild": "npm run jsonschema",
     "test": "craco test",
     "eject": "craco eject",
     "release": "release-it",
     "prerelease": "npm run build",
     "ghpages": "node_modules/.bin/gh-pages -d build",
-    "preghpages": "npm run build"
+    "preghpages": "npm run build",
+    "jsonschema": "typescript-json-schema --required --noExtraProps ./src/types/template.ts Template -o src/types/Template.json"
   },
   "module": "src/App.js",
   "bin": "bin/etherface",
@@ -53,6 +55,7 @@
     "@material-ui/types": "^5.0.0",
     "@web3-react/core": "^6.0.9",
     "@web3-react/injected-connector": "^6.0.7",
+    "ajv": "^6.12.2",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link-context": "^1.0.20",
@@ -101,12 +104,14 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^3.2.1",
     "@welldone-software/why-did-you-render": "welldone-software/why-did-you-render",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "gh-pages": "^2.2.0",
     "react-test-renderer": "^16.13.1",
-    "release-it": "^13.6.1"
+    "release-it": "^13.6.1",
+    "typescript-json-schema": "^0.42.0"
   },
   "jest": {
     "transformIgnorePatterns": [

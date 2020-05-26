@@ -1,32 +1,15 @@
 import React, { useMemo } from 'react';
-import slugify from 'slugify';
 import { useToasts } from 'react-toast-notifications'
+import { nextId } from '../helpers';
 
 export const AppTemplateStore = React.createContext();
 
-// TODO Move this somewhere else
-Object.filter = (obj, predicate) =>
-  Object.keys(obj)
-    .filter( key => predicate(obj[key]) )
-    .reduce( (res, key) => (res[key] = obj[key], res), {} );
+const FILE_FORMAT_VERSION = '0';
 
 const initialState = {
   settings: {},
   __loaded: false,
 };
-
-function maxId(objs) {
-  let max = 0;
-  Object.keys(objs).forEach(key => {
-    if (objs[key].__id > max) { max = objs[key].__id; }
-  });
-  return max;
-}
-
-function nextId(objs) {
-  if (Object.keys(objs).length === 0) { return 0; }
-  return maxId(objs) + 1;
-}
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -67,7 +50,7 @@ export function reducer(state, action) {
 
       return {
         ...state,
-        name: action.payload.name,
+        name: template.name,
         tabs,
         pages,
         components,
@@ -78,11 +61,16 @@ export function reducer(state, action) {
         __source: storage,
       };
 
+    case 'EDIT_TEMPLATE':
+      console.log('EDIT TEMPLATE:: ', action.payload);
+      return {
+        ...state,
+        ...action.payload,
+        __version: state.__version + 1,
+      };
+
     case 'ADD_TAB': {
       const tabId = nextId(state.tabs);
-      // TODO: Move validation error throwing to action creator
-      if (!action.payload.name) { throw new Error('Name required'); }
-      const slug = slugify(action.payload.name);
 
       // Create a first page for the tab
       const pageId = nextId(state.pages);
@@ -99,7 +87,6 @@ export function reducer(state, action) {
           [tabId]: {
             ...action.payload,
             __id: tabId,
-            slug,
           },
         },
         pages: {
@@ -396,6 +383,10 @@ export function serializeTemplate(template) {
   });
 
   serializedTemplate.addresses = Object.keys(template.addresses).map(addressKey  => template.addresses[addressKey]);
+
+  // Extra properties
+  serializedTemplate.name = template.name;
+  serializedTemplate.templateVersion = FILE_FORMAT_VERSION;
 
   return serializedTemplate;
 }

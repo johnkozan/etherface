@@ -1,17 +1,46 @@
 import React from 'react';
+import Ajv from 'ajv';
+import slugify from 'slugify';
+
+import { default as schema } from 'types/Template.json';
+
+import { nextId } from './helpers';
 import { AppTemplateStore } from './contexts/AppTemplateContext';
 
 import { connectTheGraph } from './lib/thegraph';
 import localstorage from './lib/localstorage';
 
+
+const ajv = new Ajv({ allErrors: true });
+ajv.addSchema(schema, 'template');
+
 export const useActions = () => {
-  const { dispatch } = React.useContext(AppTemplateStore);
+  const { dispatch, state } = React.useContext(AppTemplateStore);
 
   function loadAppTemplate(template, storage) {
     dispatch({ type: 'LOAD_TEMPLATE', payload: {template, storage} });
   }
 
+  function editTemplate(template) {
+    dispatch({ type: 'EDIT_TEMPLATE', payload: template});
+  }
+
   function addTab(tab){
+    if (!tab.slug) {
+      tab.slug = slugify(tab.name);
+    }
+
+    // validations
+    const valid = ajv.validate({ $ref: 'template#/definitions/Tab' }, tab);
+    if (!valid) {
+      const errorText =
+        ajv.errorsText() && ajv.errorsText().toLowerCase() !== "no errors"
+        ? ajv.errorsText()
+        : "";
+      throw new Error(errorText);
+    }
+    const existingBySlug = Object.filter(state.tabs, t => t.slug === tab.slug);
+
     dispatch({ type: 'ADD_TAB', payload: tab });
   }
 
@@ -87,6 +116,7 @@ export const useActions = () => {
 
   return {
     loadAppTemplate,
+    editTemplate,
     addTab,
     editTab,
     deleteTab,

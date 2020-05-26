@@ -1,0 +1,104 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": false,
+    "definitions": {
+        "Component": {
+            "additionalProperties": false,
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "address",
+                "type"
+            ],
+            "type": "object"
+        },
+        "Number": {
+            "additionalProperties": false,
+            "description": "An object that represents a number of any kind. All JavaScript numbers are 64-bit floating-point numbers.",
+            "type": "object"
+        },
+        "Page": {
+            "additionalProperties": false,
+            "properties": {
+                "components": {
+                    "items": {
+                        "$ref": "#/definitions/Component"
+                    },
+                    "type": "array"
+                },
+                "layout": {
+                    "$ref": "#/definitions/PageLayout"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "components",
+                "layout",
+                "title"
+            ],
+            "type": "object"
+        },
+        "PageLayout": {
+            "additionalProperties": false,
+            "properties": {
+                "columns": {
+                    "items": {
+                        "$ref": "#/definitions/Number"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "columns"
+            ],
+            "type": "object"
+        },
+        "Tab": {
+            "additionalProperties": false,
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pages": {
+                    "items": {
+                        "$ref": "#/definitions/Page"
+                    },
+                    "type": "array"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "pages",
+                "slug"
+            ],
+            "type": "object"
+        }
+    },
+    "properties": {
+        "tabs": {
+            "items": {
+                "$ref": "#/definitions/Tab"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "tabs"
+    ],
+    "type": "object"
+}
+
