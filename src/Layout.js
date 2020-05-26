@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import {
   useMediaQuery,
@@ -7,11 +7,13 @@ import {
   Container,
   Divider,
   Drawer,
+  Fab,
   Grid,
   Hidden,
   List,
   ListItem,
 } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { makeStyles, useTheme } from "@material-ui/styles";
 import clsx from "clsx";
@@ -98,6 +100,14 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.primary.main
     },
   },
+  fab: {
+    position: 'fixed',
+    top: 'auto',
+    right: 'auto',
+    margin: 0,
+    bottom: theme.spacing(2),
+    left: theme.spacing(2),
+  },
 }));
 
 const NavLinkWithRef = forwardRef((props, ref) => (
@@ -128,8 +138,13 @@ export const Layout = ({ children }) => {
   const toggleSidebar = () => {
     setOpenSidebar(!openSidebar);
   };
-
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
+
+  useEffect(() => {
+    if (!isDesktop) {
+      setOpenSidebar(false);
+    }
+  }, [location]);
 
   const renderSettingsSubNavs = () => settingsSubNavs.map(s =>
     <ListItem className={classes.subitem} key={s.name}>
@@ -241,6 +256,11 @@ export const Layout = ({ children }) => {
         <Web3Status />
         { children }
       </main>
+
+
+      <Hidden smUp implementation="css">
+        <Fab className={classes.fab} color="primary" size="small" onClick={toggleSidebar}><MenuIcon /></Fab>;
+      </Hidden>
     </div>
   );
 }

@@ -40,7 +40,7 @@ export const Page = ({ page }) => {
       { columnWidths.map((colSize,colNum) => {
         const actualColNum = colNum + 1; // columns are 1 based
         const rowComponents = componentsByColumn(components, actualColNum);
-        return <Grid item xs={colSize} key={`col-${actualColNum}`}>
+        return <Grid item xs={12} lg={colSize} key={`col-${actualColNum}`}>
           <Grid container spacing={1}>
             { rowComponents.map(component => {
               const ShowComponent = componentForType(component.type, 'show');
@@ -59,8 +59,8 @@ export const Page = ({ page }) => {
       <Typography variant="h4"> { page.title }</Typography>
       <div>
         { componentGrid }
-      </div>
         <EditButton onClick={() => setEditMode(true)} />
+      </div>
     </div>
   );
 }
