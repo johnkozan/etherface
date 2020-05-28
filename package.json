@@ -29,8 +29,8 @@
     "test": "craco test",
     "eject": "craco eject",
     "release": "release-it",
-    "prerelease": "npm run build",
-    "ghpages": "node_modules/.bin/gh-pages -d build",
+    "prerelease": "npm run build && git status -s",
+    "ghpages": "gh-pages -d build",
     "preghpages": "npm run build",
     "jsonschema": "typescript-json-schema --required --noExtraProps ./src/types/template.ts Template -o src/types/Template.json"
   },
