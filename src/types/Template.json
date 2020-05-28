@@ -89,15 +89,23 @@
         }
     },
     "properties": {
+        "name": {
+            "type": "string"
+        },
         "tabs": {
             "items": {
                 "$ref": "#/definitions/Tab"
             },
             "type": "array"
+        },
+        "templateVersion": {
+            "type": "string"
         }
     },
     "required": [
-        "tabs"
+        "name",
+        "tabs",
+        "templateVersion"
     ],
     "type": "object"
 }
