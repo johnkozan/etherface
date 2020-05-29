@@ -37,8 +37,8 @@ export const Addresses = () => {
   const { addresses } = template;
   const { deleteAddress } = useActions();
 
-  const onDelete = (address) => {
-    deleteAddress(address);
+  const onDelete = ({address, network}) => {
+    deleteAddress({address, network});
   };
 
   const noAddresses = addresses.length === 0 ? <div>No Addresses.  Add one below</div> : undefined;

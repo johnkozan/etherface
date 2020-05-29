@@ -1,13 +1,21 @@
 import React, { createContext } from 'react';
+import fs from 'fs';
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import { ToastProvider } from 'react-toast-notifications'
 import { BrowserStorage }  from '../lib/storage';
 import { CustomToast } from '../Notifications';
-import { reducer, AppTemplateProvider } from './AppTemplateContext';
+import { reducer, AppTemplateProvider, useAppTemplate } from './AppTemplateContext';
 import { useActions } from '../actions';
 
 import exampleTemplate from '../examples/default.json';
+
+const exampleInititalState = JSON.parse(fs.readFileSync('test/fixtures/initialState.json'));
+
+const storage = new BrowserStorage('etherface-file');
+const wrapper = ({ children }) => (
+  <ToastProvider components={{Toast: CustomToast}}><AppTemplateProvider>{children}</AppTemplateProvider></ToastProvider>
+);
 
 
 it('loads existing template json into internal state', () => {
@@ -21,10 +29,16 @@ it('loads existing template json into internal state', () => {
   expect(state.addresses.length).toBe(2);
 });
 
-const storage = new BrowserStorage('etherface-file');
-const wrapper = ({ children }) => (
-  <ToastProvider components={{Toast: CustomToast}}><AppTemplateProvider>{children}</AppTemplateProvider></ToastProvider>
-);
+
+it('deletes an addresses without deleting all the addresses', () => {
+  const address = '0xc0dA01a04C3f3E0be433606045bB7017A7323E38';
+  const network = 'mainnet';
+  const action = {type: 'DELETE_ADDRESS', payload: {address, network}};
+
+  const state = reducer(exampleInititalState, action);
+
+  expect(state.addresses.length).toBe(1);
+});
 
 it('requires Tab to have Name', () => {
   expect.assertions(1);
@@ -43,11 +57,12 @@ it('requires Tab to have Name', () => {
   expect(t).toThrow("data should have required property 'name'");
 });
 
-// TODO: Need to wait betwwen addTabs, or start with existing initialState...
+//TODO: Need to wait betwwen addTabs, or start with existing initialState...
 //it('requires Tab to have unique slug', () => {
   //expect.assertions(1);
 
   //const { result, error }  = renderHook(() => useActions(), { wrapper });
+  //const { result: templateResult, error: templateError } = renderHook(() => useAppTemplate(), { wrapper });
   //const { addTab } = result.current;
 
   //const tab = {
@@ -58,8 +73,8 @@ it('requires Tab to have Name', () => {
 
   //const t = () => {
     //act(() => {
-      //addTab(tab);
-      //setTimeout(() => addTab(tab), 1000);
+        //console.log('tabs: ', tabs);
+        //addTab(tab);
     //});
   //};
   //expect(t).toThrow("slug not unique");

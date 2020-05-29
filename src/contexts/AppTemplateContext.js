@@ -241,12 +241,15 @@ export function reducer(state, action) {
         __version: state.__version + 1,
       };
 
-    case 'DELETE_ADDRESS':
+    case 'DELETE_ADDRESS': {
       return {
         ...state,
-        addresses: state.addresses.filter(a => (a.address !== action.payload.address && a.network !== action.payload.network)),
+        addresses: state.addresses.filter(a => {
+          return ((a.address !== action.payload.address) || (a.network !== action.payload.network))
+        }),
         __version: state.__version + 1,
       };
+    }
 
     case 'LOAD_SETTINGS':
       return {
