@@ -10,7 +10,7 @@ export const AppTemplateStore = React.createContext();
 
 const FILE_FORMAT_VERSION = '0';
 
-const initialState = {
+const defaultInitalState = {
   __loaded: false,
 };
 
@@ -260,8 +260,8 @@ export function reducer(state, action) {
 
 }
 
-export const AppTemplateProvider = ({ children, storage }) => {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+export const AppTemplateProvider = ({ children, storage, initialState }) => {
+  const [state, dispatch] = React.useReducer(reducer, initialState || defaultInitalState);
   const { addToast } = useToasts();
   const { settings } = useSettings();
 

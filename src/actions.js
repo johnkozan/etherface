@@ -100,6 +100,12 @@ export const useActions = () => {
   }
 
   function deleteAddress(address) {
+    // Prevent address from being deleted if a web3 transaction depends on it
+    state.addresses.forEach(a => {
+      if (a.address === address.address && a.network === address.network) {
+        throw new Error('Cannot delete address, component depends on it.');
+      }
+    });
     dispatch({ type: 'DELETE_ADDRESS', payload: address});
   }
 

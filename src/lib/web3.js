@@ -16,7 +16,7 @@ export const useContractByAddress = (address, network) => {
   const addressRecord = useAddress(address, network);
   const { library, account, active } = useWeb3React();
 
-  const { abi } = addressRecord;
+  const { abi } = addressRecord || {};
 
   return useMemo(() => {
     if (!abi) { return; }

@@ -40,6 +40,7 @@ export const ShowWeb3Call = ({ component }) => {
 
   useEffect(() => {
     (async () => {
+      if (!contract) { return; }
       const args = []; // TODO: component can have default args
         const result = await contract[component.signature](...args);
         setResult(result);

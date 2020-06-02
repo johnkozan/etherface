@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/styles";
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { useForm } from 'react-hooks-useform';
 import { useWeb3React } from '@web3-react/core'
 
@@ -71,6 +72,15 @@ export const ShowWeb3Transaction = ({ component }) => {
     form.reset();
     setResult(undefined);
   };
+
+  if (!func) {
+    return <div>
+      <Alert severity="warning">
+        <AlertTitle>Address not found in addressbook</AlertTitle>
+
+      </Alert>
+    </div>;
+  }
 
   const signerRequired = func.type === 'transaction';
   const componentNetworkId = NETWORKS.find(n => n.id === component.network).chainId;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Avatar,
@@ -21,6 +21,7 @@ import { useActions } from '../../actions';
 
 import { Identicon } from '../Controls/Identicon';
 import { Confirm } from '../Controls/Confirm';
+import { ErrorMsg } from '../Controls/ErrorMsg';
 import { NewAddress } from './NewAddress';
 
 const useStyles = makeStyles(theme => ({
@@ -36,15 +37,22 @@ export const Addresses = () => {
   const template = useAppTemplate();
   const { addresses } = template;
   const { deleteAddress } = useActions();
+  const [error, setError] = useState(null);
 
   const onDelete = ({address, network}) => {
-    deleteAddress({address, network});
+    try {
+      deleteAddress({address, network});
+    } catch (err) {
+      setError(err.toString());
+    }
   };
 
   const noAddresses = addresses.length === 0 ? <div>No Addresses.  Add one below</div> : undefined;
+  const errMsg = error ? <ErrorMsg message={error} /> : undefined;
 
   return (
     <div>
+      { errMsg }
       <Card>
         <CardHeader title="Addresses" />
         <CardContent>
