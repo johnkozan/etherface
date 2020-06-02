@@ -10,10 +10,12 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
+import DescriptionIcon from '@material-ui/icons/Description';
 import { useHistory } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications'
 import { Confirm } from '../../components/Controls/Confirm';
-import { useAppTemplate, useSettings, useStorage, serializeTemplate } from '../../contexts/AppTemplateContext';
+import { useAppTemplate, useStorage, serializeTemplate, fileNameForTemplate } from '../../contexts/AppTemplateContext';
+import { useSettings } from '../../contexts/SettingsContext';
 import { useActions } from '../../actions';
 
 import exampleTemplate from '../../examples/default.json';
@@ -21,8 +23,8 @@ import exampleTemplate from '../../examples/default.json';
 export const LocalstorageOptions = () => {
   const template = useAppTemplate();
   const storage = useStorage();
-  const settings = useSettings();
-  const { loadAppTemplate, setSetting } = useActions();
+  const { settings, setSetting } = useSettings();
+  const { loadAppTemplate } = useActions();
   const { addToast } = useToasts();
   const  history = useHistory();
 
@@ -43,10 +45,34 @@ export const LocalstorageOptions = () => {
     const exportedTemplate = serializeTemplate(template);
     storage.save(exportedTemplate);
     addToast('Template saved to localstorage', {apperance: 'success', autoDismiss: true, autoDismissTimeout: 3000});
-  }
+  };
 
+  const loadTemplate = async (fileName) => {
+    const newTemplate = await storage.load(fileName);
+    loadAppTemplate(newTemplate, storage);
+    addToast(`Loaded template ${newTemplate.name}`, {apperance: 'success', autoDismiss: true, autoDismissTimeout: 3000});
+  };
+
+  const currentFileName = fileNameForTemplate(template);
+  const fileList = storage.getFileList();
 
   return <div>
+
+    <Typography variant="h6">Templates in Browser storage:</Typography>
+
+    <List>
+      { fileList.map(f =>
+        <ListItem button onClick={() => loadTemplate(f)} color={f === currentFileName ? 'primary' : 'default'}>
+          <ListItemIcon><DescriptionIcon /></ListItemIcon>
+          <ListItemText>{ f }</ListItemText>
+        </ListItem>
+      ) }
+      { !fileList || fileList.length === 0 ? <ListItem>
+        <ListItemText>No templates in browser storage.</ListItemText>
+      </ListItem> : undefined }
+    </List>
+
+    <Typography variant="h6">Browser storage settings</Typography>
 
     <List>
       <ListItem button onClick={() => toggleOption('autosave')}>
@@ -78,7 +104,7 @@ export const LocalstorageOptions = () => {
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>
-          <ListItemText>Delete from Localstorage</ListItemText>
+          <ListItemText>Delete <strong>{ template.name }</strong> from browser storage</ListItemText>
         </ListItem>
       </Confirm>
     </List>

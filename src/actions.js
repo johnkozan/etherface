@@ -8,7 +8,6 @@ import { nextId } from './helpers';
 import { AppTemplateStore } from './contexts/AppTemplateContext';
 
 import { connectTheGraph } from './lib/thegraph';
-import localstorage from './lib/localstorage';
 
 
 const ajv = new Ajv({ allErrors: true });
@@ -104,16 +103,6 @@ export const useActions = () => {
     dispatch({ type: 'DELETE_ADDRESS', payload: address});
   }
 
-  function loadSettings() {
-    const settings = localstorage.loadSettings();
-    dispatch({ type: 'LOAD_SETTINGS', payload: settings});
-  };
-
-  function setSetting(setting, value) {
-    localstorage.setSetting(setting, value);
-    dispatch({ type: 'SET_SETTING', payload: {setting, value}});
-  }
-
   return {
     loadAppTemplate,
     editTemplate,
@@ -131,7 +120,5 @@ export const useActions = () => {
     addAddress,
     deleteAddress,
     editAddress,
-    loadSettings,
-    setSetting,
   };
 };

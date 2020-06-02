@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react';
 import { useToasts } from 'react-toast-notifications'
+import slugify from 'slugify';
+
+import { useSettings } from './SettingsContext';
 import { nextId } from '../helpers';
+
 
 export const AppTemplateStore = React.createContext();
 
 const FILE_FORMAT_VERSION = '0';
 
 const initialState = {
-  settings: {},
   __loaded: false,
 };
 
@@ -251,21 +254,6 @@ export function reducer(state, action) {
       };
     }
 
-    case 'LOAD_SETTINGS':
-      return {
-        ...state,
-        settings: action.payload,
-      };
-
-    case 'SET_SETTING':
-      return {
-        ...state,
-        settings: {
-          ...state.settings,
-          [action.payload.setting]: action.payload.value,
-        },
-      };
-
     default:
       return state;
   }
@@ -275,6 +263,7 @@ export function reducer(state, action) {
 export const AppTemplateProvider = ({ children, storage }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const { addToast } = useToasts();
+  const { settings } = useSettings();
 
   // TODO: React warning about updating during state transition
   function autoSave() {
@@ -286,7 +275,7 @@ export const AppTemplateProvider = ({ children, storage }) => {
   // Autosave on changes to template
   useMemo(() => {
     if (state.__version && state.__version > 0) {
-      if (state.settings.autosave) {
+      if (settings.autosave) {
         autoSave();
       }
     }
@@ -344,11 +333,6 @@ export const useIntegration = (type, endpoint) => {
   return integration;
 };
 
-export const useSettings = () => {
-  const { state } = React.useContext(AppTemplateStore);
-  return state.settings;
-};
-
 export const useStorage = () => {
   const { state } = React.useContext(AppTemplateStore);
   return state.__source;
@@ -392,4 +376,8 @@ export function serializeTemplate(template) {
   serializedTemplate.templateVersion = FILE_FORMAT_VERSION;
 
   return serializedTemplate;
+}
+
+export function fileNameForTemplate(template) {
+    return slugify(template.name || 'Untitled template');
 }

@@ -23,7 +23,7 @@ import { fromJS } from 'immutable';
 
 import { useActions } from '../../actions';
 import { ErrorMsg } from '../../components/Controls/ErrorMsg';
-import { useAppTemplate, useSettings, serializeTemplate } from '../../contexts/AppTemplateContext';
+import { useAppTemplate, useSettings, serializeTemplate, fileNameForTemplate } from '../../contexts/AppTemplateContext';
 
 
 export const SettingsMain = () => {
@@ -54,6 +54,7 @@ export const SettingsMain = () => {
   const SettingsOptions = template.__source.settingsComponent;
 
   const download = () => {
+    const fileName = fileNameForTemplate(template);
     const exportedTemplate = serializeTemplate(template);
     const formatted = JSON.stringify(exportedTemplate, 1, '  ');
     fileDownload(formatted, 'template.json');

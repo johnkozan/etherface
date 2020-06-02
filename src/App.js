@@ -16,6 +16,7 @@ import { Loading } from './Loading';
 
 import { Web3ContextProvider } from './contexts/Web3Context';
 import { AppTemplateProvider } from './contexts/AppTemplateContext';
+import { SettingsProvider } from './contexts/SettingsContext';
 
 const history = createBrowserHistory();
 
@@ -31,19 +32,21 @@ export default function App({ storage }) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router history={history}>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <ToastProvider components={{Toast: CustomToast}}>
-            <Web3ContextProvider>
-              <AppTemplateProvider storage={storage}>
-                <Loading storage={storage}>
-                  <Layout>
-                    <Routes />
-                  </Layout>
-                </Loading>
-              </AppTemplateProvider>
-            </Web3ContextProvider>
-          </ToastProvider>
-        </Web3ReactProvider>
+        <SettingsProvider>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <ToastProvider components={{Toast: CustomToast}}>
+              <Web3ContextProvider>
+                <AppTemplateProvider storage={storage}>
+                  <Loading storage={storage}>
+                    <Layout>
+                      <Routes />
+                    </Layout>
+                  </Loading>
+                </AppTemplateProvider>
+              </Web3ContextProvider>
+            </ToastProvider>
+          </Web3ReactProvider>
+        </SettingsProvider>
       </Router>
     </ThemeProvider>
   );

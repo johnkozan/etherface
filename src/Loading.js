@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { injected, useWeb3ConnectExisting } from './lib/web3';
 import { useActions } from './actions';
 import { useAppTemplate } from './contexts/AppTemplateContext';
+import { useSettings } from './contexts/SettingsContext';
 import { Spinner } from './components/Controls/Spinner';
 import { ErrorMsg } from './components/Controls/ErrorMsg';
 
@@ -14,7 +15,8 @@ export const Loading = ({ children, storage }) => {
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState(false);
   const { integrations } = appTemplate;
-  const { loadAppTemplate, connectIntegration, loadSettings } = useActions();
+  const { loadAppTemplate, connectIntegration } = useActions();
+  const { loadSettings } = useSettings();
   const { activate } = useWeb3React();
   const triedWeb3Existing = useWeb3ConnectExisting();
 

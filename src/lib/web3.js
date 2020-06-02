@@ -49,14 +49,14 @@ export const useWeb3ConnectExisting = () => {
           setTried(true);
         })
       } else {
-        setTried(true)
+        setTried(true);
       }
     })
   }, []);
 
   useEffect(() => {
     if (!tried && active) {
-      setTried(true)
+      setTried(true);
     }
   }, [tried, active]);
 

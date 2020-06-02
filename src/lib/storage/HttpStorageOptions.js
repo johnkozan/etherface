@@ -8,11 +8,11 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core';
-import { useSettings } from '../../contexts/AppTemplateContext';
+import { useSettings } from '../../contexts/SettingsContext';
 import { useActions } from '../../actions';
 
 export const HttpStorageOptions = () => {
-  const settings = useSettings();
+  const { settings } = useSettings();
 
   return <div>
 

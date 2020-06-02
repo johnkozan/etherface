@@ -1,4 +1,6 @@
 {
+  "name": "Example template",
+  "templateVersion": "0",
   "tabs": [
     {
       "name": "Welcome",
