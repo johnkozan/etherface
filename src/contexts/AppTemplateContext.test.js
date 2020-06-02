@@ -80,6 +80,23 @@ it('prevents an address from being deleted it a web3 component depends on it', (
   expect(t).toThrow();
 });
 
+it('deletes corresponding pages and components when deleting a tab', () => {
+  expect(Object.keys(exampleInititalState.tabs).length).toBe(2);
+  expect(Object.keys(exampleInititalState.pages).length).toBe(2);
+  expect(Object.keys(exampleInititalState.components).length).toBe(6);
+
+  const tabToDelete = {
+    __id: 1, // assumes id
+  };
+
+  const action = {type: 'DELETE_TAB', payload: tabToDelete};
+  const state = reducer(exampleInititalState, action);
+
+  expect(Object.keys(state.tabs).length).toBe(1);
+  expect(Object.keys(state.pages).length).toBe(1);
+  expect(Object.keys(state.components).length).toBe(4);
+});
+
 //TODO: Need to wait betwwen addTabs, or start with existing initialState...
 //it('requires Tab to have unique slug', () => {
 //expect.assertions(1);

@@ -14,7 +14,14 @@ const ajv = new Ajv({ allErrors: true });
 ajv.addSchema(schema, 'template');
 
 export const useActions = () => {
-  const { dispatch, state } = React.useContext(AppTemplateStore);
+  const { dispatch, state, reducer } = React.useContext(AppTemplateStore);
+
+  //function verifyTemplate(action) {
+    //const newState = reducer(state, action);
+    //const { errors, warnings } = validateNewState(newState);
+
+    //return { errors, warnings };
+  //}
 
   function loadAppTemplate(template, storage) {
     dispatch({ type: 'LOAD_TEMPLATE', payload: {template, storage} });

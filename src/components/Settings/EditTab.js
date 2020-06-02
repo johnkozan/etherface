@@ -88,10 +88,9 @@ export const EditTab = ({ tab, onCancel }) => {
 
             <br />
 
-            <Confirm onConfirm={() => onDelete(tab)} title="Delete Tab" description={`Delete tab "${tab.name}"?`}>
+            <Confirm onConfirm={() => onDelete(tab)} title="Delete Tab" description={<div>Delete tab "{tab.name}"?<br /><strong>WARNING:</strong> All related pages and their components will also be deleted.</div>}>
               <Button variant="outlined">Delete Tab</Button>
             </Confirm>
-
 
           </CardActions>
 

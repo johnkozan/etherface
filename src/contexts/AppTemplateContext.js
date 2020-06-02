@@ -65,7 +65,6 @@ export function reducer(state, action) {
       };
 
     case 'EDIT_TEMPLATE':
-      console.log('EDIT TEMPLATE:: ', action.payload);
       return {
         ...state,
         ...action.payload,
@@ -114,9 +113,11 @@ export function reducer(state, action) {
       };
 
     case 'DELETE_TAB':
-      // TODO: Need to delete Pages and Tabs also
+      const pages_id = Object.keys(Object.filter(state.pages, p => p.__tab_id === action.payload.__id)).map(pageKey => state.pages[pageKey].__id);
       return {
         ...state,
+        components: Object.filter(state.components, c => pages_id.indexOf(c.__page_id) === -1),
+        pages: Object.filter(state.pages, p => pages_id.indexOf(p.__tab_id) === -1),
         tabs: Object.filter(state.tabs, t => t.__id !== action.payload.__id),
         __version: state.__version + 1,
       };
@@ -281,7 +282,7 @@ export const AppTemplateProvider = ({ children, storage, initialState }) => {
     }
   }, [state.__version]);
 
-  return <AppTemplateStore.Provider value={{state, dispatch}}>
+  return <AppTemplateStore.Provider value={{state, dispatch, reducer}}>
     { children }
   </AppTemplateStore.Provider>;
 };
