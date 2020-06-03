@@ -80,6 +80,21 @@ it('prevents an address from being deleted it a web3 component depends on it', (
   expect(t).toThrow();
 });
 
+it('allows an address to be deleted if no web3 components depend on it', () => {
+  const address = '0x4DA681E4713cC8C4fDbE8a1B027AeBE59c4B332E';
+  const network = 'mainnet';
+
+  const { result, error }  = renderHook(() => useActions(), { wrapper });
+  const { deleteAddress } = result.current;
+
+  const t = () =>
+    act(() =>
+      deleteAddress({address, network})
+    );
+
+  expect(t).not.toThrow();
+});
+
 it('deletes corresponding pages and components when deleting a tab', () => {
   expect(Object.keys(exampleInititalState.tabs).length).toBe(2);
   expect(Object.keys(exampleInititalState.pages).length).toBe(2);

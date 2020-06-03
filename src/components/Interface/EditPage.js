@@ -111,7 +111,7 @@ export const EditPage = ({ page, onCancel }) => {
   const initialValues = fromJS(page);
   const [fields, form] = useForm({
     fields: [
-      { name: 'title', label: 'title', required: false },
+      { name: 'title', label: 'title', optional: true },
     ],
     initialValues,
     submit: values => {
