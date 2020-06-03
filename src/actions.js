@@ -2,7 +2,7 @@ import React from 'react';
 import Ajv from 'ajv';
 import slugify from 'slugify';
 
-import { default as schema } from 'types/Template.json';
+import { default as schema } from './types/Template.json';
 
 import { nextId } from './helpers';
 import { AppTemplateStore } from './contexts/AppTemplateContext';
