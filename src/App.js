@@ -18,7 +18,7 @@ import { Web3ContextProvider } from './contexts/Web3Context';
 import { AppTemplateProvider } from './contexts/AppTemplateContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 
-const history = createBrowserHistory();
+const defaultHistory = createBrowserHistory();
 
 function getLibrary(provider) {
   const library = new Web3Provider(provider);
@@ -27,11 +27,11 @@ function getLibrary(provider) {
 }
 
 
-export default function App({ storage }) {
+export default function App({ storage, history }) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router history={history}>
+      <Router history={history || defaultHistory}>
         <SettingsProvider>
           <Web3ReactProvider getLibrary={getLibrary}>
             <ToastProvider components={{Toast: CustomToast}}>
