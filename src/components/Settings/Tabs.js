@@ -13,6 +13,7 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import EditIcon from '@material-ui/icons/Edit';
 import FolderIcon from '@material-ui/icons/Folder';
 import AddIcon from '@material-ui/icons/Add';
@@ -66,9 +67,17 @@ export const Tabs = () => {
 
   const selectIcon = selectIconTabId !== undefined ? <EmojiPicker onSelect={onSelectEmoji} onRemove={onRemoveIcon} onCancel={onCancelEmojii} /> : undefined;
 
+  const tabsWarning = Object.keys(tabs).length === 0 ? <div>
+      <Alert severity="warning">
+        <AlertTitle>Template has no tabs defined. Create your first tab:</AlertTitle>
+      </Alert>
+    </div> : undefined;
+
+
   return (
     <div>
       { selectIcon }
+      { tabsWarning }
       <Card>
         <CardHeader title="Tabs" />
 

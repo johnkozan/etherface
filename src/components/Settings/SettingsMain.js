@@ -51,13 +51,13 @@ export const SettingsMain = () => {
     }
   });
 
-  const SettingsOptions = template.__source.settingsComponent;
+  const SettingsOptions = template.__source.settingsComponent || (() => null);
 
   const download = () => {
     const fileName = fileNameForTemplate(template);
     const exportedTemplate = serializeTemplate(template);
     const formatted = JSON.stringify(exportedTemplate, 1, '  ');
-    fileDownload(formatted, 'template.json');
+    fileDownload(formatted, `${fileName}.json`);
   };
 
   const errMsg = error ? <ErrorMsg message={error} /> : undefined;

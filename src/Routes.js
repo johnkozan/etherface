@@ -23,7 +23,7 @@ export const Routes = () => {
 
       <Route path={SETTINGS_ROUTE} component={Settings} />
 
-      <Route path="/" render={() => <Redirect to={`/${defaultTab.slug}`} /> } />
+      <Route path="/" render={() => <Redirect to={defaultTab ? `/${defaultTab.slug}` : `${SETTINGS_ROUTE}/settings/tabs` } /> } />
     </Switch>
   );
 }
