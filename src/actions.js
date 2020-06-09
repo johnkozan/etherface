@@ -35,6 +35,9 @@ export const useActions = () => {
     if (!tab.slug) {
       tab.slug = slugify(tab.name);
     }
+    if (!tab.pages) {
+      tab.pages = [];
+    }
 
     // validations
     const valid = ajv.validate({ $ref: 'template#/definitions/Tab' }, tab);
