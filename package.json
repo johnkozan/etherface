@@ -68,7 +68,7 @@
     "emoji-mart": "^3.0.0",
     "ethers": "^4.0.47",
     "fastify": "^2.14.1",
-    "fastify-static": "^2.7.0",
+    "fastify-static": "^4.2.4",
     "fetch-graphql-schema": "^0.2.1",
     "graphql-tag": "^2.10.3",
     "immutable": "^4.0.0-rc.12",
